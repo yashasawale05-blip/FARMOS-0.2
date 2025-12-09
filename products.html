@@ -59,14 +59,16 @@
             border-radius: 20px;
             font-weight: bold;
         }
+
+        /* Checkout Button */
         .checkout-btn {
             display: block;
-            width: 180px;
-            margin: 30px auto;
+            width: 200px;
+            margin: 40px auto;
             background: #2f7a32;
             color: white;
             text-align: center;
-            padding: 12px 18px;
+            padding: 14px 20px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 18px;
@@ -89,7 +91,7 @@
             <img src="https://i.ibb.co/JpbcQHk/tomato.jpg" alt="Tomato">
             <h3>Tomato</h3>
             <p>₹40 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Tomato', 40)">Add to Cart</button>
         </div>
 
         <!-- Potato -->
@@ -97,7 +99,7 @@
             <img src="https://i.ibb.co/4S4xVJX/potato.jpg" alt="Potato">
             <h3>Potato</h3>
             <p>₹25 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Potato', 25)">Add to Cart</button>
         </div>
 
         <!-- Onion -->
@@ -105,7 +107,7 @@
             <img src="https://i.ibb.co/3YJzRz4/onion.jpg" alt="Onion">
             <h3>Onion</h3>
             <p>₹40 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Onion', 40)">Add to Cart</button>
         </div>
 
         <!-- Carrot -->
@@ -113,20 +115,26 @@
             <img src="https://i.ibb.co/y4W7b5r/carrot.jpg" alt="Carrot">
             <h3>Carrot</h3>
             <p>₹40 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Carrot', 40)">Add to Cart</button>
         </div>
 
     </div>
 
-    <script>
-        let cartCount = 0;
-
-        function addToCart() {
-            cartCount++;
-            document.getElementById("cart-count").innerText = cartCount;
-        }
-    </script>
+    <!-- Checkout Button -->
     <a href="checkout.html" class="checkout-btn">Go to Checkout</a>
 
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            document.getElementById("cart-count").innerText = cart.length;
+        }
+
+        // Load cart count on page open
+        document.getElementById("cart-count").innerText = cart.length;
+    </script>
+
 </body>
-                </html>
+</html>
