@@ -3,54 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Farmos - Fresh From Farm</title>
-  <link rel="stylesheet" href="style.css">
+  <title>FarmOS - Fresh From Farm</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f6fff4;
+    }
+
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      background: #2f7a32;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+    }
+
+    @media (max-width: 600px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #2f7a32;
+        padding: 10px;
+        width: 100%;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+      background: url('https://i.ibb.co/Fz97hVd/farm.jpg') center/cover no-repeat;
+      color: white;
+      font-weight: bold;
+    }
+
+    .hero h2 {
+      font-size: 32px;
+    }
+
+    .btn {
+      background: #2f7a32;
+      padding: 12px 20px;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 18px;
+      display: inline-block;
+      margin-top: 15px;
+    }
+
+    /* ---------- WHY SECTION ---------- */
+    .why {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .why-box {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .why-box div {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      text-align: center;
+      background: #2f7a32;
+      color: white;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>Farmos</h1>
-    <nav class="navbar">
+<!-- NAVBAR -->
+<nav class="navbar">
   <div class="logo">FarmOS 🌿</div>
 
   <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="products.html">Shop</a></li>
-      <li><a href="checkout.html">Checkout</a></li>
+      <li><a href="checkout.html">Cart</a></li>
       <li><a href="login.html">Login</a></li>
   </ul>
 
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    </nav>
-</header>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</nav>
 
+<!-- HERO SECTION -->
 <section class="hero">
   <h2>Fresh Vegetables Direct From Farmers</h2>
   <p>Healthy, chemical-free, and delivered within hours.</p>
-  <a href="products.html" class="btn">shop Now</a>
+  <a href="products.html" class="btn">Shop Now</a>
 </section>
 
+<!-- WHY SECTION -->
 <section class="why">
-  <h2>Why Farmos?</h2>
+  <h2>Why FarmOS?</h2>
   <div class="why-box">
     <div>
-      <h3>Fresh</h3>
+      <h3>🌿 Fresh</h3>
       <p>Delivered within hours of harvesting.</p>
     </div>
     <div>
-      <h3>No Middlemen</h3>
+      <h3>🤝 No Middlemen</h3>
       <p>Better prices for customers & farmers.</p>
     </div>
     <div>
-      <h3>Affordable</h3>
+      <h3>💰 Affordable</h3>
       <p>Lowest market price guaranteed.</p>
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <p>© 2025 Farmos • Fresh From Farm to Your Home</p>
+  <p>© 2025 FarmOS • Fresh From Farm to Your Home</p>
 </footer>
 
+<script>
+function toggleMenu() {
+  document.querySelector(".nav-links").classList.toggle("show");
+}
+</script>
+
 </body>
-    </html>
+        </html>
