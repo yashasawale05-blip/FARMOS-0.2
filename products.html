@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmos - Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<header>
+  <h1>Farmos</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Shop</a>
+    <a href="cart.html">Cart 🛒</a>
+  </nav>
+</header>
+
+<section class="product-container">
+  <h2>Fresh Vegetables</h2>
+
+  <div class="products">
+    <div class="product">
+      <img src="https://i.imgur.com/30YQw9l.png">
+      <h3>Tomato</h3>
+      <p>₹30 / kg</p>
+      <button onclick="addToCart('Tomato', 30)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://i.imgur.com/aKfvUgd.png">
+      <h3>Potato</h3>
+      <p>₹25 / kg</p>
+      <button onclick="addToCart('Potato', 25)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://i.imgur.com/QW3kQzm.png">
+      <h3>Onion</h3>
+      <p>₹40 / kg</p>
+      <button onclick="addToCart('Onion', 40)">Add to Cart</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Farmos</p>
+</footer>
+
+</body>
+  </html>
