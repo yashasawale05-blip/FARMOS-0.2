@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmOS - Signup</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6fff4;
+            margin: 0;
+        }
+
+        /* ---------- NAVBAR ---------- */
+        .navbar {
+            background: #2f7a32;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: #2f7a32;
+                padding: 10px;
+                width: 100%;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+        }
+
+        /* ---------- SIGNUP FORM ---------- */
+        .signup-box {
+            background: white;
+            max-width: 380px;
+            margin: 50px auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2f7a32;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid gray;
+            margin-top: 10px;
+        }
+
+        .btn {
+            width: 95%;
+            background: #2f7a32;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        p {
+            margin-top: 15px;
+        }
+
+        a {
+            color: #2f7a32;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">FarmOS 🌿</div>
+
+  <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="checkout.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+  </ul>
+
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</nav>
+
+<!-- Signup Form -->
+<div class="signup-box">
+    <h2>Create Account</h2>
+
+    <input type="text" id="signupName" placeholder="Full Name">
+    <input type="email" id="signupEmail" placeholder="Email">
+    <input type="password" id="signupPassword" placeholder="Password">
+
+    <button class="btn" onclick="signup()">Signup</button>
+
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+</div>
+
+<script>
+function toggleMenu() {
+    document.querySelector(".nav-links").classList.toggle("show");
+}
+
+function signup() {
+    let name = document.getElementById("signupName").value.trim();
+    let email = document.getElementById("signupEmail").value.trim();
+    let password = document.getElementById("signupPassword").value.trim();
+
+    if (!name || !email || !password) {
+        alert("Please fill all fields ❗");
+        return;
+    }
+
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPassword", password);
+
+    alert("Account created successfully! 🎉 Please login now.");
+
+    window.location.href = "login.html"; 
+}
+</script>
+
+</body>
+  </html>
