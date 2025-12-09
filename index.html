@@ -173,6 +173,31 @@ function toggleMenu() {
   document.querySelector(".nav-links").classList.toggle("show");
 }
 </script>
+  <script>
+function updateNavbar() {
+    let user = localStorage.getItem("userName");
+
+    let loginLink = document.querySelector(".nav-links li:last-child a");
+
+    if (user) {
+        loginLink.textContent = "Logout";
+        loginLink.href = "#";
+        loginLink.onclick = function () {
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userEmail");
+            localStorage.removeItem("userPassword");
+            alert("Logged out successfully!");
+            window.location.href = "index.html";
+        };
+
+        let welcomeText = document.createElement("li");
+        welcomeText.innerHTML = `<a href="#">👋 ${user}</a>`;
+        document.querySelector(".nav-links").prepend(welcomeText);
+    }
+}
+
+updateNavbar();
+  </script>
 
 </body>
         </html>
