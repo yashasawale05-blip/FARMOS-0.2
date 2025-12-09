@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Farmos</title>
-  <link rel="stylesheet" href="style.css">
+    <title>Checkout – FARMOS</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>Farmos</h1>
-</header>
+<h2>Checkout</h2>
 
-<section class="checkout">
-  <h2>Checkout</h2>
-  <p>This is a demo checkout page. Payment gateway will be added later.</p>
-  <a href="index.html" class="btn">Back to Home</a>
-</section>
+<div id="checkout-items"></div>
+<h3 id="total-amount"></h3>
 
-<footer>
-  <p>© 2025 Farmos</p>
-</footer>
+<h3>Enter Delivery Details</h3>
+<input id="customerName" placeholder="Full Name"><br><br>
+<input id="customerAddress" placeholder="Address"><br><br>
+<input id="customerPhone" placeholder="Phone Number"><br><br>
 
+<button onclick="placeOrder()">Place Order</button>
+
+<script src="script.js"></script>
+<script>
+   loadCheckout();
+</script>
 </body>
 </html>
