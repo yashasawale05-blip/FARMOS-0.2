@@ -154,27 +154,33 @@
 </div>
 
 <script>
-function toggleMenu() {
-  document.querySelector(".nav-links").classList.toggle("show");
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let container = document.querySelector(".checkout-box");
+
+if (cart.length === 0) {
+    container.innerHTML += "<p>No items in cart</p>";
+} else {
+    let total = 0;
+
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+
+        container.innerHTML += `
+            <div class="item-row">
+                <span>${item.name} x ${item.quantity}</span>
+                <span>₹${item.price * item.quantity}</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("total-price").innerText = total;
+    document.getElementById("item-count").innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-let cartItems = JSON.parse(localStorage.getItem("cartData")) || [];
-let itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-let totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-document.getElementById("item-count").innerText = itemCount;
-document.getElementById("total-price").innerText = totalPrice;
-
 function placeOrder() {
-    if (itemCount === 0) {
-        alert("Your cart is empty. Add items before placing an order.");
-        return;
-    }
-
-    alert("🎉 Order placed successfully! Your fresh produce will arrive soon 🚚💚");
-
-    localStorage.removeItem("cartData");
-    window.location.href = "index.html";
+    alert("Order placed successfully! 🚚🌿");
+    localStorage.removeItem("cart");
+    window.location.href = "products.html";
 }
 </script>
     <script>
