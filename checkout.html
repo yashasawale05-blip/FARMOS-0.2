@@ -1,26 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Checkout – FARMOS</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmOS - Checkout</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6fff4;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2f7a32;
+        }
+
+        .checkout-box {
+            background: white;
+            max-width: 450px;
+            margin: 25px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+            border-top: 2px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .order-btn {
+            width: 100%;
+            background: #2f7a32;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .back-btn {
+            margin-top: 10px;
+            text-align: center;
+            display: block;
+            color: #2f7a32;
+            text-decoration: none;
+            font-size: 16px;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>Checkout</h2>
+    <h1>Your Cart Summary</h1>
 
-<div id="checkout-items"></div>
-<h3 id="total-amount"></h3>
+    <div class="checkout-box">
+        <div class="item-row">
+            <span>Items in Cart</span>
+            <span id="item-count">0</span>
+        </div>
 
-<h3>Enter Delivery Details</h3>
-<input id="customerName" placeholder="Full Name"><br><br>
-<input id="customerAddress" placeholder="Address"><br><br>
-<input id="customerPhone" placeholder="Phone Number"><br><br>
+        <div class="total">
+            Total Price: ₹<span id="total-price">0</span>
+        </div>
 
-<button onclick="placeOrder()">Place Order</button>
+        <a href="#" class="order-btn" onclick="placeOrder()">Place Order</a>
 
-<script src="script.js"></script>
-<script>
-   loadCheckout();
-</script>
+        <a href="product.html" class="back-btn">⬅ Back to Products</a>
+    </div>
+
+
+    <script>
+        // Fetch cart count sent using localStorage
+        let items = localStorage.getItem("cartCount") || 0;
+        let price = items * 40; // Default average price
+
+        document.getElementById("item-count").innerText = items;
+        document.getElementById("total-price").innerText = price;
+
+        function placeOrder() {
+            alert("Your order has been placed successfully! 🚚🌾");
+            localStorage.removeItem("cartCount");
+        }
+    </script>
+
 </body>
 </html>
