@@ -159,28 +159,28 @@
             <img src="https://i.ibb.co/JpbcQHk/tomato.jpg" alt="Tomato">
             <h3>Tomato</h3>
             <p>₹40 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Tomato', 40)">Add to Cart</button>
         </div>
 
         <div class="product-card">
             <img src="https://i.ibb.co/4S4xVJX/potato.jpg" alt="Potato">
             <h3>Potato</h3>
             <p>₹25 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Potato', 25)">Add to Cart</button>
         </div>
 
         <div class="product-card">
             <img src="https://i.ibb.co/3YJzRz4/onion.jpg" alt="Onion">
             <h3>Onion</h3>
             <p>₹40 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Onion', 40)">Add to Cart</button>
         </div>
 
         <div class="product-card">
             <img src="https://i.ibb.co/y4W7b5r/carrot.jpg" alt="Carrot">
             <h3>Carrot</h3>
             <p>₹40 / kg</p>
-            <button onclick="addToCart()">Add to Cart</button>
+            <button onclick="addToCart('Carrot',40)">Add to Cart</button>
         </div>
 
     </div>
@@ -188,16 +188,30 @@
     <a href="checkout.html" class="checkout-btn">Go to Checkout</a>
 
 <script>
-function toggleMenu() {
-    document.querySelector(".nav-links").classList.toggle("show");
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(productName, price) {
+    // Check if item already exists
+    let item = cart.find(p => p.name === productName);
+
+    if (item) {
+        item.quantity += 1;
+    } else {
+        cart.push({ name: productName, price: price, quantity: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    updateCartCount();
 }
 
-let cartCount = 0;
-
-function addToCart() {
-    cartCount++;
-    document.getElementById("cart-count").innerText = cartCount;
+function updateCartCount() {
+    let totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById("cart-count").innerText = totalQty;
 }
+
+updateCartCount();
 </script>
     <script>
 function updateNavbar() {
