@@ -124,9 +124,10 @@
         let cartCount = 0;
 
         function addToCart() {
-            cartCount++;
-            document.getElementById("cart-count").innerText = cartCount;
-        }
+    cartCount++;
+    localStorage.setItem("cartCount", cartCount);
+    document.getElementById("cart-count").innerText = cartCount;
+    }
     </script>
 
     <!-- Checkout button -->
