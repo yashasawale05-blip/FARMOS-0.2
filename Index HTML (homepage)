@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmos - Fresh From Farm</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Farmos</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="products.html">Shop</a>
+    <a href="cart.html">Cart 🛒</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Fresh Vegetables Direct From Farmers</h2>
+  <p>Healthy, chemical-free, and delivered within hours.</p>
+  <a href="products.html" class="btn">Shop Now</a>
+</section>
+
+<section class="why">
+  <h2>Why Farmos?</h2>
+  <div class="why-box">
+    <div>
+      <h3>Fresh</h3>
+      <p>Delivered within hours of harvesting.</p>
+    </div>
+    <div>
+      <h3>No Middlemen</h3>
+      <p>Better prices for customers & farmers.</p>
+    </div>
+    <div>
+      <h3>Affordable</h3>
+      <p>Lowest market price guaranteed.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Farmos • Fresh From Farm to Your Home</p>
+</footer>
+
+</body>
+</html>
