@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmOS - Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f6fff4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2f7a32;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .card button {
+            margin-top: 10px;
+            background: #2f7a32;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2f7a32;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cart-icon">
+        Cart: <span id="cart-count">0</span>
+    </div>
+
+    <h1>Farm Fresh Vegetables</h1>
+
+    <div class="container">
+
+        <div class="card">
+            <img src="https://i.ibb.co/JpbcQHk/tomato.jpg" alt="Tomato">
+            <h3>Tomato</h3>
+            <p>₹25 / kg</p>
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/xJ7JzG2/potato.jpg" alt="Potato">
+            <h3>Potato</h3>
+            <p>₹20 / kg</p>
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/f8Z8W0K/onion.jpg" alt="Onion">
+            <h3>Onion</h3>
+            <p>₹28 / kg</p>
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/y4W7b5r/carrot.jpg" alt="Carrot">
+            <h3>Carrot</h3>
+            <p>₹40 / kg</p>
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+
+    </div>
+
+<script>
+    let cartCount = 0;
+
+    function addToCart() {
+        cartCount++;
+        document.getElementById("cart-count").innerText = cartCount;
+    }
+</script>
+
+</body>
+  </html>
