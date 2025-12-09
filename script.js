@@ -71,3 +71,32 @@ function login() {
     alert("Invalid login details");
   }
 }
+function loadCheckout() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let html = "";
+    let total = 0;
+
+    cart.forEach(item => {
+        html += `<p>${item.name} – ₹${item.price}</p>`;
+        total += item.price;
+    });
+
+    document.getElementById("checkout-items").innerHTML = html;
+    document.getElementById("total-amount").innerHTML = "Total: ₹" + total;
+}
+
+function placeOrder() {
+    const name = document.getElementById("customerName").value;
+    const address = document.getElementById("customerAddress").value;
+    const phone = document.getElementById("customerPhone").value;
+
+    if (!name || !address || !phone) {
+        alert("Please fill all details");
+        return;
+    }
+
+    localStorage.removeItem("cart");
+
+    alert("Order placed successfully! Thank you ❤️");
+    window.location.href = "index.html";
+}
