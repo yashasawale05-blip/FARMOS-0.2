@@ -9,12 +9,67 @@
         body {
             font-family: Arial, sans-serif;
             background: #f6fff4;
-            padding: 20px;
+            margin: 0;
         }
 
+        /* ---------- NAVBAR ---------- */
+        .navbar {
+            background: #2f7a32;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: #2f7a32;
+                padding: 10px;
+                width: 100%;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+        }
+
+        /* ---------- CHECKOUT BOX ---------- */
         h1 {
             text-align: center;
             color: #2f7a32;
+            margin-top: 20px;
         }
 
         .checkout-box {
@@ -67,37 +122,61 @@
 
 <body>
 
-    <h1>Your Cart Summary</h1>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">FarmOS 🌿</div>
 
-    <div class="checkout-box">
-        <div class="item-row">
-            <span>Items in Cart</span>
-            <span id="item-count">0</span>
-        </div>
+  <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="checkout.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+  </ul>
 
-        <div class="total">
-            Total Price: ₹<span id="total-price">0</span>
-        </div>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</nav>
 
-        <a href="#" class="order-btn" onclick="placeOrder()">Place Order</a>
+<h1>Checkout Summary 🛒</h1>
 
-        <a href="products.html" class="back-btn">⬅ Back to Products</a>
+<div class="checkout-box">
+    <div class="item-row">
+        <span>Total Items</span>
+        <span id="item-count">0</span>
     </div>
 
+    <div class="total">
+        Total Price: ₹<span id="total-price">0</span>
+    </div>
 
-    <script>
-        // Fetch cart count sent using localStorage
-        let items = localStorage.getItem("cartCount") || 0;
-        let price = items * 40; // Default average price
+    <a href="#" class="order-btn" onclick="placeOrder()">Place Order</a>
 
-        document.getElementById("item-count").innerText = items;
-        document.getElementById("total-price").innerText = price;
+    <a href="products.html" class="back-btn">⬅ Continue Shopping</a>
+</div>
 
-        function placeOrder() {
-            alert("Your order has been placed successfully! 🚚🌾");
-            localStorage.removeItem("cartCount");
-        }
-    </script>
+<script>
+function toggleMenu() {
+  document.querySelector(".nav-links").classList.toggle("show");
+}
+
+let cartItems = JSON.parse(localStorage.getItem("cartData")) || [];
+let itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+let totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+document.getElementById("item-count").innerText = itemCount;
+document.getElementById("total-price").innerText = totalPrice;
+
+function placeOrder() {
+    if (itemCount === 0) {
+        alert("Your cart is empty. Add items before placing an order.");
+        return;
+    }
+
+    alert("🎉 Order placed successfully! Your fresh produce will arrive soon 🚚💚");
+
+    localStorage.removeItem("cartData");
+    window.location.href = "index.html";
+}
+</script>
 
 </body>
 </html>
