@@ -1,20 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login – FARMOS</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmOS - Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6fff4;
+            margin: 0;
+        }
+
+        /* ---------- NAVBAR ---------- */
+        .navbar {
+            background: #2f7a32;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: #2f7a32;
+                padding: 10px;
+                width: 100%;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+        }
+
+        /* ---------- LOGIN BOX ---------- */
+        .login-box {
+            background: white;
+            max-width: 380px;
+            margin: 50px auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2f7a32;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid gray;
+            margin-top: 10px;
+        }
+
+        .btn {
+            width: 95%;
+            background: #2f7a32;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        p {
+            margin-top: 15px;
+        }
+
+        a {
+            color: #2f7a32;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Login</h2>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">FarmOS 🌿</div>
 
-<input type="email" id="loginEmail" placeholder="Email"><br><br>
-<input type="password" id="loginPassword" placeholder="Password"><br><br>
+  <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="checkout.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+  </ul>
 
-<button onclick="login()">Login</button>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</nav>
 
-<p>New user? <a href="signup.html">Signup here</a></p>
+<div class="login-box">
+    <h2>Login</h2>
 
-<script src="script.js"></script>
+    <input type="email" id="loginEmail" placeholder="Enter Email">
+
+    <input type="password" id="loginPassword" placeholder="Enter Password">
+
+    <button class="btn" onclick="login()">Login</button>
+
+    <p>New user? <a href="signup.html">Create an account</a></p>
+</div>
+
+<script>
+function toggleMenu() {
+    document.querySelector(".nav-links").classList.toggle("show");
+}
+
+function login() {
+    let email = document.getElementById("loginEmail").value.trim();
+    let password = document.getElementById("loginPassword").value.trim();
+
+    let savedEmail = localStorage.getItem("userEmail");
+    let savedPassword = localStorage.getItem("userPassword");
+
+    if (email === savedEmail && password === savedPassword) {
+        alert("Login successful! 🎉");
+        window.location.href = "products.html";
+    } else {
+        alert("Invalid email or password ⚠️");
+    }
+}
+</script>
 </body>
-</html>
+        </html>
