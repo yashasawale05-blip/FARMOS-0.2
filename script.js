@@ -47,3 +47,27 @@ function addToCart() {
 
 // Run this when page loads
 document.addEventListener("DOMContentLoaded", updateCartUI);
+function signup() {
+  const user = {
+    name: document.getElementById("signupName").value,
+    email: document.getElementById("signupEmail").value,
+    password: document.getElementById("signupPassword").value
+  };
+
+  localStorage.setItem("farmosUser", JSON.stringify(user));
+  alert("Signup successful!");
+  window.location.href = "login.html";
+}
+
+function login() {
+  const savedUser = JSON.parse(localStorage.getItem("farmosUser"));
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  if (savedUser && email === savedUser.email && password === savedUser.password) {
+    alert("Login successful!");
+    window.location.href = "product.html";
+  } else {
+    alert("Invalid login details");
+  }
+}
