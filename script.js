@@ -26,3 +26,24 @@ function showCart() {
 if (window.location.pathname.includes("cart.html")) {
   showCart();
 }
+// --- CART SYSTEM ---
+
+let cartCount = localStorage.getItem("cartCount")
+    ? parseInt(localStorage.getItem("cartCount"))
+    : 0;
+
+// Update cart count on page load
+function updateCartUI() {
+    const cartDisplay = document.getElementById("cart-count");
+    if (cartDisplay) cartDisplay.innerText = cartCount;
+}
+
+// Add product to cart
+function addToCart() {
+    cartCount++;
+    localStorage.setItem("cartCount", cartCount);
+    updateCartUI();
+}
+
+// Run this when page loads
+document.addEventListener("DOMContentLoaded", updateCartUI);
