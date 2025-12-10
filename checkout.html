@@ -1,198 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmOS - Checkout</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FarmOS — Checkout</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f6fff4;
-            margin: 0;
-        }
+  <style>
+    :root{--green:#2f7a32}
+    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif}
+    body{background:linear-gradient(rgba(255,255,255,0.9),rgba(255,255,255,0.9)), url('https://i.ibb.co/xr2yKjH/vegetable-bg.jpg'); background-size:cover;background-position:center}
+    .navbar{background:var(--green);padding:12px 20px;color:#fff;position:sticky;top:0}
+    .logo{font-weight:700}
+    .nav-links{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    .nav-links a{color:white;text-decoration:none}
+    .menu-btn{display:none}
+    @media(max-width:700px){.nav-links{display:none}.nav-links.show{display:flex}.menu-btn{display:block}}
 
-        /* NAVBAR */
-        .navbar {
-            background: #2f7a32;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-        }
-
-        @media (max-width: 600px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                background: #2f7a32;
-                padding: 10px;
-                width: 100%;
-            }
-            .nav-links.show {
-                display: flex;
-            }
-            .menu-btn {
-                display: block;
-            }
-        }
-
-        /* CHECKOUT BOX */
-        h1 {
-            text-align: center;
-            color: #2f7a32;
-            margin-top: 20px;
-        }
-
-        .checkout-box {
-            background: white;
-            max-width: 450px;
-            margin: 25px auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-        }
-
-        .item-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        .total {
-            font-weight: bold;
-            font-size: 20px;
-            margin-top: 20px;
-            border-top: 2px solid #ddd;
-            padding-top: 10px;
-        }
-
-        .order-btn {
-            width: 100%;
-            background: #2f7a32;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            display: block;
-            margin-top: 20px;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .back-btn {
-            margin-top: 10px;
-            text-align: center;
-            display: block;
-            color: #2f7a32;
-            text-decoration: none;
-            font-size: 16px;
-        }
-    </style>
+    .wrap{max-width:920px;margin:28px auto;padding:12px}
+    .checkout-box{background:#fff;border-radius:12px;padding:18px;box-shadow:0 8px 26px rgba(0,0,0,0.12)}
+    .item-row{display:flex;justify-content:space-between;padding:8px 2px;border-bottom:1px solid #eee}
+    .summary{display:flex;justify-content:space-between;margin-top:14px;font-weight:700}
+    .order-btn{display:block;width:100%;background:var(--green);color:#fff;padding:12px;border-radius:10px;border:none;margin-top:16px;cursor:pointer;text-align:center}
+    .back{display:inline-block;margin-top:10px;color:var(--green);text-decoration:none}
+    .empty{padding:18px;text-align:center;color:#555}
+  </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-    <div class="logo">FarmOS 🌿</div>
-
-    <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="products.html">Shop</a></li>
-        <li><a href="checkout.html">Cart</a></li>
-    </ul>
-
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <div class="logo">FarmOS 🌿</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Shop</a></li>
+    <li><a href="checkout.html">Cart</a></li>
+  </ul>
+  <button class="menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
 </nav>
 
-<h1>Checkout Summary 🛒</h1>
+<div class="wrap">
+  <h1 style="color:var(--green);text-align:center;margin-top:6px">Checkout</h1>
 
-<div class="checkout-box" id="checkout-box">
-    <div class="item-row">
-        <span>Total Items</span>
-        <span id="item-count">0</span>
+  <div class="checkout-box" id="checkoutBox">
+    <div id="list"></div>
+
+    <div class="summary">
+      <div>Total items</div>
+      <div id="totalItems">0</div>
     </div>
 
-    <div id="cart-list"></div>
-
-    <div class="total">
-        Total Price: ₹<span id="total-price">0</span>
+    <div class="summary">
+      <div>Total price</div>
+      <div id="totalPrice">₹0</div>
     </div>
 
-    <a href="#" class="order-btn" onclick="placeOrder()">Place Order</a>
-
-    <a href="products.html" class="back-btn">⬅ Continue Shopping</a>
+    <button class="order-btn" id="placeBtn">Place Order</button>
+    <a class="back" href="products.html">⬅ Continue shopping</a>
+  </div>
 </div>
 
 <script>
-function toggleMenu() {
-    document.querySelector(".nav-links").classList.toggle("show");
-}
+function toggleMenu(){document.querySelector('.nav-links').classList.toggle('show')}
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let totalPrice = 0;
-let totalItems = 0;
+/* read cart and render */
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const list = document.getElementById('list');
+const totalItemsEl = document.getElementById('totalItems');
+const totalPriceEl = document.getElementById('totalPrice');
 
-let listContainer = document.getElementById("cart-list");
-let itemCount = document.getElementById("item-count");
-let priceElement = document.getElementById("total-price");
-
-if (cart.length === 0) {
-    listContainer.innerHTML = "<p>No items in cart</p>";
+if(cart.length === 0){
+  list.innerHTML = '<div class="empty">Your cart is empty — add fresh items from shop.</div>';
 } else {
-    cart.forEach(item => {
-        totalItems += item.quantity;
-        totalPrice += item.price * item.quantity;
-
-        listContainer.innerHTML += `
-            <div class="item-row">
-                <span>${item.name} × ${item.quantity}</span>
-                <span>₹${item.price * item.quantity}</span>
-            </div>
-        `;
-    });
+  cart.forEach(item=>{
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `<div>${item.name} × ${item.quantity}</div><div>₹${item.price * item.quantity}</div>`;
+    list.appendChild(row);
+  });
 }
 
-itemCount.innerText = totalItems;
-priceElement.innerText = totalPrice;
+const totalItems = cart.reduce((s,i)=> s + i.quantity, 0);
+const totalPrice = cart.reduce((s,i)=> s + i.price * i.quantity, 0);
 
-function placeOrder() {
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
-    alert("Order placed successfully! 🚚🌿");
-    localStorage.removeItem("cart");
-    window.location.href = "products.html";
-}
+totalItemsEl.innerText = totalItems;
+totalPriceEl.innerText = '₹' + totalPrice;
+
+document.getElementById('placeBtn').addEventListener('click', ()=> {
+  if(cart.length === 0){ alert('Cart is empty'); return; }
+  // Place order (demo): clear cart and confirm
+  localStorage.removeItem('cart');
+  alert('Order placed! Thank you — FarmOS will deliver soon 🚚🌿');
+  // redirect to products to continue shopping
+  window.location.href = 'products.html';
+});
 </script>
 
 </body>
