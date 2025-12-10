@@ -1,203 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FarmOS - Fresh From Farm</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FarmOS — Fresh From Farm</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f6fff4;
+    :root{
+      --green:#2f7a32;
+      --muted:#ebf7ed;
+      --card:#ffffff;
+    }
+    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:#f1fff1;}
+    /* page background (full) */
+    body{
+      background-image: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('https://i.ibb.co/Fz97hVd/farm.jpg');
+      background-size: cover;
+      background-position: center;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* ---------- NAVBAR ---------- */
-    .navbar {
-      background: #2f7a32;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: white;
-    }
+    /* NAVBAR */
+    .navbar{background:var(--green);display:flex;justify-content:space-between;align-items:center;padding:12px 20px;color:#fff;position:sticky;top:0;z-index:30;}
+    .logo{font-weight:700;font-size:20px}
+    .nav-links{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    .nav-links a{color:white;text-decoration:none;font-weight:600}
+    .menu-btn{display:none;background:none;border:none;color:white;font-size:22px}
 
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
+    @media(max-width:700px){ .nav-links{display:none;flex-direction:column;background:var(--green);position:absolute;right:12px;top:58px;padding:12px;border-radius:8px} .nav-links.show{display:flex} .menu-btn{display:block} }
 
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-    }
+    /* HERO */
+    .hero { max-width:1200px;margin:48px auto 20px;padding:40px;background:rgba(255,255,255,0.8);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12); display:flex;gap:24px;align-items:center; }
+    .hero-left{flex:1}
+    .hero-right{flex:1;display:flex;justify-content:center}
+    .hero h1{margin:0;color:var(--green);font-size:34px}
+    .hero p{color:#354535;font-size:18px;line-height:1.4}
+    .btn-primary{display:inline-block;background:var(--green);color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:14px}
+    .hero-right img{width:320px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.12)}
 
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    /* WHY */
+    .why{max-width:1100px;margin:26px auto;padding:18px 16px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+    .card{background:var(--card);padding:18px;border-radius:10px;min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,0.06);text-align:center}
+    .card h3{margin:8px 0;color:var(--green)}
 
-    .menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 22px;
-    }
-
-    @media (max-width: 600px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        background: #2f7a32;
-        padding: 10px;
-        width: 100%;
-      }
-
-      .nav-links.show {
-        display: flex;
-      }
-
-      .menu-btn {
-        display: block;
-      }
-    }
-
-    /* ---------- HERO SECTION ---------- */
-    .hero {
-      text-align: center;
-      padding: 70px 20px;
-      background: url('https://i.ibb.co/Fz97hVd/farm.jpg') center/cover no-repeat;
-      color: white;
-      font-weight: bold;
-    }
-
-    .hero h2 {
-      font-size: 32px;
-    }
-
-    .btn {
-      background: #2f7a32;
-      padding: 12px 20px;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 18px;
-      display: inline-block;
-      margin-top: 15px;
-    }
-
-    /* ---------- WHY SECTION ---------- */
-    .why {
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .why-box {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .why-box div {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 200px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    /* ---------- FOOTER ---------- */
-    footer {
-      text-align: center;
-      background: #2f7a32;
-      color: white;
-      padding: 10px;
-      margin-top: 20px;
-    }
+    /* FOOTER */
+    footer{padding:18px;text-align:center;color:white;background:var(--green);margin-top:40px}
 
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">FarmOS 🌿</div>
 
   <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Shop</a></li>
-      <li><a href="checkout.html">Cart</a></li>
-      <li><a href="login.html">Login</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Shop</a></li>
+    <li><a href="checkout.html">Cart</a></li>
+    <li><a href="login.html">Login</a></li>
   </ul>
 
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <button class="menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
 </nav>
 
-<!-- HERO SECTION -->
-<section class="hero">
-  <h2>Fresh Vegetables Direct From Farmers</h2>
-  <p>Healthy, chemical-free, and delivered within hours.</p>
-  <a href="products.html" class="btn">Shop Now</a>
-</section>
-
-<!-- WHY SECTION -->
-<section class="why">
-  <h2>Why FarmOS?</h2>
-  <div class="why-box">
-    <div>
-      <h3>🌿 Fresh</h3>
-      <p>Delivered within hours of harvesting.</p>
+<main>
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Fresh vegetables direct from farmers</h1>
+      <p>Healthy, seasonal produce delivered within hours. No middlemen — better prices for farmers and fresher food for you.</p>
+      <a class="btn-primary" href="products.html">Shop Fresh Now</a>
     </div>
-    <div>
-      <h3>🤝 No Middlemen</h3>
-      <p>Better prices for customers & farmers.</p>
+    <div class="hero-right">
+      <img src="https://i.ibb.co/4pDNDk2/fresh-vegetables.png" alt="Fresh vegetables">
     </div>
-    <div>
-      <h3>💰 Affordable</h3>
-      <p>Lowest market price guaranteed.</p>
+  </section>
+
+  <section class="why" aria-label="why-farmos">
+    <div class="card">
+      <h3>Fresh — same day</h3>
+      <p>Picked in the morning, delivered the same day to keep nutrients and taste.</p>
     </div>
-  </div>
-</section>
+    <div class="card">
+      <h3>Fair prices</h3>
+      <p>Direct trade — no extra middleman cost.</p>
+    </div>
+    <div class="card">
+      <h3>Local farmers</h3>
+      <p>We partner with local growers for seasonal produce.</p>
+    </div>
+  </section>
+</main>
 
-<!-- FOOTER -->
-<footer>
-  <p>© 2025 FarmOS • Fresh From Farm to Your Home</p>
-</footer>
-
-<script>
-function toggleMenu() {
-  document.querySelector(".nav-links").classList.toggle("show");
-}
-</script>
-  <script>
-function updateNavbar() {
-    let user = localStorage.getItem("userName");
-
-    let loginLink = document.querySelector(".nav-links li:last-child a");
-
-    if (user) {
-        loginLink.textContent = "Logout";
-        loginLink.href = "#";
-        loginLink.onclick = function () {
-            localStorage.removeItem("userName");
-            localStorage.removeItem("userEmail");
-            localStorage.removeItem("userPassword");
-            alert("Logged out successfully!");
-            window.location.href = "index.html";
-        };
-
-        let welcomeText = document.createElement("li");
-        welcomeText.innerHTML = `<a href="#">👋 ${user}</a>`;
-        document.querySelector(".nav-links").prepend(welcomeText);
-    }
-}
-
-updateNavbar();
-  </script>
+<footer>© 2025 FarmOS • Fresh from farm to your home</footer>
 
 </body>
-        </html>
+      </html>
