@@ -1,194 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmOS - Signup</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f6fff4;
-            margin: 0;
-        }
-
-        /* ---------- NAVBAR ---------- */
-        .navbar {
-            background: #2f7a32;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        @media (max-width: 600px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                background: #2f7a32;
-                padding: 10px;
-                width: 100%;
-            }
-
-            .nav-links.show {
-                display: flex;
-            }
-
-            .menu-btn {
-                display: block;
-            }
-        }
-
-        /* ---------- SIGNUP FORM ---------- */
-        .signup-box {
-            background: white;
-            max-width: 380px;
-            margin: 50px auto;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-            text-align: center;
-        }
-
-        h2 {
-            color: #2f7a32;
-        }
-
-        input {
-            width: 90%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid gray;
-            margin-top: 10px;
-        }
-
-        .btn {
-            width: 95%;
-            background: #2f7a32;
-            color: white;
-            padding: 12px;
-            border-radius: 6px;
-            border: none;
-            margin-top: 15px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        p {
-            margin-top: 15px;
-        }
-
-        a {
-            color: #2f7a32;
-            text-decoration: none;
-        }
-    </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FarmOS — Signup</title>
+<style>
+  :root{--green:#2f7a32}
+  html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif}
+  body{background:linear-gradient(rgba(255,255,255,0.95),rgba(255,255,255,0.95)), url('https://i.ibb.co/Fz97hVd/farm.jpg'); background-size:cover}
+  .nav{background:var(--green);padding:12px;color:#fff;position:sticky;top:0}
+  .container{max-width:420px;margin:60px auto;padding:18px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12)}
+  h2{color:var(--green);text-align:center}
+  input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
+  .btn{width:100%;background:var(--green);color:#fff;padding:12px;border:0;border-radius:8px;cursor:pointer}
+  p{text-align:center;margin-top:12px}
+</style>
 </head>
 <body>
+<nav class="nav"><div style="font-weight:700">FarmOS 🌿</div></nav>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="logo">FarmOS 🌿</div>
-
-  <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Shop</a></li>
-      <li><a href="checkout.html">Cart</a></li>
-      <li><a href="login.html">Login</a></li>
-  </ul>
-
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
-</nav>
-
-<!-- Signup Form -->
-<div class="signup-box">
-    <h2>Create Account</h2>
-
-    <input type="text" id="signupName" placeholder="Full Name">
-    <input type="email" id="signupEmail" placeholder="Email">
-    <input type="password" id="signupPassword" placeholder="Password">
-
-    <button class="btn" onclick="signup()">Signup</button>
-
-    <p>Already have an account? <a href="login.html">Login here</a></p>
+<div class="container">
+  <h2>Create account</h2>
+  <input id="name" type="text" placeholder="Full name">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button class="btn" id="signupBtn">Signup</button>
+  <p>Already have an account? <a href="login.html">Login</a></p>
 </div>
 
 <script>
-function toggleMenu() {
-    document.querySelector(".nav-links").classList.toggle("show");
-}
-
-function signup() {
-    let name = document.getElementById("signupName").value.trim();
-    let email = document.getElementById("signupEmail").value.trim();
-    let password = document.getElementById("signupPassword").value.trim();
-
-    if (!name || !email || !password) {
-        alert("Please fill all fields ❗");
-        return;
-    }
-
-    localStorage.setItem("userName", name);
-    localStorage.setItem("userEmail", email);
-    localStorage.setItem("userPassword", password);
-
-    alert("Account created successfully! 🎉 Please login now.");
-
-    window.location.href = "login.html"; 
-}
+document.getElementById('signupBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pass = document.getElementById('password').value.trim();
+  if(!name || !email || !pass){ alert('Please fill all fields'); return; }
+  localStorage.setItem('userName', name);
+  localStorage.setItem('userEmail', email);
+  localStorage.setItem('userPassword', pass);
+  alert('Account created — please login');
+  window.location.href = 'login.html';
+});
 </script>
-    <script>
-function updateNavbar() {
-    let user = localStorage.getItem("userName");
-
-    let loginLink = document.querySelector(".nav-links li:last-child a");
-
-    if (user) {
-        loginLink.textContent = "Logout";
-        loginLink.href = "#";
-        loginLink.onclick = function () {
-            localStorage.removeItem("userName");
-            localStorage.removeItem("userEmail");
-            localStorage.removeItem("userPassword");
-            alert("Logged out successfully!");
-            window.location.href = "index.html";
-        };
-
-        let welcomeText = document.createElement("li");
-        welcomeText.innerHTML = `<a href="#">👋 ${user}</a>`;
-        document.querySelector(".nav-links").prepend(welcomeText);
-    }
-}
-
-updateNavbar();
-</script>
-
 </body>
-  </html>
+</html>
