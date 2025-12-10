@@ -12,7 +12,7 @@
             margin: 0;
         }
 
-        /* ---------- NAVBAR ---------- */
+        /* NAVBAR */
         .navbar {
             background: #2f7a32;
             padding: 12px 20px;
@@ -55,17 +55,15 @@
                 padding: 10px;
                 width: 100%;
             }
-
             .nav-links.show {
                 display: flex;
             }
-
             .menu-btn {
                 display: block;
             }
         }
 
-        /* ---------- CHECKOUT BOX ---------- */
+        /* CHECKOUT BOX */
         h1 {
             text-align: center;
             color: #2f7a32;
@@ -124,25 +122,26 @@
 
 <!-- NAVBAR -->
 <nav class="navbar">
-  <div class="logo">FarmOS 🌿</div>
+    <div class="logo">FarmOS 🌿</div>
 
-  <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Shop</a></li>
-      <li><a href="checkout.html">Cart</a></li>
-      <li><a href="login.html">Login</a></li>
-  </ul>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="checkout.html">Cart</a></li>
+    </ul>
 
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
 </nav>
 
 <h1>Checkout Summary 🛒</h1>
 
-<div class="checkout-box">
+<div class="checkout-box" id="checkout-box">
     <div class="item-row">
         <span>Total Items</span>
         <span id="item-count">0</span>
     </div>
+
+    <div id="cart-list"></div>
 
     <div class="total">
         Total Price: ₹<span id="total-price">0</span>
@@ -154,59 +153,46 @@
 </div>
 
 <script>
+function toggleMenu() {
+    document.querySelector(".nav-links").classList.toggle("show");
+}
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let container = document.querySelector(".checkout-box");
+let totalPrice = 0;
+let totalItems = 0;
+
+let listContainer = document.getElementById("cart-list");
+let itemCount = document.getElementById("item-count");
+let priceElement = document.getElementById("total-price");
 
 if (cart.length === 0) {
-    container.innerHTML += "<p>No items in cart</p>";
+    listContainer.innerHTML = "<p>No items in cart</p>";
 } else {
-    let total = 0;
-
     cart.forEach(item => {
-        total += item.price * item.quantity;
+        totalItems += item.quantity;
+        totalPrice += item.price * item.quantity;
 
-        container.innerHTML += `
+        listContainer.innerHTML += `
             <div class="item-row">
-                <span>${item.name} x ${item.quantity}</span>
+                <span>${item.name} × ${item.quantity}</span>
                 <span>₹${item.price * item.quantity}</span>
             </div>
         `;
     });
-
-    document.getElementById("total-price").innerText = total;
-    document.getElementById("item-count").innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
+itemCount.innerText = totalItems;
+priceElement.innerText = totalPrice;
+
 function placeOrder() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
     alert("Order placed successfully! 🚚🌿");
     localStorage.removeItem("cart");
     window.location.href = "products.html";
 }
-</script>
-    <script>
-function updateNavbar() {
-    let user = localStorage.getItem("userName");
-
-    let loginLink = document.querySelector(".nav-links li:last-child a");
-
-    if (user) {
-        loginLink.textContent = "Logout";
-        loginLink.href = "#";
-        loginLink.onclick = function () {
-            localStorage.removeItem("userName");
-            localStorage.removeItem("userEmail");
-            localStorage.removeItem("userPassword");
-            alert("Logged out successfully!");
-            window.location.href = "index.html";
-        };
-
-        let welcomeText = document.createElement("li");
-        welcomeText.innerHTML = `<a href="#">👋 ${user}</a>`;
-        document.querySelector(".nav-links").prepend(welcomeText);
-    }
-}
-
-updateNavbar();
 </script>
 
 </body>
