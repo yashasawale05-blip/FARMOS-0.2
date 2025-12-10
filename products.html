@@ -8,12 +8,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f6fff4;
+            background: #f1fff1;
             margin: 0;
-            padding: 0;
         }
 
-        /* -------- NAVBAR -------- */
+        /* NAVBAR */
         .navbar {
             background: #2f7a32;
             padding: 12px 20px;
@@ -48,25 +47,23 @@
             font-size: 22px;
         }
 
-        @media (max-width: 600px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                background: #2f7a32;
-                padding: 10px;
-                width: 100%;
+        @media(max-width:600px){
+            .nav-links{
+                display:none;
+                flex-direction:column;
+                background:#2f7a32;
+                padding:10px;
+                width:100%;
             }
-
-            .nav-links.show {
-                display: flex;
+            .nav-links.show{
+                display:flex;
             }
-
-            .menu-btn {
-                display: block;
+            .menu-btn{
+                display:block;
             }
         }
 
-        /* ---------- PRODUCT CARDS ---------- */
+        /* PRODUCT CARDS */
         h1 {
             text-align: center;
             color: #2f7a32;
@@ -75,7 +72,7 @@
 
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
             gap: 20px;
             padding: 20px;
         }
@@ -83,29 +80,36 @@
         .product-card {
             background: white;
             padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
             text-align: center;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.03);
         }
 
         .product-card img {
             width: 100%;
-            height: 150px;
+            height: 160px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .product-card button {
             background: #2f7a32;
             color: white;
             border: none;
-            padding: 8px 14px;
+            padding: 10px;
             margin-top: 10px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            width: 100%;
+            font-size: 15px;
         }
 
-        /* ---------- CART ICON ---------- */
+        /* CART ICON */
         .cart-icon {
             position: fixed;
             top: 20px;
@@ -113,131 +117,110 @@
             background: #2f7a32;
             color: white;
             padding: 10px 16px;
-            border-radius: 20px;
+            border-radius: 24px;
             font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* ---------- CHECKOUT BUTTON ---------- */
+        /* CHECKOUT BUTTON */
         .checkout-btn {
             display: block;
-            width: 200px;
-            text-align: center;
+            width: 220px;
             margin: 30px auto;
             background: #2f7a32;
             color: white;
             padding: 12px;
-            border-radius: 8px;
             font-size: 18px;
+            border-radius: 10px;
+            text-align: center;
             text-decoration: none;
         }
-
     </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-      <div class="logo">FarmOS</div>
-      <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="products.html">Shop</a></li>
-          <li><a href="checkout.html">Cart</a></li>
-      </ul>
-      <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    </nav>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">FarmOS 🌿</div>
 
-    <div class="cart-icon">
-        Cart: <span id="cart-count">0</span>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="checkout.html">Cart</a></li>
+    </ul>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</nav>
+
+<div class="cart-icon">
+    Cart: <span id="cart-count">0</span>
+</div>
+
+<h1>Farm Fresh Vegetables</h1>
+
+<div class="container">
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/JpbcQHk/tomato.jpg" alt="Tomato">
+        <h3>Tomato</h3>
+        <p>₹40 / kg</p>
+        <button onclick="addToCart('Tomato',40)">Add to Cart</button>
     </div>
 
-    <h1>Farm Fresh Vegetables</h1>
-
-    <div class="container">
-
-        <div class="product-card">
-            <img src="https://i.ibb.co/JpbcQHk/tomato.jpg" alt="Tomato">
-            <h3>Tomato</h3>
-            <p>₹40 / kg</p>
-            <button onclick="addToCart('Tomato', 40)">Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <img src="https://i.ibb.co/4S4xVJX/potato.jpg" alt="Potato">
-            <h3>Potato</h3>
-            <p>₹25 / kg</p>
-            <button onclick="addToCart('Potato', 25)">Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <img src="https://i.ibb.co/3YJzRz4/onion.jpg" alt="Onion">
-            <h3>Onion</h3>
-            <p>₹40 / kg</p>
-            <button onclick="addToCart('Onion', 40)">Add to Cart</button>
-        </div>
-
-        <div class="product-card">
-            <img src="https://i.ibb.co/y4W7b5r/carrot.jpg" alt="Carrot">
-            <h3>Carrot</h3>
-            <p>₹40 / kg</p>
-            <button onclick="addToCart('Carrot',40)">Add to Cart</button>
-        </div>
-
+    <div class="product-card">
+        <img src="https://i.ibb.co/4S4xVJX/potato.jpg" alt="Potato">
+        <h3>Potato</h3>
+        <p>₹25 / kg</p>
+        <button onclick="addToCart('Potato',25)">Add to Cart</button>
     </div>
 
-    <a href="checkout.html" class="checkout-btn">Go to Checkout</a>
+    <div class="product-card">
+        <img src="https://i.ibb.co/3YJzRz4/onion.jpg" alt="Onion">
+        <h3>Onion</h3>
+        <p>₹40 / kg</p>
+        <button onclick="addToCart('Onion',40)">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/y4W7b5r/carrot.jpg" alt="Carrot">
+        <h3>Carrot</h3>
+        <p>₹40 / kg</p>
+        <button onclick="addToCart('Carrot',40)">Add to Cart</button>
+    </div>
+
+</div>
+
+<a href="checkout.html" class="checkout-btn">Go to Checkout</a>
 
 <script>
-<script>
+function toggleMenu(){
+    document.querySelector(".nav-links").classList.toggle("show");
+}
+
+// CART SYSTEM
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function addToCart(productName, price) {
-    // Check if item already exists
-    let item = cart.find(p => p.name === productName);
+function addToCart(name, price){
+    let existing = cart.find(x => x.name === name);
 
-    if (item) {
-        item.quantity += 1;
+    if(existing){
+        existing.quantity++;
     } else {
-        cart.push({ name: productName, price: price, quantity: 1 });
+        cart.push({ name, price, quantity: 1 });
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-
     updateCartCount();
 }
 
-function updateCartCount() {
-    let totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById("cart-count").innerText = totalQty;
+function updateCartCount(){
+    let total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById("cart-count").innerText = total;
 }
 
 updateCartCount();
 </script>
-    <script>
-function updateNavbar() {
-    let user = localStorage.getItem("userName");
-
-    let loginLink = document.querySelector(".nav-links li:last-child a");
-
-    if (user) {
-        loginLink.textContent = "Logout";
-        loginLink.href = "#";
-        loginLink.onclick = function () {
-            localStorage.removeItem("userName");
-            localStorage.removeItem("userEmail");
-            localStorage.removeItem("userPassword");
-            alert("Logged out successfully!");
-            window.location.href = "index.html";
-        };
-
-        let welcomeText = document.createElement("li");
-        welcomeText.innerHTML = `<a href="#">👋 ${user}</a>`;
-        document.querySelector(".nav-links").prepend(welcomeText);
-    }
-}
-
-updateNavbar();
-</script>
 
 </body>
-</html>
+    </html>
