@@ -1,226 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmOS - Products</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>FarmOS — Shop</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f1fff1;
-            margin: 0;
-        }
+  <style>
+    :root{--green:#2f7a32}
+    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7fff7;}
+    body{background-image: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), url('https://i.ibb.co/3mKc1p7/fields-pattern.jpg'); background-position:center; background-size:cover;}
+    .navbar{background:var(--green);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;color:#fff;position:sticky;top:0;z-index:40}
+    .logo{font-weight:700}
+    .nav-links{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    .nav-links a{color:white;text-decoration:none;font-weight:600}
+    .menu-btn{display:none}
+    @media(max-width:700px){.nav-links{display:none;flex-direction:column;background:var(--green);position:absolute;right:12px;top:58px;padding:12px;border-radius:8px}.nav-links.show{display:flex}.menu-btn{display:block}}
 
-        /* NAVBAR */
-        .navbar {
-            background: #2f7a32;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
+    .container{max-width:1200px;margin:28px auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+    .product-card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 8px 22px rgba(0,0,0,0.08);text-align:center;transition:transform .18s}
+    .product-card:hover{transform:translateY(-6px)}
+    .product-card img{width:100%;height:180px;object-fit:cover;border-radius:8px}
+    .product-card h3{margin:10px 0;color:var(--green)}
+    .price{font-weight:700;color:#1f5b27}
+    .btn-add{background:var(--green);color:#fff;padding:10px;border-radius:8px;border:0;width:100%;cursor:pointer;margin-top:10px}
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-        }
-
-        @media(max-width:600px){
-            .nav-links{
-                display:none;
-                flex-direction:column;
-                background:#2f7a32;
-                padding:10px;
-                width:100%;
-            }
-            .nav-links.show{
-                display:flex;
-            }
-            .menu-btn{
-                display:block;
-            }
-        }
-
-        /* PRODUCT CARDS */
-        h1 {
-            text-align: center;
-            color: #2f7a32;
-            margin-top: 20px;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .product-card {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .product-card:hover {
-            transform: scale(1.03);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .product-card button {
-            background: #2f7a32;
-            color: white;
-            border: none;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 15px;
-        }
-
-        /* CART ICON */
-        .cart-icon {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #2f7a32;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 24px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        /* CHECKOUT BUTTON */
-        .checkout-btn {
-            display: block;
-            width: 220px;
-            margin: 30px auto;
-            background: #2f7a32;
-            color: white;
-            padding: 12px;
-            font-size: 18px;
-            border-radius: 10px;
-            text-align: center;
-            text-decoration: none;
-        }
-    </style>
+    .cart-icon{position:fixed;right:20px;top:20px;background:var(--green);color:#fff;padding:10px 14px;border-radius:24px;font-weight:700;box-shadow:0 8px 22px rgba(0,0,0,0.16)}
+    .checkout-btn{display:block;width:220px;margin:28px auto;background:var(--green);color:#fff;padding:12px;border-radius:10px;text-align:center;text-decoration:none}
+  </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-    <div class="logo">FarmOS 🌿</div>
-
-    <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="products.html">Shop</a></li>
-        <li><a href="checkout.html">Cart</a></li>
-    </ul>
-
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <div class="logo">FarmOS 🌿</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Shop</a></li>
+    <li><a href="checkout.html">Cart</a></li>
+    <li><a href="login.html">Login</a></li>
+  </ul>
+  <button class="menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
 </nav>
 
-<div class="cart-icon">
-    Cart: <span id="cart-count">0</span>
+<div class="cart-icon">Cart: <span id="cart-count">0</span></div>
+
+<h1 style="text-align:center;color:var(--green);margin-top:20px">Fresh Vegetables</h1>
+
+<div class="container" id="products-container">
+  <!-- product cards inserted directly (you can add more) -->
+  <div class="product-card">
+    <img src="https://i.ibb.co/JpbcQHk/tomato.jpg" alt="Tomato">
+    <h3>Tomato</h3>
+    <div class="price">₹40 / kg</div>
+    <button class="btn-add" onclick="addToCart('Tomato',40)">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://i.ibb.co/4S4xVJX/potato.jpg" alt="Potato">
+    <h3>Potato</h3>
+    <div class="price">₹25 / kg</div>
+    <button class="btn-add" onclick="addToCart('Potato',25)">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://i.ibb.co/3YJzRz4/onion.jpg" alt="Onion">
+    <h3>Onion</h3>
+    <div class="price">₹40 / kg</div>
+    <button class="btn-add" onclick="addToCart('Onion',40)">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://i.ibb.co/y4W7b5r/carrot.jpg" alt="Carrot">
+    <h3>Carrot</h3>
+    <div class="price">₹40 / kg</div>
+    <button class="btn-add" onclick="addToCart('Carrot',40)">Add to Cart</button>
+  </div>
 </div>
 
-<h1>Farm Fresh Vegetables</h1>
-
-<div class="container">
-
-    <div class="product-card">
-        <img src="https://i.ibb.co/JpbcQHk/tomato.jpg" alt="Tomato">
-        <h3>Tomato</h3>
-        <p>₹40 / kg</p>
-        <button onclick="addToCart('Tomato',40)">Add to Cart</button>
-    </div>
-
-    <div class="product-card">
-        <img src="https://i.ibb.co/4S4xVJX/potato.jpg" alt="Potato">
-        <h3>Potato</h3>
-        <p>₹25 / kg</p>
-        <button onclick="addToCart('Potato',25)">Add to Cart</button>
-    </div>
-
-    <div class="product-card">
-        <img src="https://i.ibb.co/3YJzRz4/onion.jpg" alt="Onion">
-        <h3>Onion</h3>
-        <p>₹40 / kg</p>
-        <button onclick="addToCart('Onion',40)">Add to Cart</button>
-    </div>
-
-    <div class="product-card">
-        <img src="https://i.ibb.co/y4W7b5r/carrot.jpg" alt="Carrot">
-        <h3>Carrot</h3>
-        <p>₹40 / kg</p>
-        <button onclick="addToCart('Carrot',40)">Add to Cart</button>
-    </div>
-
-</div>
-
-<a href="checkout.html" class="checkout-btn">Go to Checkout</a>
+<a class="checkout-btn" href="checkout.html">Go to Checkout</a>
 
 <script>
-function toggleMenu(){
-    document.querySelector(".nav-links").classList.toggle("show");
-}
+/* shared nav toggle */
+function toggleMenu(){document.querySelector('.nav-links').classList.toggle('show')}
 
-// CART SYSTEM
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+/* CART (stores full items array under 'cart') */
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 function addToCart(name, price){
-    let existing = cart.find(x => x.name === name);
-
-    if(existing){
-        existing.quantity++;
-    } else {
-        cart.push({ name, price, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
+  const existing = cart.find(it=> it.name === name);
+  if(existing) existing.quantity++;
+  else cart.push({ name, price, quantity: 1 });
+  localStorage.setItem('cart', JSON.stringify(cart));
+  refreshCount();
 }
 
-function updateCartCount(){
-    let total = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById("cart-count").innerText = total;
+function refreshCount(){
+  const total = cart.reduce((s,i)=> s + i.quantity, 0);
+  document.getElementById('cart-count').innerText = total;
 }
-
-updateCartCount();
+refreshCount();
 </script>
 
 </body>
-    </html>
+</html>
