@@ -27,36 +27,27 @@
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="logo">FarmOS 🌿</div>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="products.html">Shop</a></li>
-    <li><a href="checkout.html">Cart</a></li>
-  </ul>
-  <button class="menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
-</nav>
+<header class="checkout-header">
+    <h1>🧺 Your Cart</h1>
+</header>
 
-<div class="wrap">
-  <h1 style="color:var(--green);text-align:center;margin-top:6px">Checkout</h1>
+<div class="checkout-container">
+    <div class="order-card">
+        <h2>Cart Items</h2>
 
-  <div class="checkout-box" id="checkoutBox">
-    <div id="list"></div>
+        <div id="cart-items"></div>
 
-    <div class="summary">
-      <div>Total items</div>
-      <div id="totalItems">0</div>
+        <div class="summary-row total">
+            <span>Total</span>
+            <span>₹<span id="total-price">0</span></span>
+        </div>
+
+        <button class="order-btn" onclick="placeOrder()">Place Order</button>
+        <a href="products.html" class="back-link">← Continue Shopping</a>
     </div>
-
-    <div class="summary">
-      <div>Total price</div>
-      <div id="totalPrice">₹0</div>
-    </div>
-
-    <button class="order-btn" id="placeBtn">Place Order</button>
-    <a class="back" href="products.html">⬅ Continue shopping</a>
-  </div>
 </div>
+
+</body>
 
 <script>
 function toggleMenu(){document.querySelector('.nav-links').classList.toggle('show')}
