@@ -82,8 +82,8 @@
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 updateCartCount();
 
-function addToCart(name, price) {
-    cart.push({ name, price });
+function addToCart(name, price, image) {
+    cart.push({ name, price, image });
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
     alert(name + " added to cart 🌱");
@@ -98,8 +98,8 @@ function updateCartCount() {
 
 </body>
 </html>
-<button onclick="addToCart('Potato', 25)">Add to Cart</button>
-<button onclick="addToCart('Onion', 40)">Add to Cart</button>
-<button onclick="addToCart('Carrot`', 40)">Add to Cart</button>
+<button onclick="addToCart('Potato', 25, 'images/potato.jpg')">Add to Cart</button>
+<button onclick="addToCart('Onion', 40, 'images/onion.jpg')">Add to Cart</button>
+<button onclick="addToCart('Carrot', 40, 'images/Carrot.jpg')">Add to Cart</button>
 
 
