@@ -50,40 +50,43 @@
 </body>
 
 <script>
-function toggleMenu(){document.querySelector('.nav-links').classList.toggle('show')}
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* read cart and render */
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-const list = document.getElementById('list');
-const totalItemsEl = document.getElementById('totalItems');
-const totalPriceEl = document.getElementById('totalPrice');
+function renderCart() {
+    let container = document.getElementById("cart-items");
+    let total = 0;
+    container.innerHTML = "";
 
-if(cart.length === 0){
-  list.innerHTML = '<div class="empty">Your cart is empty — add fresh items from shop.</div>';
-} else {
-  cart.forEach(item=>{
-    const row = document.createElement('div');
-    row.className = 'item-row';
-    row.innerHTML = `<div>${item.name} × ${item.quantity}</div><div>₹${item.price * item.quantity}</div>`;
-    list.appendChild(row);
-  });
+    cart.forEach((item, index) => {
+        total += item.price;
+
+        container.innerHTML += `
+            <div class="cart-item">
+                <span>${item.name} - ₹${item.price}</span>
+                <button class="remove-btn" onclick="removeItem(${index})">❌</button>
+            </div>
+        `;
+    });
+
+    document.getElementById("total-price").innerText = total;
 }
 
-const totalItems = cart.reduce((s,i)=> s + i.quantity, 0);
-const totalPrice = cart.reduce((s,i)=> s + i.price * i.quantity, 0);
+function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
 
-totalItemsEl.innerText = totalItems;
-totalPriceEl.innerText = '₹' + totalPrice;
+function placeOrder() {
+    alert("Order placed successfully 🌱");
+    localStorage.removeItem("cart");
+    window.location.href = "products.html";
+}
 
-document.getElementById('placeBtn').addEventListener('click', ()=> {
-  if(cart.length === 0){ alert('Cart is empty'); return; }
-  // Place order (demo): clear cart and confirm
-  localStorage.removeItem('cart');
-  alert('Order placed! Thank you — FarmOS will deliver soon 🚚🌿');
-  // redirect to products to continue shopping
-  window.location.href = 'products.html';
-});
+// Load cart on page open
+renderCart();
 </script>
+
 
 </body>
 </html>
