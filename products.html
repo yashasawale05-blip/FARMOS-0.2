@@ -80,24 +80,26 @@
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+updateCartCount();
 
 function addToCart(name, price) {
     cart.push({ name, price });
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
+    alert(name + " added to cart 🌱");
 }
 
 function updateCartCount() {
     document.getElementById("cart-count").innerText = cart.length;
 }
-
-// Load cart count on page load
-updateCartCount();
 </script>
+
 
 
 </body>
 </html>
 <button onclick="addToCart('Potato', 25)">Add to Cart</button>
 <button onclick="addToCart('Onion', 40)">Add to Cart</button>
+<button onclick="addToCart('Carrot`', 40)">Add to Cart</button>
+
 
