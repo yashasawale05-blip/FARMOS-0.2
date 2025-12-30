@@ -80,30 +80,68 @@
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-updateCartCount();
 
-function addToCart(name, price, image) {
-    let existing = cart.find(item => item.name === name);
+function renderCart() {
+  const container = document.getElementById("cart-items");
+  const totalEl = document.getElementById("total-price");
+  container.innerHTML = "";
 
-    if (existing) {
-        existing.kg += 1;     // add 1 kg if already exists
-    } else {
-        cart.push({
-            name: name,
-            price: price,
-            image: image,
-            kg: 1             // start with 1 kg
-        });
-    }
+  if (cart.length === 0) {
+    container.innerHTML = "<p>Your cart is empty 🌱</p>";
+    totalEl.innerText = 0;
+    return;
+  }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.kg;
+    total += itemTotal;
+
+    container.innerHTML += `
+      <div class="cart-item">
+        <img src="${item.image}" class="cart-img">
+
+        <div class="cart-info">
+          <strong>${item.name}</strong><br>
+          ₹${item.price} / kg
+        </div>
+
+        <input type="number"
+               class="kg-input"
+               min="0.5"
+               step="0.5"
+               value="${item.kg}"
+               onchange="updateKg(${index}, this.value)">
+
+        <div class="item-total">₹${itemTotal}</div>
+      </div>
+    `;
+  });
+
+  totalEl.innerText = total;
 }
 
-function updateCartCount() {
-    let totalKg = cart.reduce((sum, item) => sum + item.kg, 0);
-    document.getElementById("cart-count").innerText = totalKg;
+function updateKg(index, value) {
+  let kg = parseFloat(value);
+
+  if (kg <= 0) {
+    cart.splice(index, 1);
+  } else {
+    cart[index].kg = kg;
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
 }
+
+function placeOrder() {
+  alert("Order placed successfully 🌱");
+  localStorage.removeItem("cart");
+  window.location.href = "products.html";
+}
+
+renderCart();
 </script>
 
 
