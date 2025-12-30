@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FarmOS — Admin Panel</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f6fff4;
+}
+
+header {
+  background: #2f7a32;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 15px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.order-card h3 {
+  margin: 0 0 10px;
+  color: #2f7a32;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.status {
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+select {
+  padding: 6px;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌾 FarmOS Admin Dashboard</h1>
+</header>
+
+<div class="container" id="orders-container"></div>
+
+<script>
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+const container = document.getElementById("orders-container");
+
+if (orders.length === 0) {
+  container.innerHTML = "<p>No orders yet 🌱</p>";
+}
+
+orders.forEach((order, index) => {
+  let itemsHtml = "";
+  order.items.forEach(item => {
+    itemsHtml += `
+      <div class="item">
+        <span>${item.name} (${item.kg} kg)</span>
+        <span>₹${item.price * item.kg}</span>
+      </div>
+    `;
+  });
+
+  container.innerHTML += `
+    <div class="order-card">
+      <h3>Order #${order.id}</h3>
+      ${itemsHtml}
+      <p><strong>Total:</strong> ₹${order.total}</p>
+      <p><strong>Payment:</strong> ${order.payment}</p>
+      <div class="status">
+        Status:
+        <select onchange="updateStatus(${index}, this.value)">
+          <option ${order.status==="Pending"?"selected":""}>Pending</option>
+          <option ${order.status==="Delivered"?"selected":""}>Delivered</option>
+        </select>
+      </div>
+    </div>
+  `;
+});
+
+function updateStatus(index, status) {
+  orders[index].status = status;
+  localStorage.setItem("orders", JSON.stringify(orders));
+}
+</script>
+
+</body>
+</html>
