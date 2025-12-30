@@ -86,9 +86,14 @@ function addToCart(name, price, image) {
     let existing = cart.find(item => item.name === name);
 
     if (existing) {
-        existing.qty += 1;
+        existing.kg += 1;     // add 1 kg if already exists
     } else {
-        cart.push({ name, price, image, qty: 1 });
+        cart.push({
+            name: name,
+            price: price,
+            image: image,
+            kg: 1             // start with 1 kg
+        });
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -96,11 +101,10 @@ function addToCart(name, price, image) {
 }
 
 function updateCartCount() {
-    let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-    document.getElementById("cart-count").innerText = totalQty;
+    let totalKg = cart.reduce((sum, item) => sum + item.kg, 0);
+    document.getElementById("cart-count").innerText = totalKg;
 }
 </script>
-
 
 
 </body>
