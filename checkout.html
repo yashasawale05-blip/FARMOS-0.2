@@ -167,7 +167,7 @@ function renderCart() {
   let total = 0;
 
   cart.forEach((item, index) => {
-    let itemTotal = item.price * item.qty;
+    let itemTotal = item.price * item.kg;
     total += itemTotal;
 
     container.innerHTML += `
@@ -176,13 +176,16 @@ function renderCart() {
 
         <div class="cart-info">
           <strong>${item.name}</strong>
-          ₹${item.price} × ${item.qty} = ₹${itemTotal}
+          ₹${item.price} / kg
         </div>
 
-        <div class="qty-box">
-          <button onclick="changeQty(${index}, -1)">−</button>
-          <span>${item.qty}</span>
-          <button onclick="changeQty(${index}, 1)">+</button>
+        <input type="number" min="0.5" step="0.5"
+               value="${item.kg}"
+               class="kg-input"
+               onchange="updateKg(${index}, this.value)">
+
+        <div class="item-total">
+          ₹${itemTotal}
         </div>
       </div>
     `;
@@ -191,11 +194,13 @@ function renderCart() {
   totalEl.innerText = total;
 }
 
-function changeQty(index, change) {
-  cart[index].qty += change;
+function updateKg(index, value) {
+  let kg = parseFloat(value);
 
-  if (cart[index].qty <= 0) {
+  if (kg <= 0) {
     cart.splice(index, 1);
+  } else {
+    cart[index].kg = kg;
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
