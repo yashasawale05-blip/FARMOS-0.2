@@ -7,148 +7,199 @@
 
   <style>
     :root{--green:#2f7a32}
-    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7fff7;}
-    body{background-image: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), url('https://i.ibb.co/3mKc1p7/fields-pattern.jpg'); background-position:center; background-size:cover;}
-    .navbar{background:var(--green);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;color:#fff;position:sticky;top:0;z-index:40}
-    .logo{font-weight:700}
-    .nav-links{display:flex;gap:18px;list-style:none;margin:0;padding:0}
-    .nav-links a{color:white;text-decoration:none;font-weight:600}
-    .menu-btn{display:none}
-    @media(max-width:700px){.nav-links{display:none;flex-direction:column;background:var(--green);position:absolute;right:12px;top:58px;padding:12px;border-radius:8px}.nav-links.show{display:flex}.menu-btn{display:block}}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:#f7fff7;
+    }
 
-    .container{max-width:1200px;margin:28px auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-    .product-card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 8px 22px rgba(0,0,0,0.08);text-align:center;transition:transform .18s}
-    .product-card:hover{transform:translateY(-6px)}
-    .product-card img{width:100%;height:180px;object-fit:cover;border-radius:8px}
-    .product-card h3{margin:10px 0;color:var(--green)}
-    .price{font-weight:700;color:#1f5b27}
-    .btn-add{background:var(--green);color:#fff;padding:10px;border-radius:8px;border:0;width:100%;cursor:pointer;margin-top:10px}
+    .navbar{
+      background:var(--green);
+      padding:12px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:#fff;
+      position:sticky;
+      top:0;
+    }
 
-    .cart-icon{position:fixed;right:20px;top:20px;background:var(--green);color:#fff;padding:10px 14px;border-radius:24px;font-weight:700;box-shadow:0 8px 22px rgba(0,0,0,0.16)}
-    .checkout-btn{display:block;width:220px;margin:28px auto;background:var(--green);color:#fff;padding:12px;border-radius:10px;text-align:center;text-decoration:none}
+    .nav-links{
+      display:flex;
+      gap:18px;
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+
+    .nav-links a{
+      color:white;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:30px auto;
+      padding:15px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:20px;
+    }
+
+    .product-card{
+      background:white;
+      padding:15px;
+      border-radius:12px;
+      text-align:center;
+      box-shadow:0 8px 22px rgba(0,0,0,0.1);
+    }
+
+    .product-card img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      border-radius:8px;
+    }
+
+    .product-card h3{
+      margin:10px 0;
+      color:var(--green);
+    }
+
+    .price{
+      font-weight:bold;
+      margin-bottom:8px;
+    }
+
+    .btn-add{
+      background:var(--green);
+      color:white;
+      border:none;
+      padding:10px;
+      width:100%;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .cart-icon{
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:var(--green);
+      color:white;
+      padding:10px 14px;
+      border-radius:20px;
+      font-weight:bold;
+    }
+
+    .checkout-btn{
+      display:block;
+      width:220px;
+      margin:30px auto;
+      text-align:center;
+      background:var(--green);
+      color:white;
+      padding:12px;
+      border-radius:10px;
+      text-decoration:none;
+    }
   </style>
 </head>
+
 <body>
 
 <nav class="navbar">
   <div class="logo">FarmOS 🌿</div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
-    <li><a href="products.html">Shop</a></li>
+    <li><a href="product.html">Shop</a></li>
     <li><a href="checkout.html">Cart</a></li>
-    <li><a href="login.html">Login</a></li>
   </ul>
-  <button class="menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
 </nav>
 
-<div class="cart-icon">Cart: <span id="cart-count">0</span></div>
+<div class="cart-icon">
+  Cart: <span id="cart-count">0</span>
+</div>
 
-<h1 style="text-align:center;color:var(--green);margin-top:20px">Fresh Vegetables</h1>
+<h1 style="text-align:center;color:#2f7a32;margin-top:20px">
+  Fresh Vegetables
+</h1>
 
-<div class="container" id="products-container">
-  <!-- product cards inserted directly (you can add more) -->
+<div class="container">
+
   <div class="product-card">
-    <img src="  https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/e0336146923f85d26167054a6d9f6ed3910f4fad/Screenshot_2025-12-09-11-09-48-73_40deb401b9ffe8e1df2f1cc5ba480b12.jpg   " alt="Tomato">
+    <img src="https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg" alt="Tomato">
     <h3>Tomato</h3>
     <div class="price">₹40 / kg</div>
-    <button class="btn-add" onclick="addToCart('Tomato',40)">Add to Cart</button>
+    <button class="btn-add"
+      onclick="addToCart('Tomato',40,'https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg')">
+      Add to Cart
+    </button>
   </div>
 
   <div class="product-card">
     <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true" alt="Potato">
     <h3>Potato</h3>
     <div class="price">₹25 / kg</div>
-    <button class="btn-add" onclick="addToCart('Potato',25)">Add to Cart</button>
+    <button class="btn-add"
+      onclick="addToCart('Potato',25,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true')">
+      Add to Cart
+    </button>
   </div>
 
   <div class="product-card">
     <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true" alt="Onion">
     <h3>Onion</h3>
     <div class="price">₹40 / kg</div>
-    <button class="btn-add" onclick="addToCart('Onion',40)">Add to Cart</button>
+    <button class="btn-add"
+      onclick="addToCart('Onion',40,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true')">
+      Add to Cart
+    </button>
   </div>
 
   <div class="product-card">
     <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true" alt="Carrot">
     <h3>Carrot</h3>
     <div class="price">₹40 / kg</div>
-    <button class="btn-add" onclick="addToCart('Carrot',40)">Add to Cart</button>
+    <button class="btn-add"
+      onclick="addToCart('Carrot',40,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true')">
+      Add to Cart
+    </button>
   </div>
+
 </div>
 
-<a class="checkout-btn" href="checkout.html">Go to Checkout</a>
+<a href="checkout.html" class="checkout-btn">Go to Checkout</a>
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+updateCartCount();
 
-function renderCart() {
-  const container = document.getElementById("cart-items");
-  const totalEl = document.getElementById("total-price");
-  container.innerHTML = "";
+function addToCart(name, price, image) {
+  let existing = cart.find(item => item.name === name);
 
-  if (cart.length === 0) {
-    container.innerHTML = "<p>Your cart is empty 🌱</p>";
-    totalEl.innerText = 0;
-    return;
-  }
-
-  let total = 0;
-
-  cart.forEach((item, index) => {
-    const itemTotal = item.price * item.kg;
-    total += itemTotal;
-
-    container.innerHTML += `
-      <div class="cart-item">
-        <img src="${item.image}" class="cart-img">
-
-        <div class="cart-info">
-          <strong>${item.name}</strong><br>
-          ₹${item.price} / kg
-        </div>
-
-        <input type="number"
-               class="kg-input"
-               min="0.5"
-               step="0.5"
-               value="${item.kg}"
-               onchange="updateKg(${index}, this.value)">
-
-        <div class="item-total">₹${itemTotal}</div>
-      </div>
-    `;
-  });
-
-  totalEl.innerText = total;
-}
-
-function updateKg(index, value) {
-  let kg = parseFloat(value);
-
-  if (kg <= 0) {
-    cart.splice(index, 1);
+  if (existing) {
+    existing.kg += 1;
   } else {
-    cart[index].kg = kg;
+    cart.push({
+      name: name,
+      price: price,
+      image: image,
+      kg: 1
+    });
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
+  updateCartCount();
 }
 
-function placeOrder() {
-  alert("Order placed successfully 🌱");
-  localStorage.removeItem("cart");
-  window.location.href = "products.html";
+function updateCartCount() {
+  let totalKg = cart.reduce((sum, item) => sum + item.kg, 0);
+  document.getElementById("cart-count").innerText = totalKg;
 }
-
-renderCart();
 </script>
-
 
 </body>
 </html>
-<button onclick="addToCart('Potato', 25, 'https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/e0336146923f85d26167054a6d9f6ed3910f4fad/Screenshot_2025-12-09-11-09-48-73_40deb401b9ffe8e1df2f1cc5ba480b12.jpg   " alt="Tomato">')">Add to Cart</button>
-<button onclick="addToCart('Onion', 40, 'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true" alt="Potato')">Add to Cart</button>
-<button onclick="addToCart(https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true" alt="Carrot")">Add to Cart</button>
-
-
