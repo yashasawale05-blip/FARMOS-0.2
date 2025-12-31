@@ -6,52 +6,74 @@
 <title>FarmOS — Admin Panel</title>
 
 <style>
+:root { --green:#2f7a32; }
+
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f6fff4;
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#f4fff3;
 }
 
 header {
-  background: #2f7a32;
-  color: white;
-  padding: 15px;
-  text-align: center;
+  background:var(--green);
+  color:white;
+  padding:15px;
+  text-align:center;
 }
 
 .container {
-  max-width: 1000px;
-  margin: 30px auto;
-  padding: 15px;
+  max-width:1000px;
+  margin:30px auto;
+  padding:15px;
 }
 
 .order-card {
-  background: white;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+  background:white;
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:20px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.12);
 }
 
-.order-card h3 {
-  margin: 0 0 10px;
-  color: #2f7a32;
+.order-header {
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.items {
+  margin-top:10px;
 }
 
 .item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  border-bottom:1px solid #eee;
+  padding:8px 0;
 }
 
-.status {
-  font-weight: bold;
-  margin-top: 8px;
+.item img {
+  width:45px;
+  height:45px;
+  border-radius:6px;
+  object-fit:cover;
 }
 
-select {
-  padding: 6px;
-  border-radius: 6px;
+.status-select {
+  margin-top:12px;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-weight:bold;
+}
+
+.empty {
+  text-align:center;
+  font-size:18px;
+  color:#666;
+  margin-top:40px;
 }
 </style>
 </head>
@@ -59,44 +81,50 @@ select {
 <body>
 
 <header>
-  <h1>🌾 FarmOS Admin Dashboard</h1>
+<h1>🧑‍💼 Admin — Orders Dashboard</h1>
 </header>
 
 <div class="container" id="orders-container"></div>
 
 <script>
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
 const container = document.getElementById("orders-container");
 
 if (orders.length === 0) {
-  container.innerHTML = "<p>No orders yet 🌱</p>";
+  container.innerHTML = "<div class='empty'>No orders yet 📦</div>";
 }
 
 orders.forEach((order, index) => {
-  let itemsHtml = "";
+  let itemsHTML = "";
+
   order.items.forEach(item => {
-    itemsHtml += `
+    itemsHTML += `
       <div class="item">
-        <span>${item.name} (${item.kg} kg)</span>
-        <span>₹${item.price * item.kg}</span>
+        <img src="${item.image}">
+        <div>
+          <strong>${item.name}</strong><br>
+          ${item.kg} kg × ₹${item.price}
+        </div>
       </div>
     `;
   });
 
   container.innerHTML += `
     <div class="order-card">
-      <h3>Order #${order.id}</h3>
-      ${itemsHtml}
-      <p><strong>Total:</strong> ₹${order.total}</p>
-      <p><strong>Payment:</strong> ${order.payment}</p>
-      <div class="status">
-        Status:
-        <select onchange="updateStatus(${index}, this.value)">
-          <option ${order.status==="Pending"?"selected":""}>Pending</option>
-          <option ${order.status==="Delivered"?"selected":""}>Delivered</option>
-        </select>
+      <div class="order-header">
+        <span>Order ID: ${order.id}</span>
+        <span>₹${order.total}</span>
       </div>
+
+      <div><strong>Payment:</strong> ${order.payment}</div>
+
+      <div class="items">${itemsHTML}</div>
+
+      <select class="status-select" onchange="updateStatus(${index}, this.value)">
+        <option ${order.status === "Pending" ? "selected" : ""}>Pending</option>
+        <option ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
+        <option ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
+      </select>
     </div>
   `;
 });
@@ -104,6 +132,7 @@ orders.forEach((order, index) => {
 function updateStatus(index, status) {
   orders[index].status = status;
   localStorage.setItem("orders", JSON.stringify(orders));
+  alert("Order status updated ✅");
 }
 </script>
 
