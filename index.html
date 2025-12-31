@@ -127,6 +127,43 @@ footer{
   text-align:center;
   padding:18px;
 }
+  /* ===== GLOBAL ANIMATIONS ===== */
+.fade-in{
+  opacity:0;
+  transform:translateY(20px);
+  animation:fadeIn 0.8s ease forwards;
+}
+
+.slide-left{
+  opacity:0;
+  transform:translateX(40px);
+  animation:slideLeft 0.8s ease forwards;
+}
+
+.scale-in{
+  opacity:0;
+  transform:scale(0.9);
+  animation:scaleIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn{
+  to{opacity:1; transform:translateY(0);}
+}
+@keyframes slideLeft{
+  to{opacity:1; transform:translateX(0);}
+}
+@keyframes scaleIn{
+  to{opacity:1; transform:scale(1);}
+  }
+  button, .btn, a{
+  transition:0.3s;
+}
+button:hover, .btn:hover, a:hover{
+  transform:scale(1.05);
+}
+button:active{
+  transform:scale(0.95);
+  }
 </style>
 </head>
 
