@@ -29,7 +29,6 @@ h1{text-align:center;margin:20px}
   padding:12px;
   border-radius:14px;
   margin-bottom:12px;
-  transition:0.3s;
 }
 
 .item img{
@@ -56,11 +55,6 @@ h1{text-align:center;margin:20px}
   cursor:pointer;
 }
 
-.qty button:disabled{
-  opacity:.3;
-  cursor:not-allowed;
-}
-
 .total{
   text-align:right;
   font-size:20px;
@@ -70,7 +64,7 @@ h1{text-align:center;margin:20px}
 .place{
   display:block;
   margin:30px auto;
-  background:#22c55e;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
   color:black;
   padding:14px;
   border-radius:14px;
@@ -113,7 +107,7 @@ function render(){
         ₹${item.price} / kg
       </div>
       <div class="qty">
-        <button ${item.kg===1?"disabled":""} onclick="change('${name}',-1)">−</button>
+        <button onclick="change('${name}',-1)">−</button>
         <span>${item.kg}</span>
         <button onclick="change('${name}',1)">+</button>
       </div>
@@ -121,14 +115,15 @@ function render(){
     </div>`;
   }
 
-  document.getElementById("cartBox").innerHTML = html||"<p>Your cart is empty 🌱</p>";
+  document.getElementById("cartBox").innerHTML =
+    html || "<p>Your cart is empty 🌱</p>";
   document.getElementById("totalPrice").innerText = total;
+  localStorage.setItem("cart",JSON.stringify(cart));
 }
 
 function change(name,val){
   cart[name].kg += val;
   if(cart[name].kg<=0) delete cart[name];
-  localStorage.setItem("cart",JSON.stringify(cart));
   render();
 }
 
