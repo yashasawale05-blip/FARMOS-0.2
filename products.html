@@ -1,30 +1,33 @@
   <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8">
 <title>FarmOS — Shop</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <style>
+/* === COLORS & ROOT === */
 :root{
   --green:#22c55e;
   --bg:#020617;
-  --glass:rgba(255,255,255,0.06);
-  --border:rgba(255,255,255,0.12);
+  --card:#111827;
   --accent:#fbbf24;
 }
-*{box-sizing:border-box}
+
+/* === BODY & GLOBAL === */
 body{
   margin:0;
-  font-family:"Segoe UI", Arial;
+  font-family:Segoe UI, Arial;
   background:
     linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.95)),
     url("https://images.unsplash.com/photo-1506806732259-39c2d0268443");
   background-size:cover;
-  background-attachment:fixed;
   color:#e5e7eb;
+  opacity:0; /* fade-in animation */
+  animation:fadeIn .4s forwards;
 }
 
-/* NAVBAR */
+/* === NAVBAR === */
 .navbar{
   background:rgba(0,0,0,.6);
   backdrop-filter:blur(14px);
@@ -44,7 +47,7 @@ body{
 }
 .navbar a:hover{color:var(--green);}
 
-/* CART FLOAT */
+/* === CART FLOAT === */
 .cart-float{
   position:fixed;
   top:80px;
@@ -90,7 +93,7 @@ body{
   100%{ transform: scale(1); }
 }
 
-/* GRID */
+/* === GRID & PRODUCT CARDS === */
 .container{
   max-width:1200px;
   margin:30px auto;
@@ -100,19 +103,16 @@ body{
   gap:26px;
 }
 
-/* PRODUCT */
 .product-card{
-  background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.02));
-  border:1px solid var(--border);
+  background:var(--card);
   border-radius:20px;
   padding:16px;
   text-align:center;
-  backdrop-filter:blur(14px);
-  box-shadow:0 20px 40px rgba(0,0,0,.6);
   transition:0.3s;
 }
 .product-card:hover{
-  transform:translateY(-5px) scale(1.02);
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px rgba(0,0,0,.6);
 }
 .product-card img{
   width:100%;
@@ -156,7 +156,7 @@ body{
   box-shadow:0 10px 30px rgba(34,197,94,.5);
 }
 
-/* MINI CART */
+/* === MINI CART === */
 .mini-cart{
   position:fixed;
   top:0;
@@ -175,67 +175,31 @@ body{
   justify-content:space-between;
   align-items:center;
 }
-.mini-cart .back-btn{
-  cursor:pointer;
-  font-size:14px;
-  color:var(--accent);
-}
 .cart-item{
   display:flex;
   justify-content:space-between;
   margin:10px 0;
   font-size:14px;
 }
-.checkout{
-  display:block;
-  margin-top:20px;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:black;
-  text-align:center;
-  padding:12px;
-  border-radius:12px;
-  text-decoration:none;
-  font-weight:900;
-}
-  /* ===== GLOBAL ANIMATIONS ===== */
-.fade-in{
-  opacity:0;
-  transform:translateY(20px);
-  animation:fadeIn 0.8s ease forwards;
-}
 
-.slide-left{
-  opacity:0;
-  transform:translateX(40px);
-  animation:slideLeft 0.8s ease forwards;
+/* === GLOBAL ANIMATION CSS === */
+.fade-out{
+  animation:fadeOut .3s forwards;
 }
-
-.scale-in{
-  opacity:0;
-  transform:scale(0.9);
-  animation:scaleIn 0.6s ease forwards;
+@keyframes fadeIn{to{opacity:1}}
+@keyframes fadeOut{to{opacity:0}}
+button,.btn{
+  transition:0.25s;
 }
-
-@keyframes fadeIn{
-  to{opacity:1; transform:translateY(0);}
-}
-@keyframes slideLeft{
-  to{opacity:1; transform:translateX(0);}
-}
-@keyframes scaleIn{
-  to{opacity:1; transform:scale(1);}
-  }
-  button, .btn, a{
-  transition:0.3s;
-}
-button:hover, .btn:hover, a:hover{
+button:hover,.btn:hover{
   transform:scale(1.05);
 }
 button:active{
   transform:scale(0.95);
-  }
+}
 </style>
 </head>
+
 <body>
 
 <div class="navbar">
@@ -261,7 +225,7 @@ button:active{
   </h3>
   <div id="miniItems"></div>
   <strong>Total: ₹<span id="miniTotal">0</span></strong>
-  <a href="checkout.html" class="checkout">Checkout</a>
+  <a href="checkout.html" class="btn">Checkout</a>
 </div>
 
 <script>
@@ -281,7 +245,7 @@ function renderProducts(){
   for(let name in products){
     const qty=cart[name]?.kg||0;
     html+=`
-    <div class="product-card scale-in">
+    <div class="product-card">
       <img src="${products[name].img}">
       <h3>${name}</h3>
       <div class="price">₹${products[name].price} / kg</div>
@@ -334,6 +298,19 @@ function updateMini(){
 function toggleCart(){
   document.getElementById("miniCart").classList.toggle("show");
 }
+
+/* === PAGE TRANSITION === */
+document.querySelectorAll("a").forEach(link=>{
+  const href=link.getAttribute("href");
+  if(href && !href.startsWith("#") && !href.startsWith("http")){
+    link.addEventListener("click",e=>{
+      e.preventDefault();
+      document.body.classList.add("fade-out");
+      setTimeout(()=>window.location.href=href,300);
+    });
+  }
+});
 </script>
+
 </body>
-                                                          </html>
+</html>
