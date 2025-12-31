@@ -3,77 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FarmOS — Admin Panel</title>
+<title>FarmOS Admin Dashboard</title>
 
 <style>
-:root { --green:#2f7a32; }
+:root {
+  --green:#2f7a32;
+  --dark:#1b1b1b;
+}
 
 body {
   margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  background:#f4fff3;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#f4f6f8;
 }
 
+/* HEADER */
 header {
   background:var(--green);
   color:white;
-  padding:15px;
+  padding:16px;
   text-align:center;
 }
 
-.container {
-  max-width:1000px;
-  margin:30px auto;
-  padding:15px;
+/* STATS */
+.stats-container {
+  max-width:1100px;
+  margin:25px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
 }
 
-.order-card {
+.stat-box {
   background:white;
-  border-radius:12px;
-  padding:18px;
-  margin-bottom:20px;
+  border-radius:14px;
+  padding:20px;
+  text-align:center;
   box-shadow:0 8px 24px rgba(0,0,0,0.12);
 }
 
-.order-header {
-  display:flex;
-  justify-content:space-between;
-  font-weight:bold;
-  margin-bottom:10px;
+.stat-box h3 {
+  margin:0;
+  color:var(--green);
 }
 
-.items {
+.stat-box p {
+  font-size:30px;
+  font-weight:bold;
   margin-top:10px;
 }
 
-.item {
-  display:flex;
-  gap:10px;
-  align-items:center;
-  border-bottom:1px solid #eee;
-  padding:8px 0;
+/* ORDERS */
+.orders-section {
+  max-width:1100px;
+  margin:30px auto;
+  background:white;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.12);
 }
 
-.item img {
-  width:45px;
-  height:45px;
-  border-radius:6px;
+.orders-section h2 {
+  margin-top:0;
+  color:var(--green);
+}
+
+.order-card {
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:14px;
+  margin-bottom:14px;
+}
+
+.order-card strong {
+  color:#333;
+}
+
+.order-items img {
+  width:40px;
+  height:40px;
   object-fit:cover;
+  border-radius:6px;
+  margin-right:6px;
 }
 
-.status-select {
-  margin-top:12px;
-  padding:8px;
-  border-radius:8px;
+.order-items {
+  margin-top:8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+select {
+  padding:6px;
+  border-radius:6px;
   border:1px solid #ccc;
-  font-weight:bold;
-}
-
-.empty {
-  text-align:center;
-  font-size:18px;
-  color:#666;
-  margin-top:40px;
+  margin-top:8px;
 }
 </style>
 </head>
@@ -81,59 +106,104 @@ header {
 <body>
 
 <header>
-<h1>🧑‍💼 Admin — Orders Dashboard</h1>
+  <h1>🌱 FarmOS Admin Dashboard</h1>
 </header>
 
-<div class="container" id="orders-container"></div>
+<!-- DASHBOARD STATS -->
+<div class="stats-container">
+  <div class="stat-box">
+    <h3>Total Orders</h3>
+    <p id="totalOrders">0</p>
+  </div>
+
+  <div class="stat-box">
+    <h3>Total Revenue</h3>
+    <p>₹<span id="totalRevenue">0</span></p>
+  </div>
+
+  <div class="stat-box">
+    <h3>Pending</h3>
+    <p id="pendingOrders">0</p>
+  </div>
+
+  <div class="stat-box">
+    <h3>Delivered</h3>
+    <p id="deliveredOrders">0</p>
+  </div>
+</div>
+
+<!-- ORDERS LIST -->
+<div class="orders-section">
+  <h2>📦 All Orders</h2>
+  <div id="ordersList"></div>
+</div>
 
 <script>
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
-const container = document.getElementById("orders-container");
 
-if (orders.length === 0) {
-  container.innerHTML = "<div class='empty'>No orders yet 📦</div>";
+/* UPDATE STATS */
+function updateStats() {
+  document.getElementById("totalOrders").innerText = orders.length;
+
+  let revenue = 0;
+  let pending = 0;
+  let delivered = 0;
+
+  orders.forEach(o => {
+    revenue += Number(o.total);
+    if (o.status === "Pending") pending++;
+    if (o.status === "Delivered") delivered++;
+  });
+
+  document.getElementById("totalRevenue").innerText = revenue;
+  document.getElementById("pendingOrders").innerText = pending;
+  document.getElementById("deliveredOrders").innerText = delivered;
 }
 
-orders.forEach((order, index) => {
-  let itemsHTML = "";
+/* RENDER ORDERS */
+function renderOrders() {
+  let container = document.getElementById("ordersList");
+  container.innerHTML = "";
 
-  order.items.forEach(item => {
-    itemsHTML += `
-      <div class="item">
-        <img src="${item.image}">
-        <div>
-          <strong>${item.name}</strong><br>
-          ${item.kg} kg × ₹${item.price}
-        </div>
+  if (orders.length === 0) {
+    container.innerHTML = "<p>No orders yet.</p>";
+    return;
+  }
+
+  orders.forEach((order, index) => {
+    let itemsHTML = "";
+    order.items.forEach(item => {
+      itemsHTML += `
+        <img src="${item.image}" title="${item.name}">
+      `;
+    });
+
+    container.innerHTML += `
+      <div class="order-card">
+        <strong>Order #${index + 1}</strong><br>
+        Total: ₹${order.total}<br>
+        Status:
+        <select onchange="updateStatus(${index}, this.value)">
+          <option ${order.status === "Pending" ? "selected" : ""}>Pending</option>
+          <option ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
+        </select>
+
+        <div class="order-items">${itemsHTML}</div>
       </div>
     `;
   });
+}
 
-  container.innerHTML += `
-    <div class="order-card">
-      <div class="order-header">
-        <span>Order ID: ${order.id}</span>
-        <span>₹${order.total}</span>
-      </div>
-
-      <div><strong>Payment:</strong> ${order.payment}</div>
-
-      <div class="items">${itemsHTML}</div>
-
-      <select class="status-select" onchange="updateStatus(${index}, this.value)">
-        <option ${order.status === "Pending" ? "selected" : ""}>Pending</option>
-        <option ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
-        <option ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
-      </select>
-    </div>
-  `;
-});
-
+/* UPDATE STATUS */
 function updateStatus(index, status) {
   orders[index].status = status;
   localStorage.setItem("orders", JSON.stringify(orders));
-  alert("Order status updated ✅");
+  updateStats();
 }
+
+/* INIT */
+updateStats();
+renderOrders();
 </script>
 
 </body>
