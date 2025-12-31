@@ -284,37 +284,83 @@ h1{
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let quantities = {};
+
+syncUIFromCart();
 updateCartCount();
 
+/* ---------- SYNC UI ---------- */
+function syncUIFromCart(){
+  cart.forEach(item=>{
+    quantities[item.name] = item.kg;
+    const el = document.getElementById("qty-"+item.name);
+    if(el) el.innerText = item.kg;
+  });
+}
+
+/* ---------- CHANGE QTY ---------- */
 function changeQty(name, change){
   if(!quantities[name]) quantities[name] = 0;
   quantities[name] += change;
-  if(quantities[name] < 0) quantities[name] = 0;
-  document.getElementById("qty-"+name).innerText = quantities[name];
-}
 
-function addToCart(name, price, image){
-  let kg = quantities[name] > 0 ? quantities[name] : 1;
-  let existing = cart.find(item => item.name === name);
-
-  if(existing){
-    existing.kg += kg;
+  if(quantities[name] <= 0){
+    quantities[name] = 0;
+    cart = cart.filter(item => item.name !== name);
   } else {
-    cart.push({ name, price, image, kg });
+    let item = cart.find(item => item.name === name);
+    if(item){
+      item.kg = quantities[name];
+    } else {
+      cart.push({
+        name: name,
+        price: getPrice(name),
+        image: getImage(name),
+        kg: quantities[name]
+      });
+    }
   }
 
-  quantities[name] = 0;
-  document.getElementById("qty-"+name).innerText = 0;
-
+  document.getElementById("qty-"+name).innerText = quantities[name];
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
 }
 
+/* ---------- ADD BUTTON (FIRST TIME) ---------- */
+function addToCart(name, price, image){
+  if(quantities[name] === 0){
+    quantities[name] = 1;
+    cart.push({ name, price, image, kg:1 });
+    document.getElementById("qty-"+name).innerText = 1;
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+}
+
+/* ---------- CART COUNT ---------- */
 function updateCartCount(){
-  let totalKg = cart.reduce((sum,item)=>sum+item.kg,0);
-  document.getElementById("cart-count").innerText = totalKg;
+  let total = cart.reduce((sum,item)=>sum+item.kg,0);
+  document.getElementById("cart-count").innerText = total;
+}
+
+/* ---------- HELPERS ---------- */
+function getPrice(name){
+  return {
+    Tomato:40,
+    Potato:25,
+    Onion:40,
+    Carrot:40
+  }[name];
+}
+
+function getImage(name){
+  return {
+    Tomato:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg",
+    Potato:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true",
+    Onion:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true",
+    Carrot:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true"
+  }[name];
 }
 </script>
+
 
 </body>
     </html>
