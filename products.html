@@ -11,22 +11,22 @@
   --bg:#020617;
   --glass:rgba(255,255,255,0.06);
   --border:rgba(255,255,255,0.12);
+  --hover-glow: rgba(34,197,94,0.5);
 }
 
-*{box-sizing:border-box}
+*{box-sizing:border-box;}
 
 body{
   margin:0;
   font-family:Segoe UI, Arial;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.95)),
-    url("https://images.unsplash.com/photo-1506806732259-39c2d0268443");
+  background: linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.95)),
+              url("https://images.unsplash.com/photo-1506806732259-39c2d0268443");
   background-size:cover;
   background-attachment:fixed;
   color:#e5e7eb;
 }
 
-/* NAVBAR */
+/* ===== NAVBAR ===== */
 .navbar{
   background:rgba(0,0,0,.6);
   backdrop-filter:blur(14px);
@@ -45,21 +45,30 @@ body{
   margin-left:18px;
 }
 
-/* CART FLOAT */
+/* ===== CART FLOAT ICON ===== */
 .cart-float{
   position:fixed;
-  top:90px;
+  top:80px;
   right:20px;
   background:var(--green);
   color:black;
-  padding:10px 18px;
-  border-radius:30px;
+  padding:12px 18px;
+  border-radius:50px;
   font-weight:800;
   cursor:pointer;
   z-index:60;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:0.3s;
 }
 
-/* GRID */
+.cart-float:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 15px var(--hover-glow);
+}
+
+/* ===== GRID ===== */
 .container{
   max-width:1200px;
   margin:30px auto;
@@ -69,7 +78,7 @@ body{
   gap:26px;
 }
 
-/* PRODUCT */
+/* ===== PRODUCT CARD ===== */
 .product-card{
   background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.02));
   border:1px solid var(--border);
@@ -78,6 +87,12 @@ body{
   text-align:center;
   backdrop-filter:blur(14px);
   box-shadow:0 20px 40px rgba(0,0,0,.6);
+  transition:0.3s;
+}
+
+.product-card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 25px 50px rgba(0,0,0,.7);
 }
 
 .product-card img{
@@ -89,6 +104,7 @@ body{
 
 .price{opacity:.85;margin:6px 0}
 
+/* ===== QTY SELECTOR ===== */
 .qty{
   display:flex;
   justify-content:center;
@@ -105,6 +121,7 @@ body{
   font-size:20px;
   font-weight:bold;
   cursor:pointer;
+  transition:0.2s;
 }
 
 .qty button:disabled{
@@ -112,6 +129,7 @@ body{
   cursor:not-allowed;
 }
 
+/* ===== ADD BUTTON ===== */
 .btn{
   width:100%;
   padding:12px;
@@ -120,20 +138,28 @@ body{
   font-weight:800;
   background:linear-gradient(135deg,#22c55e,#16a34a);
   cursor:pointer;
+  transition:0.3s;
 }
 
-/* MINI CART */
+.btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 10px 30px var(--hover-glow);
+}
+
+/* ===== MINI CART ===== */
 .mini-cart{
   position:fixed;
   top:0;
   right:-360px;
-  width:340px;
+  width:360px;
   height:100%;
   background:#020617;
   box-shadow:-10px 0 40px rgba(0,0,0,.8);
   padding:20px;
   transition:.4s;
   z-index:100;
+  display:flex;
+  flex-direction:column;
 }
 
 .mini-cart.show{right:0}
@@ -147,12 +173,12 @@ body{
 
 .checkout{
   display:block;
-  margin-top:20px;
+  margin-top:auto;
   background:var(--green);
   color:black;
   text-align:center;
-  padding:12px;
-  border-radius:12px;
+  padding:14px;
+  border-radius:14px;
   text-decoration:none;
   font-weight:900;
 }
@@ -187,10 +213,10 @@ body{
 
 <script>
 const products={
- Tomato:{price:40,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg"},
- Potato:{price:25,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true"},
- Onion:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true"},
- Carrot:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true"}
+  Tomato:{price:40,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg"},
+  Potato:{price:25,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true"},
+  Onion:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true"},
+  Carrot:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true"}
 };
 
 let cart = JSON.parse(localStorage.getItem("cart")) || {};
@@ -219,12 +245,13 @@ function renderProducts(){
   document.getElementById("productList").innerHTML=html;
 }
 
-/* ADD / UPDATE */
+/* ADD FIRST TIME */
 function addFirst(name){
   if(!cart[name]) cart[name]={kg:1,...products[name]};
   save();
 }
 
+/* UPDATE QTY */
 function updateQty(name,change){
   if(!cart[name]) return;
   cart[name].kg+=change;
@@ -266,4 +293,4 @@ function toggleCart(){
 </script>
 
 </body>
-  </html>  
+</html>            
