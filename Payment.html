@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FarmOS — Payment</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --green:#22c55e;
+  --bg:#020617;
+  --accent:#fbbf24;
+}
+body{
+  margin:0;
+  font-family:Segoe UI, Arial;
+  background:var(--bg);
+  color:#e5e7eb;
+}
+.navbar{
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(14px);
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.navbar a{
+  color:#e5e7eb;
+  text-decoration:none;
+  font-weight:600;
+  margin-left:18px;
+}
+.navbar a:hover{color:var(--green);}
+.cart-float{
+  position:fixed;
+  top:80px;
+  right:20px;
+  background: linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  padding:12px 20px;
+  border-radius:50px;
+  font-weight:800;
+  cursor:pointer;
+  z-index:60;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:16px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.4);
+}
+#cartCount{
+  display:inline-block;
+  min-width:24px;
+  height:24px;
+  line-height:24px;
+  text-align:center;
+  border-radius:50%;
+  background:#fff;
+  color:#22c55e;
+  font-weight:bold;
+  font-size:14px;
+}
+.container{
+  max-width:500px;
+  margin:30px auto;
+  padding:20px;
+  background:#111827;
+  border-radius:16px;
+}
+.container h2{text-align:center;margin-bottom:20px;}
+input,select{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:none;
+  font-size:14px;
+}
+button{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:black;
+  font-weight:900;
+  cursor:pointer;
+}
+button:hover{
+  transform:scale(1.02);
+  box-shadow:0 5px 20px rgba(34,197,94,0.5);
+}
+.success{
+  text-align:center;
+  margin-top:30px;
+  font-size:20px;
+  color:var(--accent);
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <strong>FarmOS 🌿</strong>
+  <div>
+    <a href="product.html">Home</a>
+  </div>
+</div>
+
+<div class="cart-float">
+🛒 <span id="cartCount">0</span>
+</div>
+
+<div class="container">
+  <h2>Payment & Address</h2>
+  <input type="text" id="name" placeholder="Full Name" required>
+  <input type="text" id="address" placeholder="Address" required>
+  <input type="text" id="city" placeholder="City" required>
+  <input type="text" id="pincode" placeholder="Pincode" required>
+  <select id="payment">
+    <option value="COD">Cash on Delivery</option>
+    <option value="UPI">UPI</option>
+    <option value="Card">Debit/Credit Card</option>
+  </select>
+  <button onclick="pay()">Pay Now</button>
+  <div class="success" id="successMsg"></div>
+</div>
+
+<script>
+let cart=JSON.parse(localStorage.getItem("cart"))||{};
+document.getElementById("cartCount").innerText = Object.values(cart).reduce((s,i)=>s+i.kg,0);
+
+function pay(){
+  const name=document.getElementById("name").value;
+  const address=document.getElementById("address").value;
+  const city=document.getElementById("city").value;
+  const pincode=document.getElementById("pincode").value;
+  if(!name||!address||!city||!pincode){
+    alert("Please fill all address fields!");
+    return;
+  }
+  const payment=document.getElementById("payment").value;
+  document.getElementById("successMsg").innerHTML=`Payment Method: <strong>${payment}</strong><br>Thank you, ${name}! Your order has been placed 🌿`;
+  localStorage.removeItem("cart");
+  document.getElementById("cartCount").innerText = 0;
+}
+</script>
+
+</body>
+</html>
