@@ -17,16 +17,12 @@ body{
   background:var(--dark);
   color:#eaeaea;
 }
-
-/* NAVBAR */
 .navbar{
   background:#0b1510;
   padding:15px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  position:sticky;
-  top:0;
 }
 .navbar h2{color:var(--green);margin:0}
 .navbar a{
@@ -37,7 +33,6 @@ body{
 }
 .navbar a:hover{color:var(--green)}
 
-/* HERO */
 .hero{
   height:90vh;
   background:
@@ -49,8 +44,8 @@ body{
   justify-content:center;
   text-align:center;
 }
-.hero h1{font-size:52px;margin-bottom:15px}
-.hero p{font-size:20px;margin-bottom:30px}
+.hero h1{font-size:52px}
+.hero p{font-size:20px}
 .hero button{
   background:var(--green);
   border:none;
@@ -60,12 +55,10 @@ body{
   cursor:pointer;
 }
 
-/* FEATURES */
 .features{
   padding:60px 20px;
   text-align:center;
 }
-.features h2{color:var(--green)}
 .feature-box{
   max-width:1100px;
   margin:auto;
@@ -101,7 +94,7 @@ footer{
   <div>
     <h1>Premium Fresh Vegetables</h1>
     <p>Direct from farms • No middlemen</p>
-    <button onclick="location.href='product.html'">Shop Now 🛒</button>
+    <button onclick="window.location.href='product.html'">Shop Now 🛒</button>
   </div>
 </section>
 
