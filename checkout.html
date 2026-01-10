@@ -3,65 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <title>FarmOS — Checkout</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-:root{--green:#22c55e;--bg:#020617;--accent:#fbbf24;}
-body{margin:0;font-family:Segoe UI,Arial;background:#020617;color:#e5e7eb;opacity:0;animation:fadeIn .4s forwards;}
-.navbar{background:rgba(0,0,0,.6);backdrop-filter:blur(14px);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;}
-.navbar a{color:#e5e7eb;text-decoration:none;font-weight:600;margin-left:18px;}
-.navbar a:hover{color:var(--green);}
-.container{max-width:700px;margin:30px auto;padding:20px;background:rgba(17,24,39,.8);border-radius:20px;}
-h2{text-align:center;margin-bottom:20px;}
-.cart-item{display:flex;justify-content:space-between;margin:8px 0;font-size:16px;}
-.total{font-weight:800;margin-top:20px;text-align:right;}
-.btn{width:100%;padding:12px;border:none;border-radius:14px;font-weight:800;background:linear-gradient(135deg,#22c55e,#16a34a);cursor:pointer;transition:0.3s;margin-top:20px;}
-.btn:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(34,197,94,.5);}
-.cart-float{position:fixed;top:80px;right:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;padding:12px 20px;border-radius:50px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px;cursor:pointer;z-index:60;box-shadow:0 4px 15px rgba(0,0,0,0.4);transition: transform 0.3s, box-shadow 0.3s;}
-.cart-float:hover{transform:scale(1.1);box-shadow:0 0 25px rgba(34,197,94,0.6);}
-#cartCount{display:inline-block;min-width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:#fff;color:#22c55e;font-weight:bold;font-size:14px;transition: transform 0.3s;}
-.bounce{animation:bounceCart .4s ease;}
-@keyframes fadeIn{to{opacity:1}} @keyframes fadeOut{to{opacity:0}} @keyframes bounceCart{0%{transform:scale(1);}30%{transform:scale(1.3);}60%{transform:scale(0.95);}100%{transform:scale(1);}}
+body{margin:0;background:#020617;color:#fff;font-family:Segoe UI}
+.item{
+  background:#111827;
+  margin:12px auto;
+  padding:12px;
+  max-width:700px;
+  border-radius:12px;
+  display:flex;
+  justify-content:space-between;
+}
+button{
+  background:#22c55e;
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+}
 </style>
 </head>
+
 <body>
-<div class="navbar">
-  <strong>FarmOS 🌿</strong>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="product.html">Shop</a>
-    <a href="checkout.html">Checkout</a>
-  </div>
-</div>
 
-<div class="cart-float" onclick="toggleCart()">🛒 <span id="cartCount">0</span></div>
+<h2 style="text-align:center">Checkout</h2>
+<div id="box"></div>
+<h3 style="text-align:center">Total: ₹<span id="total">0</span></h3>
 
-<div class="container">
-  <h2>Checkout</h2>
-  <div id="checkoutItems"></div>
-  <div class="total">Total: ₹<span id="checkoutTotal">0</span></div>
-  <button class="btn" onclick="placeOrder()">Place Order</button>
-</div>
-
-<div class="mini-cart" id="miniCart">
-  <h3>
-    <span>Your Cart</span>
-    <span class="back-btn" onclick="toggleCart()">← Back</span>
-  </h3>
-  <div id="miniItems"></div>
-  <strong>Total: ₹<span id="miniTotal">0</span></strong>
-  <a href="checkout.html" class="btn">Checkout</a>
-</div>
+<a href="payment.html" style="display:block;text-align:center;color:#22c55e">Proceed to Payment</a>
 
 <script>
 let cart=JSON.parse(localStorage.getItem("cart"))||{};
-function toggleCart(){document.getElementById("miniCart").classList.toggle("show");}
-function updateMini(){let html="",total=0;for(let k in cart){total+=cart[k].kg*cart[k].price;html+=`<div class="cart-item">${k} × ${cart[k].kg} - ₹${cart[k].kg*cart[k].price}</div>`;}document.getElementById("miniItems").innerHTML=html||"<p>Empty</p>";document.getElementById("miniTotal").innerText=total;}
-function updateAll(){updateMini();const c=document.getElementById("cartCount");c.innerText=Object.values(cart).reduce((s,i)=>s.kg?s.kg:0,0);c.classList.remove("bounce");void c.offsetWidth;c.classList.add("bounce");updateCheckout();}
-function updateCheckout(){let html="",total=0;for(let k in cart){total+=cart[k].kg*cart[k].price;html+=`<div class="cart-item">${k} × ${cart[k].kg} - ₹${cart[k].kg*cart[k].price}</div>`;}document.getElementById("checkoutItems").innerHTML=html||"<p>Cart Empty</p>";document.getElementById("checkoutTotal").innerText=total;}
-function placeOrder(){alert("Order placed! Thank you for shopping.");localStorage.removeItem("cart");cart={};updateAll();}
-updateAll();
-/* Page transition */
-document.querySelectorAll("a").forEach(link=>{const href=link.getAttribute("href");if(href&&!href.startsWith("#")&&!href.startsWith("http")){link.addEventListener("click",e=>{e.preventDefault();document.body.classList.add("fade-out");setTimeout(()=>window.location.href=href,300);});}});
+render();
+
+function render(){
+  let html="",total=0;
+  for(let p in cart){
+    let t=cart[p].kg*cart[p].price;
+    total+=t;
+    html+=`
+    <div class="item">
+      <span>${p} × ${cart[p].kg}</span>
+      <span>₹${t}</span>
+    </div>`;
+  }
+  document.getElementById("box").innerHTML=html||"Cart empty";
+  document.getElementById("total").innerText=total;
+}
 </script>
+
 </body>
-</html>      
+</html>
