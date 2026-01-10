@@ -12,7 +12,6 @@
   --card:#111827;
   --accent:#fbbf24;
 }
-
 body{
   margin:0;
   font-family:Segoe UI, Arial;
@@ -44,15 +43,12 @@ body{
   border-radius:20px;
   box-shadow:0 0 30px rgba(34,197,94,.2);
 }
-
-/* HEAD */
 .container h2{
   text-align:center;
-  margin-bottom:20px;
   color:var(--green);
+  margin-bottom:20px;
 }
 
-/* INPUTS */
 input, textarea{
   width:100%;
   padding:14px;
@@ -60,22 +56,19 @@ input, textarea{
   border-radius:12px;
   border:none;
   background:#020617;
-  color:#fff;
-  outline:none;
-  font-size:15px;
+  color:white;
 }
-textarea{resize:none;height:90px}
+textarea{height:80px}
 
-/* PAYMENT METHODS */
+/* METHODS */
 .methods{
   display:flex;
   gap:10px;
-  margin-bottom:16px;
 }
 .method{
   flex:1;
-  padding:12px;
   background:#020617;
+  padding:12px;
   border-radius:12px;
   text-align:center;
   cursor:pointer;
@@ -83,75 +76,35 @@ textarea{resize:none;height:90px}
 }
 .method.active{
   border-color:var(--green);
-  box-shadow:0 0 15px rgba(34,197,94,.4);
+  box-shadow:0 0 10px rgba(34,197,94,.5);
 }
 
-/* BUTTON */
 .pay-btn{
   width:100%;
-  padding:16px;
+  padding:15px;
   border:none;
   border-radius:16px;
   background:linear-gradient(135deg,#22c55e,#16a34a);
   font-weight:900;
-  cursor:pointer;
   font-size:16px;
-  color:#000;
+  cursor:pointer;
 }
 
-/* LOADER */
 .loader{
   display:none;
   text-align:center;
-  margin-top:16px;
+  margin-top:15px;
 }
 .spinner{
   width:40px;
   height:40px;
-  border:4px solid #222;
+  border:4px solid #333;
   border-top:4px solid var(--green);
   border-radius:50%;
   animation:spin 1s linear infinite;
   margin:auto;
 }
 @keyframes spin{100%{transform:rotate(360deg)}}
-  /* ===== GLOBAL ANIMATIONS ===== */
-.fade-in{
-  opacity:0;
-  transform:translateY(20px);
-  animation:fadeIn 0.8s ease forwards;
-}
-
-.slide-left{
-  opacity:0;
-  transform:translateX(40px);
-  animation:slideLeft 0.8s ease forwards;
-}
-
-.scale-in{
-  opacity:0;
-  transform:scale(0.9);
-  animation:scaleIn 0.6s ease forwards;
-}
-
-@keyframes fadeIn{
-  to{opacity:1; transform:translateY(0);}
-}
-@keyframes slideLeft{
-  to{opacity:1; transform:translateX(0);}
-}
-@keyframes scaleIn{
-  to{opacity:1; transform:scale(1);}
-  }
-  button, .btn, a{
-  transition:0.3s;
-}
-button:hover, .btn:hover, a:hover{
-  transform:scale(1.05);
-}
-button:active{
-  transform:scale(0.95);
-  }
 </style>
 </head>
 
@@ -162,56 +115,69 @@ button:active{
   <a href="checkout.html">← Checkout</a>
 </div>
 
-<div class="container">
+<div class="container scale-in">
   <h2>Delivery & Payment</h2>
 
-  <!-- ADDRESS -->
-  <input type="text" id="name" placeholder="Full Name">
-  <input type="text" id="phone" placeholder="Mobile Number">
-  <textarea id="address" placeholder="Complete Address"></textarea>
+  <input id="name" placeholder="Full Name">
+  <input id="phone" placeholder="Phone Number">
+  <textarea id="address" placeholder="Delivery Address"></textarea>
 
-  <!-- PAYMENT METHODS -->
   <div class="methods">
     <div class="method active" onclick="selectMethod(this)">UPI</div>
     <div class="method" onclick="selectMethod(this)">Card</div>
     <div class="method" onclick="selectMethod(this)">COD</div>
   </div>
 
-  <!-- PAY -->
   <button class="pay-btn" onclick="payNow()">Pay Now</button>
 
   <div class="loader" id="loader">
     <div class="spinner"></div>
-    <p>Processing payment…</p>
+    <p>Processing Payment...</p>
   </div>
 </div>
 
 <script>
+let paymentMethod="UPI";
+
 function selectMethod(el){
-  document.querySelectorAll('.method').forEach(m=>m.classList.remove('active'));
-  el.classList.add('active');
+  document.querySelectorAll(".method").forEach(m=>m.classList.remove("active"));
+  el.classList.add("active");
+  paymentMethod = el.innerText;
 }
 
 function payNow(){
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
+  const name=document.getElementById("name").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const address=document.getElementById("address").value.trim();
 
-  if(name === "" || phone === "" || address === ""){
-    alert("❗ Please fill all address details");
+  if(!name || !phone || !address){
+    alert("Please fill all address details");
     return;
   }
 
-  document.querySelector(".pay-btn").style.display="none";
   document.getElementById("loader").style.display="block";
 
   setTimeout(()=>{
-    alert("✅ Payment Successful!\nYour order is confirmed 🌿");
     localStorage.removeItem("cart");
+    alert("Payment Successful via "+paymentMethod+" ✅");
     window.location.href="tracking.html";
   },2000);
 }
 </script>
 
+<!-- STEP 3 SCRIPT -->
+<script>
+document.querySelectorAll("a").forEach(link=>{
+  const href=link.getAttribute("href");
+  if(href && !href.startsWith("#")){
+    link.addEventListener("click",e=>{
+      e.preventDefault();
+      document.body.classList.add("fade-out");
+      setTimeout(()=>window.location.href=href,300);
+    });
+  }
+});
+</script>
+
 </body>
-      </html>
+  </html>
