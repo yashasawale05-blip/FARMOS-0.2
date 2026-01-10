@@ -6,7 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body{margin:0;background:#020617;color:#fff;font-family:Segoe UI}
+body{
+  margin:0;
+  background:#020617;
+  color:#fff;
+  font-family:Segoe UI;
+}
 .item{
   background:#111827;
   margin:12px auto;
@@ -16,41 +21,37 @@ body{margin:0;background:#020617;color:#fff;font-family:Segoe UI}
   display:flex;
   justify-content:space-between;
 }
-button{
-  background:#22c55e;
-  border:none;
-  padding:6px 10px;
-  border-radius:8px;
-}
 </style>
 </head>
 
 <body>
 
 <h2 style="text-align:center">Checkout</h2>
-<div id="box"></div>
+<div id="box" style="text-align:center"></div>
 <h3 style="text-align:center">Total: ₹<span id="total">0</span></h3>
 
-<a href="payment.html" style="display:block;text-align:center;color:#22c55e">Proceed to Payment</a>
+<a href="payment.html" style="display:block;text-align:center;color:#22c55e">
+Proceed to Payment
+</a>
 
 <script>
-let cart=JSON.parse(localStorage.getItem("cart"))||{};
-render();
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+let total = 0;
+let html = "";
 
-function render(){
-  let html="",total=0;
-  for(let p in cart){
-    let t=cart[p].kg*cart[p].price;
-    total+=t;
-    html+=`
+for(let p in cart){
+  let t = cart[p].kg * cart[p].price;
+  total += t;
+  html += `
     <div class="item">
       <span>${p} × ${cart[p].kg}</span>
       <span>₹${t}</span>
-    </div>`;
-  }
-  document.getElementById("box").innerHTML=html||"Cart empty";
-  document.getElementById("total").innerText=total;
+    </div>
+  `;
 }
+
+document.getElementById("box").innerHTML = html || "🛒 Cart is empty";
+document.getElementById("total").innerText = total;
 </script>
 
 </body>
