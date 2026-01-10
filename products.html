@@ -18,7 +18,7 @@ body{
   display:flex;
   justify-content:space-between;
 }
-.navbar a{color:white;text-decoration:none;margin-left:16px}
+.navbar a{color:white;text-decoration:none}
 
 .container{
   max-width:1200px;
@@ -72,44 +72,48 @@ button{
 <div class="container" id="list"></div>
 
 <script>
-const products={
+const products = {
   Tomato:{price:40,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg"},
   Potato:{price:25,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/potato.jpg"},
   Onion:{price:40,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/onion.jpg"},
   Carrot:{price:40,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/carrot.jpg"}
 };
 
-let cart=JSON.parse(localStorage.getItem("cart"))||{};
-render();
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
 function render(){
   let html="";
   for(let p in products){
-    let q=cart[p]?.kg||0;
-    html+=`
-    <div class="card">
-      <img src="${products[p].img}">
-      <h3>${p}</h3>
-      <p>₹${products[p].price}/kg</p>
-      <p>Qty: ${q}</p>
-      <button onclick="add('${p}')">Add</button>
-    </div>`;
+    let qty = cart[p]?.kg || 0;
+    html += `
+      <div class="card">
+        <img src="${products[p].img}">
+        <h3>${p}</h3>
+        <p>₹${products[p].price}/kg</p>
+        <p>Qty: ${qty}</p>
+        <button onclick="addToCart('${p}')">Add</button>
+      </div>
+    `;
   }
-  document.getElementById("list").innerHTML=html;
-  document.getElementById("count").innerText=
+  document.getElementById("list").innerHTML = html;
+  document.getElementById("count").innerText =
     Object.values(cart).reduce((s,i)=>s+i.kg,0);
 }
 
-function add(p){
-  if(!cart[p]) cart[p]={kg:0,...products[p]};
+function addToCart(p){
+  if(!cart[p]){
+    cart[p] = {kg:0, price:products[p].price, img:products[p].img};
+  }
   cart[p].kg++;
-  localStorage.setItem("cart",JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(cart));
   render();
 }
 
 function goCheckout(){
-  location.href="checkout.html";
+  window.location.href="checkout.html";
 }
+
+render();
 </script>
 
 </body>
