@@ -6,178 +6,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root{
-  --green:#22c55e;
-  --bg:#020617;
-  --card:#111827;
-  --accent:#fbbf24;
-}
 body{
-  margin:0;
-  font-family:Segoe UI, Arial;
-  background:var(--bg);
-  color:#e5e7eb;
-}
-
-/* NAVBAR */
-.navbar{
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(14px);
-  padding:14px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.navbar a{
-  color:#e5e7eb;
-  text-decoration:none;
-  font-weight:600;
-}
-
-/* CONTAINER */
-.container{
-  max-width:420px;
-  margin:30px auto;
-  background:var(--card);
-  padding:24px;
-  border-radius:20px;
-  box-shadow:0 0 30px rgba(34,197,94,.2);
-}
-.container h2{
-  text-align:center;
-  color:var(--green);
-  margin-bottom:20px;
-}
-
-input, textarea{
-  width:100%;
-  padding:14px;
-  margin-bottom:14px;
-  border-radius:12px;
-  border:none;
   background:#020617;
-  color:white;
+  color:#fff;
+  font-family:Segoe UI;
 }
-textarea{height:80px}
-
-/* METHODS */
-.methods{
-  display:flex;
-  gap:10px;
-}
-.method{
-  flex:1;
-  background:#020617;
-  padding:12px;
-  border-radius:12px;
-  text-align:center;
-  cursor:pointer;
-  border:2px solid transparent;
-}
-.method.active{
-  border-color:var(--green);
-  box-shadow:0 0 10px rgba(34,197,94,.5);
-}
-
-.pay-btn{
-  width:100%;
-  padding:15px;
-  border:none;
+.box{
+  max-width:400px;
+  margin:40px auto;
+  background:#111827;
+  padding:20px;
   border-radius:16px;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  font-weight:900;
-  font-size:16px;
-  cursor:pointer;
 }
-
-.loader{
-  display:none;
-  text-align:center;
-  margin-top:15px;
+input,textarea,button{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:none;
 }
-.spinner{
-  width:40px;
-  height:40px;
-  border:4px solid #333;
-  border-top:4px solid var(--green);
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-  margin:auto;
+button{
+  background:#22c55e;
+  font-weight:bold;
 }
-@keyframes spin{100%{transform:rotate(360deg)}}
 </style>
 </head>
 
 <body>
 
-<div class="navbar">
-  <strong>FarmOS 🌿</strong>
-  <a href="checkout.html">← Checkout</a>
-</div>
-
-<div class="container scale-in">
-  <h2>Delivery & Payment</h2>
-
-  <input id="name" placeholder="Full Name">
-  <input id="phone" placeholder="Phone Number">
-  <textarea id="address" placeholder="Delivery Address"></textarea>
-
-  <div class="methods">
-    <div class="method active" onclick="selectMethod(this)">UPI</div>
-    <div class="method" onclick="selectMethod(this)">Card</div>
-    <div class="method" onclick="selectMethod(this)">COD</div>
-  </div>
-
-  <button class="pay-btn" onclick="payNow()">Pay Now</button>
-
-  <div class="loader" id="loader">
-    <div class="spinner"></div>
-    <p>Processing Payment...</p>
-  </div>
+<div class="box">
+  <h2>Place Order</h2>
+  <input placeholder="Full Name">
+  <input placeholder="Phone">
+  <textarea placeholder="Address"></textarea>
+  <button onclick="done()">Confirm Order</button>
 </div>
 
 <script>
-let paymentMethod="UPI";
-
-function selectMethod(el){
-  document.querySelectorAll(".method").forEach(m=>m.classList.remove("active"));
-  el.classList.add("active");
-  paymentMethod = el.innerText;
+function done(){
+  localStorage.removeItem("cart");
+  alert("Order placed successfully 🌿");
+  location.href="index.html";
 }
-
-function payNow(){
-  const name=document.getElementById("name").value.trim();
-  const phone=document.getElementById("phone").value.trim();
-  const address=document.getElementById("address").value.trim();
-
-  if(!name || !phone || !address){
-    alert("Please fill all address details");
-    return;
-  }
-
-  document.getElementById("loader").style.display="block";
-
-  setTimeout(()=>{
-    localStorage.removeItem("cart");
-    alert("Payment Successful via "+paymentMethod+" ✅");
-    window.location.href="tracking.html";
-  },2000);
-}
-</script>
-
-<!-- STEP 3 SCRIPT -->
-<script>
-document.querySelectorAll("a").forEach(link=>{
-  const href=link.getAttribute("href");
-  if(href && !href.startsWith("#")){
-    link.addEventListener("click",e=>{
-      e.preventDefault();
-      document.body.classList.add("fade-out");
-      setTimeout(()=>window.location.href=href,300);
-    });
-  }
-});
 </script>
 
 </body>
-  </html>
+</html>
