@@ -2,258 +2,137 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FarmOS — Checkout</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root { --green:#2f7a32; }
-
-body {
+body{
   margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  background:#f6fff4;
+  font-family:Segoe UI, Arial;
+  background:#020617;
+  color:#e5e7eb;
 }
 
-header {
-  background:var(--green);
-  color:white;
-  padding:15px;
-  text-align:center;
-}
+h1{text-align:center;margin:20px}
 
-.checkout-container {
-  max-width:900px;
-  margin:30px auto;
-  padding:15px;
-}
-
-.order-card {
-  background:white;
-  border-radius:12px;
+.cart{
+  max-width:800px;
+  margin:20px auto;
   padding:20px;
-  box-shadow:0 8px 26px rgba(0,0,0,0.12);
 }
 
-.cart-item {
+.item{
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-}
-
-.cart-img {
-  width:60px;
-  height:60px;
-  object-fit:cover;
-  border-radius:8px;
-}
-
-.cart-info { flex:1; }
-
-.cart-info strong {
-  display:block;
-  font-size:16px;
-}
-
-.kg-input {
-  width:70px;
-  padding:6px;
-  text-align:center;
-  border-radius:6px;
-  border:1px solid #ccc;
-  font-weight:bold;
-}
-
-.item-total {
-  min-width:80px;
-  font-weight:bold;
-  text-align:right;
-}
-
-.summary-row {
-  display:flex;
-  justify-content:space-between;
-  margin-top:15px;
-  font-size:18px;
-  font-weight:bold;
-}
-
-/* PAYMENT */
-.payment-box { margin-top:20px; }
-
-.payment-option {
-  display:block;
+  gap:16px;
+  background:#111827;
   padding:12px;
-  border:2px solid #ddd;
+  border-radius:14px;
+  margin-bottom:12px;
+}
+
+.item img{
+  width:70px;
+  height:70px;
+  object-fit:cover;
   border-radius:10px;
-  margin-bottom:10px;
-  cursor:pointer;
-  font-weight:bold;
 }
 
-.payment-option:hover {
-  border-color:var(--green);
+.info{flex:1}
+
+.qty{
+  display:flex;
+  gap:10px;
 }
 
-.order-btn {
-  width:100%;
-  margin-top:20px;
-  background:var(--green);
-  color:white;
+.qty button{
+  width:30px;
+  height:30px;
+  border-radius:50%;
   border:none;
-  padding:14px;
-  font-size:16px;
-  border-radius:10px;
+  background:#22c55e;
+  font-weight:bold;
   cursor:pointer;
 }
 
-.back-link {
-  display:inline-block;
-  margin-top:15px;
-  text-decoration:none;
-  color:var(--green);
-  font-weight:bold;
+.total{
+  text-align:right;
+  font-size:20px;
+  margin-top:20px;
 }
 
-.empty {
+.place{
+  display:block;
+  margin:30px auto;
+  background:#22c55e;
+  color:black;
+  padding:14px;
+  border-radius:14px;
+  width:240px;
   text-align:center;
-  padding:25px;
-  color:#555;
+  font-weight:900;
+  text-decoration:none;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>🧺 Your Cart</h1>
-</header>
+<h1>Checkout</h1>
 
-<div class="checkout-container">
-<div class="order-card">
+<div class="cart" id="cartBox"></div>
 
-<div id="cart-items"></div>
-
-<div class="summary-row">
-<span>Total</span>
-<span>₹<span id="total-price">0</span></span>
+<div class="total">
+Total: ₹<span id="totalPrice">0</span>
 </div>
 
-<h3 style="margin-top:20px">Payment Method</h3>
-
-<div class="payment-box">
-<label class="payment-option">
-<input type="radio" name="payment" value="Cash on Delivery">
- Cash on Delivery
-</label>
-
-<label class="payment-option">
-<input type="radio" name="payment" value="UPI">
- UPI (Google Pay / PhonePe)
-</label>
-</div>
-
-<button class="order-btn" onclick="placeOrder()">Place Order</button>
-<a href="product.html" class="back-link">← Continue Shopping</a>
-
-</div>
-</div>
+<a href="#" class="place" onclick="placeOrder()">Place Order</a>
 
 <script>
-/* ================= CART LOAD ================= */
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+render();
 
-/* ================= RENDER CART ================= */
-function renderCart() {
-  const container = document.getElementById("cart-items");
-  const totalEl = document.getElementById("total-price");
-
-  container.innerHTML = "";
-
-  if (cart.length === 0) {
-    container.innerHTML = "<div class='empty'>Your cart is empty 🌱</div>";
-    totalEl.innerText = 0;
-    return;
-  }
-
-  let total = 0;
-
-  cart.forEach((item, index) => {
-    const itemTotal = item.price * item.kg;
+function render(){
+  let html="", total=0;
+  for(let name in cart){
+    let item = cart[name];
+    let itemTotal = item.kg * item.price;
     total += itemTotal;
 
-    container.innerHTML += `
-      <div class="cart-item">
-        <img src="${item.image}" class="cart-img">
-
-        <div class="cart-info">
-          <strong>${item.name}</strong>
-          ₹${item.price} / kg
-        </div>
-
-        <input type="number"
-               class="kg-input"
-               min="0.5"
-               step="0.5"
-               value="${item.kg}"
-               onchange="updateKg(${index}, this.value)">
-
-        <div class="item-total">₹${itemTotal}</div>
+    html += `
+    <div class="item">
+      <img src="${item.image}">
+      <div class="info">
+        <strong>${name}</strong><br>
+        ₹${item.price} / kg
       </div>
-    `;
-  });
+      <div class="qty">
+        <button onclick="change('${name}',-1)">−</button>
+        <span>${item.kg}</span>
+        <button onclick="change('${name}',1)">+</button>
+      </div>
+      <strong>₹${itemTotal}</strong>
+    </div>`;
+  }
 
-  totalEl.innerText = total;
+  document.getElementById("cartBox").innerHTML =
+    html || "<p>Your cart is empty 🌱</p>";
+  document.getElementById("totalPrice").innerText = total;
 }
 
-/* ================= UPDATE KG ================= */
-function updateKg(index, value) {
-  let kg = parseFloat(value);
-
-  if (kg <= 0) {
-    cart.splice(index, 1);
-  } else {
-    cart[index].kg = kg;
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
+function change(name,val){
+  cart[name].kg += val;
+  if(cart[name].kg<=0) delete cart[name];
+  localStorage.setItem("cart",JSON.stringify(cart));
+  render();
 }
 
-/* ================= PLACE ORDER ================= */
-function placeOrder() {
-  if (cart.length === 0) {
-    alert("Your cart is empty ❌");
-    return;
-  }
-
-  const payment = document.querySelector('input[name="payment"]:checked');
-  if (!payment) {
-    alert("Please select payment method ⚠️");
-    return;
-  }
-
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-  orders.push({
-    id: Date.now(),
-    items: cart,
-    total: document.getElementById("total-price").innerText,
-    payment: payment.value,
-    status: "Pending"
-  });
-
-  localStorage.setItem("orders", JSON.stringify(orders));
+function placeOrder(){
+  alert("Order placed successfully 🌿");
   localStorage.removeItem("cart");
-
-  alert("Order placed successfully 🌱");
-  window.location.href = "product.html";
+  window.location.href="product.html";
 }
-
-/* ================= LOAD CART ================= */
-renderCart();
 </script>
 
 </body>
-  </html>
+</html>
