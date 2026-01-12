@@ -2,56 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS — Checkout</title>
+<title>Checkout</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
-body{
-  margin:0;
-  background:#020617;
-  color:#fff;
-  font-family:Segoe UI;
-}
-.item{
-  background:#111827;
-  margin:12px auto;
-  padding:12px;
-  max-width:700px;
-  border-radius:12px;
-  display:flex;
-  justify-content:space-between;
-}
+body{background:#020617;color:#fff;font-family:Segoe UI;margin:0;}
+.item{background:#111827;margin:10px;padding:14px;border-radius:14px;display:flex;justify-content:space-between;}
+button{padding:10px;border:none;border-radius:12px;background:#22c55e;font-weight:900;}
 </style>
 </head>
 
 <body>
 
 <h2 style="text-align:center">Checkout</h2>
-<div id="box" style="text-align:center"></div>
-<h3 style="text-align:center">Total: ₹<span id="total">0</span></h3>
+<div id="cart"></div>
+<h3 style="text-align:right;padding:14px">Total ₹<span id="total">0</span></h3>
 
-<a href="payment.html" style="display:block;text-align:center;color:#22c55e">
-Proceed to Payment
-</a>
+<button onclick="location.href='payment.html'" style="margin:20px auto;display:block">
+Place Order
+</button>
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || {};
-let total = 0;
-let html = "";
+let box=document.getElementById("cart");
+let total=0;
 
-for(let p in cart){
-  let t = cart[p].kg * cart[p].price;
-  total += t;
-  html += `
-    <div class="item">
-      <span>${p} × ${cart[p].kg}</span>
-      <span>₹${t}</span>
-    </div>
-  `;
+for(let k in cart){
+  let t=cart[k].kg*cart[k].price;
+  total+=t;
+  box.innerHTML+=`<div class="item">${k} × ${cart[k].kg} <b>₹${t}</b></div>`;
 }
-
-document.getElementById("box").innerHTML = html || "🛒 Cart is empty";
-document.getElementById("total").innerText = total;
+document.getElementById("total").innerText=total;
 </script>
 
 </body>
