@@ -64,7 +64,7 @@ h1{text-align:center;margin:20px}
 .place{
   display:block;
   margin:30px auto;
-  background:#22c55e;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
   color:black;
   padding:14px;
   border-radius:14px;
@@ -101,7 +101,7 @@ function render(){
 
     html += `
     <div class="item">
-      <img src="${item.image}">
+      <img src="${item.img}">
       <div class="info">
         <strong>${name}</strong><br>
         ₹${item.price} / kg
@@ -118,12 +118,12 @@ function render(){
   document.getElementById("cartBox").innerHTML =
     html || "<p>Your cart is empty 🌱</p>";
   document.getElementById("totalPrice").innerText = total;
+  localStorage.setItem("cart",JSON.stringify(cart));
 }
 
 function change(name,val){
   cart[name].kg += val;
   if(cart[name].kg<=0) delete cart[name];
-  localStorage.setItem("cart",JSON.stringify(cart));
   render();
 }
 
