@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS — Order Tracking</title>
+<title>FarmOS — Truck Route Tracker</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -38,110 +38,75 @@ body{
 
 /* CONTAINER */
 .container{
-  max-width:500px;
-  margin:30px auto;
-  padding:22px;
+  max-width:520px;
+  margin:28px auto;
+  padding:20px;
 }
 
-/* ORDER CARD */
-.order-card{
+/* INFO CARD */
+.card{
   background:var(--card);
   border-radius:20px;
-  padding:20px;
+  padding:18px;
   box-shadow:0 0 30px rgba(34,197,94,.15);
   margin-bottom:22px;
 }
-.order-card h2{
+.card h2{
   margin:0;
   color:var(--green);
 }
-.order-card p{
-  opacity:.8;
+.card p{
+  opacity:.85;
   font-size:14px;
-}
-
-/* MAP */
-.map{
-  text-align:center;
-  font-size:60px;
-  margin:20px 0;
-  animation:float 2s infinite ease-in-out;
-}
-@keyframes float{
-  50%{transform:translateY(-6px)}
+  margin:6px 0 0;
 }
 
 /* ROAD */
 .road{
   position:relative;
-  width:100%;
-  height:60px;
+  height:70px;
   background:linear-gradient(90deg,#1f2937,#020617);
   border-radius:40px;
   overflow:hidden;
-  margin:20px 0;
+  margin:26px 0;
 }
 
-/* TRUCK + DUST */
+/* TRUCK */
 .truck{
   position:absolute;
-  left:-80px;
-  top:6px;
-  font-size:42px;
-  animation: drive 16s linear infinite;
+  right:-90px;
+  top:12px;
+  font-size:44px;
+  animation:truckMove 16s linear infinite;
+  z-index:2;
 }
 
-@keyframes drive{
-  0%{ left:100% }
-  100%{ left:-80px }
-}
-
+/* DUST */
 .dust{
   position:absolute;
-  right:-10px;
-  bottom:8px;
-  width:10px;
-  height:10px;
-  background:rgba(255,255,255,.6);
-  border-radius:50%;
-  animation:dust 1.2s infinite ease-out;
+  right:-90px;
+  top:40px;
+  font-size:16px;
+  opacity:0.4;
+  animation:dustMove 16s linear infinite;
 }
 
-.dust:nth-child(2){ animation-delay:.3s; }
-.dust:nth-child(3){ animation-delay:.6s; }
-
-@keyframes dust{
-  0%{
-    transform:translate(0,0) scale(1);
-    opacity:.6;
-  }
-  100%{
-    transform:translate(30px,-10px) scale(2);
-    opacity:0;
-  }
+@keyframes truckMove{
+  0%{ right:-90px; }
+  100%{ right:110%; }
 }
 
-/* PROGRESS */
-.progress{
-  background:var(--line);
-  height:8px;
-  border-radius:10px;
-  overflow:hidden;
-  margin:16px 0;
-}
-.bar{
-  height:100%;
-  width:100%;
-  background:linear-gradient(90deg,#22c55e,#4ade80);
-  animation:fill 6s forwards;
-}
-@keyframes fill{
-  from{width:0}
-  to{width:100%}
+@keyframes dustMove{
+  0%{ right:-100px; opacity:0; }
+  10%{ opacity:.4; }
+  100%{ right:115%; opacity:0; }
 }
 
-/* STEPS */
-.step{
+/* CHECKPOINTS */
+.checkpoints{
+  margin-top:20px;
+}
+.point{
   display:flex;
   align-items:center;
   gap:14px;
@@ -153,16 +118,17 @@ body{
   border-radius:50%;
   background:var(--green);
 }
-.step span{
+.point span{
+  font-size:14px;
   opacity:.9;
 }
 
-/* ETA */
-.eta{
+/* STATUS */
+.status{
   text-align:center;
-  font-size:18px;
-  margin-top:18px;
+  font-size:17px;
   color:var(--accent);
+  margin-top:18px;
 }
 
 /* BUTTONS */
@@ -182,7 +148,7 @@ body{
 .shop{
   background:linear-gradient(135deg,#22c55e,#16a34a);
 }
-.support{
+.help{
   background:#020617;
   color:var(--accent);
   border:2px solid var(--accent);
@@ -199,42 +165,52 @@ body{
 
 <div class="container">
 
-  <div class="order-card">
-    <h2>Order Confirmed</h2>
-    <p>Order ID: <strong>#FMOS1029</strong></p>
-    <p>Fresh vegetables from farm to your door 🌱</p>
+  <div class="card">
+    <h2>FarmOS Mobile Market</h2>
+    <p>Farmer-operated truck selling fresh vegetables at fixed checkpoints</p>
   </div>
 
-  <div class="map">📍</div>
-
-  <!-- 🚚 TRUCK -->
+  <!-- 🚚 TRUCK ROUTE -->
   <div class="road">
-    <div class="truck">
-      🚚
-      <span class="dust"></span>
-      <span class="dust"></span>
-      <span class="dust"></span>
+    <div class="truck">🚚</div>
+    <div class="dust">💨💨</div>
+  </div>
+
+  <!-- CHECKPOINTS -->
+  <div class="card">
+    <div class="checkpoints">
+      <div class="point">
+        <div class="dot"></div>
+        <span>Farm Collection Center — Nashik</span>
+      </div>
+      <div class="point">
+        <div class="dot"></div>
+        <span>Sorting & Loading Hub</span>
+      </div>
+      <div class="point">
+        <div class="dot"></div>
+        <span>Residential Area: Shanti Nagar (Selling)</span>
+      </div>
+      <div class="point">
+        <div class="dot"></div>
+        <span>Hotel Zone: Green Leaf & Nearby Hotels</span>
+      </div>
+      <div class="point">
+        <div class="dot"></div>
+        <span>Society Checkpoint: Rose Residency</span>
+      </div>
     </div>
-  </div>
 
-  <div class="progress">
-    <div class="bar"></div>
-  </div>
-
-  <div class="order-card">
-    <div class="step"><div class="dot"></div><span>Order Placed</span></div>
-    <div class="step"><div class="dot"></div><span>Farmer Preparing Produce</span></div>
-    <div class="step"><div class="dot"></div><span>Out for Delivery</span></div>
-    <div class="step"><div class="dot"></div><span>Delivered to You</span></div>
-
-    <div class="eta">Estimated delivery: 30–40 mins 🚜</div>
+    <div class="status">
+      🟢 Truck currently selling at Shanti Nagar
+    </div>
   </div>
 
   <div class="actions">
     <button class="btn shop" onclick="location.href='product.html'">
-      Continue Shopping
+      View Available Vegetables
     </button>
-    <button class="btn support" onclick="alert('Support coming soon ☎️')">
+    <button class="btn help" onclick="alert('FarmOS support coming soon ☎️')">
       Help
     </button>
   </div>
@@ -242,4 +218,4 @@ body{
 </div>
 
 </body>
-   </html>
+</html>
