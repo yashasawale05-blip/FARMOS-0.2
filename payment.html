@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS — Secure Payment</title>
+<title>FarmOS — Payment</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -34,224 +34,145 @@ body{
   text-decoration:none;
   font-weight:600;
 }
-.navbar a:hover{color:var(--green);}
 
+/* CONTAINER */
 .container{
-  max-width:900px;
-  margin:20px auto;
-  padding:20px;
-}
-
-/* CARD */
-.card{
+  max-width:420px;
+  margin:30px auto;
   background:var(--card);
-  padding:20px;
-  border-radius:16px;
-  margin-bottom:20px;
+  padding:24px;
+  border-radius:20px;
+  box-shadow:0 0 30px rgba(34,197,94,.2);
 }
 
-/* HEADINGS */
-h2{margin:0 0 12px;color:var(--green);}
-label{font-size:14px;opacity:.85}
+/* HEAD */
+.container h2{
+  text-align:center;
+  margin-bottom:20px;
+  color:var(--green);
+}
 
 /* INPUTS */
-input,select{
+input, textarea{
   width:100%;
-  padding:12px;
-  margin-top:6px;
-  border-radius:10px;
+  padding:14px;
+  margin-bottom:14px;
+  border-radius:12px;
   border:none;
-  outline:none;
   background:#020617;
-  color:white;
+  color:#fff;
+  outline:none;
+  font-size:15px;
 }
+textarea{resize:none;height:90px}
 
 /* PAYMENT METHODS */
 .methods{
   display:flex;
-  gap:12px;
-  margin-top:10px;
+  gap:10px;
+  margin-bottom:16px;
 }
 .method{
   flex:1;
-  padding:14px;
+  padding:12px;
   background:#020617;
-  border-radius:14px;
+  border-radius:12px;
   text-align:center;
   cursor:pointer;
   border:2px solid transparent;
 }
 .method.active{
   border-color:var(--green);
-  background:#0f172a;
-}
-
-/* ORDER SUMMARY */
-.summary div{
-  display:flex;
-  justify-content:space-between;
-  margin:6px 0;
+  box-shadow:0 0 15px rgba(34,197,94,.4);
 }
 
 /* BUTTON */
-.pay{
+.pay-btn{
   width:100%;
   padding:16px;
   border:none;
-  border-radius:18px;
-  font-size:18px;
-  font-weight:900;
+  border-radius:16px;
   background:linear-gradient(135deg,#22c55e,#16a34a);
+  font-weight:900;
   cursor:pointer;
-  margin-top:10px;
-}
-.pay:disabled{
-  opacity:.6;
-  cursor:not-allowed;
+  font-size:16px;
+  color:#000;
 }
 
 /* LOADER */
 .loader{
   display:none;
   text-align:center;
-  margin-top:20px;
+  margin-top:16px;
 }
 .spinner{
   width:40px;
   height:40px;
-  border:4px solid #333;
+  border:4px solid #222;
   border-top:4px solid var(--green);
   border-radius:50%;
   animation:spin 1s linear infinite;
-  margin:0 auto 10px;
+  margin:auto;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* SUCCESS */
-.success{
-  display:none;
-  text-align:center;
-}
-.success h1{color:var(--green)}
-.success p{opacity:.9}
-.success a{
-  display:inline-block;
-  margin-top:20px;
-  padding:14px 30px;
-  background:var(--green);
-  color:black;
-  border-radius:14px;
-  text-decoration:none;
-  font-weight:900;
-}
+@keyframes spin{100%{transform:rotate(360deg)}}
 </style>
 </head>
 
 <body>
 
 <div class="navbar">
-  <strong>FarmOS 🌿 Secure Payment</strong>
-  <a href="checkout.html">← Back</a>
+  <strong>FarmOS 🌿</strong>
+  <a href="checkout.html">← Checkout</a>
 </div>
 
-<div class="container" id="mainPage">
+<div class="container">
+  <h2>Delivery & Payment</h2>
 
-<!-- ADDRESS -->
-<div class="card">
-  <h2>Delivery Address</h2>
-  <input id="name" placeholder="Full Name">
-  <input id="phone" placeholder="Mobile Number">
-  <input id="address" placeholder="House / Street">
-  <input id="city" placeholder="City">
-  <input id="pin" placeholder="Pincode">
-</div>
+  <!-- ADDRESS -->
+  <input type="text" id="name" placeholder="Full Name">
+  <input type="text" id="phone" placeholder="Mobile Number">
+  <textarea id="address" placeholder="Complete Address"></textarea>
 
-<!-- PAYMENT -->
-<div class="card">
-  <h2>Payment Method</h2>
+  <!-- PAYMENT METHODS -->
   <div class="methods">
-    <div class="method" onclick="selectPay('UPI')">UPI</div>
-    <div class="method" onclick="selectPay('CARD')">Card</div>
-    <div class="method" onclick="selectPay('COD')">COD</div>
+    <div class="method active" onclick="selectMethod(this)">UPI</div>
+    <div class="method" onclick="selectMethod(this)">Card</div>
+    <div class="method" onclick="selectMethod(this)">COD</div>
   </div>
-</div>
 
-<!-- SUMMARY -->
-<div class="card">
-  <h2>Order Summary</h2>
-  <div id="items"></div>
-  <div class="summary">
-    <div><strong>Total</strong><strong>₹<span id="total">0</span></strong></div>
+  <!-- PAY -->
+  <button class="pay-btn" onclick="payNow()">Pay Now</button>
+
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <p>Processing payment…</p>
   </div>
-</div>
-
-<button class="pay" onclick="payNow()">Pay Now</button>
-
-<div class="loader" id="loader">
-  <div class="spinner"></div>
-  <p>Processing secure payment...</p>
-</div>
-
-</div>
-
-<!-- SUCCESS PAGE -->
-<div class="container success" id="successPage">
-  <h1>Payment Successful 🎉</h1>
-  <p>Your order has been placed successfully.</p>
-  <p><strong>Order ID:</strong> FM<span id="orderId"></span></p>
-  <p>Estimated delivery in 2 days 🌱</p>
-  <a href="tracking.html">Track Your Order 🚚</a>
 </div>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || {};
-let payment = "";
-
-/* LOAD SUMMARY */
-let total=0, html="";
-for(let k in cart){
-  let t = cart[k].kg * cart[k].price;
-  total += t;
-  html += `<div>${k} × ${cart[k].kg}<span>₹${t}</span></div>`;
-}
-document.getElementById("items").innerHTML = html || "Cart empty";
-document.getElementById("total").innerText = total;
-
-/* PAYMENT SELECT */
-function selectPay(p){
-  payment=p;
-  document.querySelectorAll(".method").forEach(m=>m.classList.remove("active"));
-  event.target.classList.add("active");
+function selectMethod(el){
+  document.querySelectorAll('.method').forEach(m=>m.classList.remove('active'));
+  el.classList.add('active');
 }
 
-/* PAY */
 function payNow(){
-  if(!payment){
-    alert("Please select payment method");
-    return;
-  }
-  if(!name.value || !phone.value || !address.value){
-    alert("Please fill address");
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  if(name === "" || phone === "" || address === ""){
+    alert("❗ Please fill all address details");
     return;
   }
 
-  if(payment==="COD"){
-    success();
-    return;
-  }
-
-  document.querySelector(".pay").disabled=true;
+  document.querySelector(".pay-btn").style.display="none";
   document.getElementById("loader").style.display="block";
 
-  setTimeout(success,2500);
-}
-
-/* SUCCESS */
-function success(){
-  localStorage.removeItem("cart");
-  document.getElementById("mainPage").style.display="none";
-  document.getElementById("successPage").style.display="block";
-  document.getElementById("orderId").innerText = Math.floor(100000+Math.random()*900000);
+  setTimeout(()=>{
+    alert("✅ Payment Successful!\nYour order is confirmed 🌿");
+    localStorage.removeItem("cart");
+    window.location.href="tracking.html";
+  },2000);
 }
 </script>
 
