@@ -2,206 +2,258 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FarmOS — Checkout</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-:root{
-  --green:#22c55e;
-  --bg:#020617;
-  --accent:#fbbf24;
-}
-body{
+:root { --green:#2f7a32; }
+
+body {
   margin:0;
-  font-family:Segoe UI, Arial;
-  background:var(--bg);
-  color:#e5e7eb;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#f6fff4;
 }
 
-/* NAVBAR */
-.navbar{
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(14px);
-  padding:14px 24px;
+header {
+  background:var(--green);
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+.checkout-container {
+  max-width:900px;
+  margin:30px auto;
+  padding:15px;
+}
+
+.order-card {
+  background:white;
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.12);
+}
+
+.cart-item {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+
+.cart-img {
+  width:60px;
+  height:60px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.cart-info { flex:1; }
+
+.cart-info strong {
+  display:block;
+  font-size:16px;
+}
+
+.kg-input {
+  width:70px;
+  padding:6px;
+  text-align:center;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-weight:bold;
+}
+
+.item-total {
+  min-width:80px;
+  font-weight:bold;
+  text-align:right;
+}
+
+.summary-row {
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  z-index:50;
-}
-.navbar a{
-  color:#e5e7eb;
-  text-decoration:none;
-  font-weight:600;
-  margin-left:18px;
-}
-.navbar a:hover{color:var(--green);}
-
-/* CART FLOAT */
-.cart-float{
-  position:fixed;
-  top:80px;
-  right:20px;
-  background: linear-gradient(135deg,#22c55e,#16a34a);
-  color:white;
-  padding:12px 20px;
-  border-radius:50px;
-  font-weight:800;
-  cursor:pointer;
-  z-index:60;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:16px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.4);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.cart-float:hover{
-  transform:scale(1.1);
-  box-shadow:0 0 25px rgba(34,197,94,0.6);
-}
-#cartCount{
-  display:inline-block;
-  min-width:24px;
-  height:24px;
-  line-height:24px;
-  text-align:center;
-  border-radius:50%;
-  background:#fff;
-  color:#22c55e;
+  margin-top:15px;
+  font-size:18px;
   font-weight:bold;
-  font-size:14px;
-  transition: transform 0.3s;
-}
-.bounce{
-  animation: bounceCart 0.4s ease;
-}
-@keyframes bounceCart{
-  0%{ transform: scale(1); }
-  30%{ transform: scale(1.3); }
-  60%{ transform: scale(0.95); }
-  100%{ transform: scale(1); }
 }
 
-/* CART ITEMS */
-.cart{
-  max-width:800px;
-  margin:20px auto;
-  padding:20px;
-}
-.item{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  background:#111827;
+/* PAYMENT */
+.payment-box { margin-top:20px; }
+
+.payment-option {
+  display:block;
   padding:12px;
-  border-radius:14px;
-  margin-bottom:12px;
-}
-.item img{
-  width:70px;
-  height:70px;
-  object-fit:cover;
+  border:2px solid #ddd;
   border-radius:10px;
-}
-.info{flex:1;}
-.qty{
-  display:flex;
-  gap:10px;
-}
-.qty button{
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  border:none;
-  background:var(--green);
+  margin-bottom:10px;
+  cursor:pointer;
   font-weight:bold;
-  cursor:pointer;
 }
-.total{
-  text-align:right;
-  font-size:20px;
+
+.payment-option:hover {
+  border-color:var(--green);
+}
+
+.order-btn {
+  width:100%;
   margin-top:20px;
-}
-.place{
-  display:block;
-  margin:20px auto;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:black;
+  background:var(--green);
+  color:white;
+  border:none;
   padding:14px;
-  border-radius:14px;
-  width:240px;
-  text-align:center;
-  font-weight:900;
-  text-decoration:none;
-}
-.back{
-  display:block;
-  margin:10px auto;
-  width:120px;
-  text-align:center;
-  color:var(--accent);
+  font-size:16px;
+  border-radius:10px;
   cursor:pointer;
+}
+
+.back-link {
+  display:inline-block;
+  margin-top:15px;
+  text-decoration:none;
+  color:var(--green);
+  font-weight:bold;
+}
+
+.empty {
+  text-align:center;
+  padding:25px;
+  color:#555;
 }
 </style>
 </head>
+
 <body>
 
-<div class="navbar">
-  <strong>FarmOS 🌿</strong>
-  <div>
-    <a href="index.html">Home</a>
-  </div>
+<header>
+<h1>🧺 Your Cart</h1>
+</header>
+
+<div class="checkout-container">
+<div class="order-card">
+
+<div id="cart-items"></div>
+
+<div class="summary-row">
+<span>Total</span>
+<span>₹<span id="total-price">0</span></span>
 </div>
 
-<div class="cart-float" onclick="alert('Cart is visible in shop')">
-🛒 <span id="cartCount">0</span>
+<h3 style="margin-top:20px">Payment Method</h3>
+
+<div class="payment-box">
+<label class="payment-option">
+<input type="radio" name="payment" value="Cash on Delivery">
+ Cash on Delivery
+</label>
+
+<label class="payment-option">
+<input type="radio" name="payment" value="UPI">
+ UPI (Google Pay / PhonePe)
+</label>
 </div>
 
-<h1 style="text-align:center;margin-top:20px">Checkout</h1>
+<button class="order-btn" onclick="placeOrder()">Place Order</button>
+<a href="product.html" class="back-link">← Continue Shopping</a>
 
-<div class="cart" id="cartBox"></div>
-
-<div class="total">
-Total: ₹<span id="totalPrice">0</span>
 </div>
-
-<span class="back" onclick="window.location.href='product.html'">← Back to Shop</span>
-<a href="payment.html" class="place">Place Order</a>
+</div>
 
 <script>
-let cart=JSON.parse(localStorage.getItem("cart"))||{};
-render();
-function render(){
-  let html="",total=0;
-  for(let name in cart){
-    let item=cart[name];
-    let itemTotal=item.kg*item.price;
-    total+=itemTotal;
-    html+=`
-    <div class="item">
-      <img src="${item.img}">
-      <div class="info">
-        <strong>${name}</strong><br>₹${item.price}/kg
-      </div>
-      <div class="qty">
-        <button onclick="change('${name}',-1)">−</button>
-        <span>${item.kg}</span>
-        <button onclick="change('${name}',1)">+</button>
-      </div>
-      <strong>₹${itemTotal}</strong>
-    </div>`;
+/* ================= CART LOAD ================= */
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* ================= RENDER CART ================= */
+function renderCart() {
+  const container = document.getElementById("cart-items");
+  const totalEl = document.getElementById("total-price");
+
+  container.innerHTML = "";
+
+  if (cart.length === 0) {
+    container.innerHTML = "<div class='empty'>Your cart is empty 🌱</div>";
+    totalEl.innerText = 0;
+    return;
   }
-  document.getElementById("cartBox").innerHTML=html||"<p>Your cart is empty 🌱</p>";
-  document.getElementById("totalPrice").innerText=total;
-  localStorage.setItem("cart",JSON.stringify(cart));
-  document.getElementById("cartCount").innerText = Object.values(cart).reduce((s,i)=>s+i.kg,0);
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.kg;
+    total += itemTotal;
+
+    container.innerHTML += `
+      <div class="cart-item">
+        <img src="${item.image}" class="cart-img">
+
+        <div class="cart-info">
+          <strong>${item.name}</strong>
+          ₹${item.price} / kg
+        </div>
+
+        <input type="number"
+               class="kg-input"
+               min="0.5"
+               step="0.5"
+               value="${item.kg}"
+               onchange="updateKg(${index}, this.value)">
+
+        <div class="item-total">₹${itemTotal}</div>
+      </div>
+    `;
+  });
+
+  totalEl.innerText = total;
 }
-function change(name,val){
-  cart[name].kg+=val;
-  if(cart[name].kg<=0) delete cart[name];
-  render();
+
+/* ================= UPDATE KG ================= */
+function updateKg(index, value) {
+  let kg = parseFloat(value);
+
+  if (kg <= 0) {
+    cart.splice(index, 1);
+  } else {
+    cart[index].kg = kg;
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
 }
+
+/* ================= PLACE ORDER ================= */
+function placeOrder() {
+  if (cart.length === 0) {
+    alert("Your cart is empty ❌");
+    return;
+  }
+
+  const payment = document.querySelector('input[name="payment"]:checked');
+  if (!payment) {
+    alert("Please select payment method ⚠️");
+    return;
+  }
+
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  orders.push({
+    id: Date.now(),
+    items: cart,
+    total: document.getElementById("total-price").innerText,
+    payment: payment.value,
+    status: "Pending"
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  localStorage.removeItem("cart");
+
+  alert("Order placed successfully 🌱");
+  window.location.href = "product.html";
+}
+
+/* ================= LOAD CART ================= */
+renderCart();
 </script>
+
 </body>
   </html>
