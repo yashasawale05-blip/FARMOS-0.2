@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -21,7 +21,7 @@ body{
   color:#e5e7eb;
 }
 
-/* NAV */
+/* NAVBAR */
 .navbar{
   padding:14px 22px;
   display:flex;
@@ -71,7 +71,29 @@ body{
   50%{transform:translateY(-6px)}
 }
 
-/* PROGRESS */
+/* 🚚 TRUCK ANIMATION */
+.road{
+  position:relative;
+  width:100%;
+  height:60px;
+  background:linear-gradient(90deg,#1f2937,#020617);
+  border-radius:40px;
+  overflow:hidden;
+  margin:20px 0;
+}
+.truck{
+  position:absolute;
+  left:-80px;
+  top:6px;
+  font-size:42px;
+  animation: drive 18s linear infinite;
+}
+@keyframes drive{
+  0%{ left:-80px }
+  100%{ left:100% }
+}
+
+/* PROGRESS BAR */
 .progress{
   background:var(--line);
   height:8px;
@@ -156,6 +178,11 @@ body{
 
   <div class="map">📍</div>
 
+  <!-- 🚚 ARRIVING TRUCK -->
+  <div class="road">
+    <div class="truck">🚚</div>
+  </div>
+
   <div class="progress">
     <div class="bar"></div>
   </div>
@@ -178,10 +205,7 @@ body{
       <span>Delivered to You</span>
     </div>
 
-    <!-- LIVE COUNTDOWN -->
-    <div class="eta" id="countdown">
-      Estimated delivery in: <strong>30:00</strong>
-    </div>
+    <div class="eta">Estimated delivery: 30–40 mins 🚜</div>
   </div>
 
   <div class="actions">
@@ -195,25 +219,5 @@ body{
 
 </div>
 
-<script>
-let deliveryMinutes = 30;
-let endTime = Date.now() + deliveryMinutes * 60 * 1000;
-
-function updateCountdown(){
-  let diff = endTime - Date.now();
-  if(diff <= 0){
-    document.getElementById("countdown").innerHTML =
-      "✅ Delivered! Enjoy fresh food 🌿";
-    return;
-  }
-  let min = Math.floor(diff / 60000);
-  let sec = Math.floor((diff % 60000) / 1000);
-  document.querySelector("#countdown strong").innerText =
-    `${min}:${sec.toString().padStart(2,"0")}`;
-}
-setInterval(updateCountdown,1000);
-updateCountdown();
-</script>
-
 </body>
-</html>
+</html>   
