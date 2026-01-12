@@ -7,9 +7,8 @@
 
 <style>
 :root{
-  --green:#4caf50;
-  --dark:#0f172a;
-  --card:#111827;
+  --green:#22c55e;
+  --bg:#020617;
   --glass:rgba(255,255,255,0.06);
   --border:rgba(255,255,255,0.12);
 }
@@ -18,96 +17,67 @@
 
 body{
   margin:0;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family:Segoe UI, Arial;
   background:
-    linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.9)),
+    linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.95)),
     url("https://images.unsplash.com/photo-1506806732259-39c2d0268443");
   background-size:cover;
   background-attachment:fixed;
   color:#e5e7eb;
 }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 .navbar{
-  background:rgba(0,0,0,0.55);
-  backdrop-filter: blur(12px);
-  padding:14px 22px;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(14px);
+  padding:14px 24px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
   position:sticky;
   top:0;
-  z-index:20;
+  z-index:50;
 }
 
-.logo{
-  font-size:20px;
-  font-weight:700;
-}
-
-.nav-links{
-  display:flex;
-  gap:20px;
-  list-style:none;
-  margin:0;
-  padding:0;
-}
-
-.nav-links a{
+.navbar a{
   color:#e5e7eb;
   text-decoration:none;
   font-weight:600;
+  margin-left:18px;
 }
 
-.nav-links a:hover{color:var(--green)}
-
-/* ===== CART ICON ===== */
-.cart-icon{
+/* CART FLOAT */
+.cart-float{
   position:fixed;
   top:90px;
   right:20px;
   background:var(--green);
   color:black;
-  padding:10px 16px;
+  padding:10px 18px;
   border-radius:30px;
-  font-weight:700;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-  z-index:30;
+  font-weight:800;
+  cursor:pointer;
+  z-index:60;
 }
 
-/* ===== TITLE ===== */
-h1{
-  text-align:center;
-  margin:30px 0 10px;
-  font-size:32px;
-  letter-spacing:1px;
-}
-
-/* ===== PRODUCT GRID ===== */
+/* GRID */
 .container{
   max-width:1200px;
-  margin:20px auto;
+  margin:30px auto;
   padding:20px;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:26px;
 }
 
-/* ===== PRODUCT CARD ===== */
+/* PRODUCT */
 .product-card{
-  background:linear-gradient(180deg, var(--glass), rgba(255,255,255,0.02));
+  background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.02));
   border:1px solid var(--border);
-  backdrop-filter: blur(14px);
-  padding:16px;
   border-radius:20px;
+  padding:16px;
   text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,0.5);
-  transition:0.35s ease;
-}
-
-.product-card:hover{
-  transform:translateY(-8px) scale(1.02);
-  box-shadow:0 30px 60px rgba(0,0,0,.7);
+  backdrop-filter:blur(14px);
+  box-shadow:0 20px 40px rgba(0,0,0,.6);
 }
 
 .product-card img{
@@ -117,204 +87,183 @@ h1{
   border-radius:14px;
 }
 
-.product-card h3{
-  margin:14px 0 6px;
-  font-size:20px;
-}
+.price{opacity:.85;margin:6px 0}
 
-.price{
-  font-weight:600;
-  opacity:0.85;
-}
-
-/* ===== QTY SELECTOR ===== */
-.qty-box{
+.qty{
   display:flex;
   justify-content:center;
-  align-items:center;
   gap:14px;
   margin:14px 0;
 }
 
-.qty-box button{
+.qty button{
   width:36px;
   height:36px;
   border-radius:50%;
   border:none;
   background:var(--green);
-  color:black;
   font-size:20px;
-  cursor:pointer;
   font-weight:bold;
-}
-
-.qty-box span{
-  font-size:18px;
-  min-width:20px;
-}
-
-/* ===== ADD BUTTON ===== */
-.btn-add{
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:black;
-  border:none;
-  padding:12px;
-  width:100%;
-  border-radius:14px;
-  font-size:15px;
-  font-weight:700;
   cursor:pointer;
-  transition:0.3s;
 }
 
-.btn-add:hover{
-  transform:scale(1.04);
-  box-shadow:0 10px 30px rgba(34,197,94,.5);
+.qty button:disabled{
+  opacity:.3;
+  cursor:not-allowed;
 }
 
-/* ===== CHECKOUT ===== */
-.checkout-btn{
-  display:block;
-  width:240px;
-  margin:40px auto;
-  text-align:center;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:black;
-  padding:14px;
-  border-radius:16px;
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:14px;
   font-weight:800;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  cursor:pointer;
+}
+
+/* MINI CART */
+.mini-cart{
+  position:fixed;
+  top:0;
+  right:-360px;
+  width:340px;
+  height:100%;
+  background:#020617;
+  box-shadow:-10px 0 40px rgba(0,0,0,.8);
+  padding:20px;
+  transition:.4s;
+  z-index:100;
+}
+
+.mini-cart.show{right:0}
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0;
+  font-size:14px;
+}
+
+.checkout{
+  display:block;
+  margin-top:20px;
+  background:var(--green);
+  color:black;
+  text-align:center;
+  padding:12px;
+  border-radius:12px;
   text-decoration:none;
-  box-shadow:0 20px 40px rgba(0,0,0,.6);
+  font-weight:900;
 }
 </style>
 </head>
 
 <body>
 
-<nav class="navbar">
-  <div class="logo">FarmOS 🌿</div>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="product.html">Shop</a></li>
-    <li><a href="checkout.html">Cart</a></li>
-  </ul>
-</nav>
-
-<div class="cart-icon">
-  🛒 <span id="cart-count">0</span>
-</div>
-
-<h1>Fresh Vegetables</h1>
-
-<div class="container">
-
-<!-- PRODUCT -->
-<div class="product-card">
-  <img src="https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg">
-  <h3>Tomato</h3>
-  <div class="price">₹40 / kg</div>
-
-  <div class="qty-box">
-    <button onclick="changeQty('Tomato',-1)">−</button>
-    <span id="qty-Tomato">0</span>
-    <button onclick="changeQty('Tomato',1)">+</button>
+<div class="navbar">
+  <strong>FarmOS 🌿</strong>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="checkout.html">Checkout</a>
   </div>
-
-  <button class="btn-add"
-    onclick="addToCart('Tomato',40,'https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg')">
-    Add to Cart
-  </button>
 </div>
 
-<div class="product-card">
-  <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true">
-  <h3>Potato</h3>
-  <div class="price">₹25 / kg</div>
-
-  <div class="qty-box">
-    <button onclick="changeQty('Potato',-1)">−</button>
-    <span id="qty-Potato">0</span>
-    <button onclick="changeQty('Potato',1)">+</button>
-  </div>
-
-  <button class="btn-add"
-    onclick="addToCart('Potato',25,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true')">
-    Add to Cart
-  </button>
+<div class="cart-float" onclick="toggleCart()">
+🛒 <span id="cartCount">0</span>
 </div>
 
-<div class="product-card">
-  <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true">
-  <h3>Onion</h3>
-  <div class="price">₹40 / kg</div>
+<h1 style="text-align:center;margin-top:30px">Fresh Vegetables</h1>
 
-  <div class="qty-box">
-    <button onclick="changeQty('Onion',-1)">−</button>
-    <span id="qty-Onion">0</span>
-    <button onclick="changeQty('Onion',1)">+</button>
-  </div>
+<div class="container" id="productList"></div>
 
-  <button class="btn-add"
-    onclick="addToCart('Onion',40,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true')">
-    Add to Cart
-  </button>
+<!-- MINI CART -->
+<div class="mini-cart" id="miniCart">
+  <h3>Your Cart</h3>
+  <div id="miniItems"></div>
+  <strong>Total: ₹<span id="miniTotal">0</span></strong>
+  <a href="checkout.html" class="checkout">Checkout</a>
 </div>
-
-<div class="product-card">
-  <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true">
-  <h3>Carrot</h3>
-  <div class="price">₹40 / kg</div>
-
-  <div class="qty-box">
-    <button onclick="changeQty('Carrot',-1)">−</button>
-    <span id="qty-Carrot">0</span>
-    <button onclick="changeQty('Carrot',1)">+</button>
-  </div>
-
-  <button class="btn-add"
-    onclick="addToCart('Carrot',40,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true')">
-    Add to Cart
-  </button>
-</div>
-
-</div>
-
-<a href="checkout.html" class="checkout-btn">Go to Checkout</a>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let quantities = {};
-updateCartCount();
+const products={
+ Tomato:{price:40,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg"},
+ Potato:{price:25,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true"},
+ Onion:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true"},
+ Carrot:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true"}
+};
 
-function changeQty(name, change){
-  if(!quantities[name]) quantities[name] = 0;
-  quantities[name] += change;
-  if(quantities[name] < 0) quantities[name] = 0;
-  document.getElementById("qty-"+name).innerText = quantities[name];
-}
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
-function addToCart(name, price, image){
-  let kg = quantities[name] > 0 ? quantities[name] : 1;
-  let existing = cart.find(item => item.name === name);
+renderProducts();
+updateAll();
 
-  if(existing){
-    existing.kg += kg;
-  } else {
-    cart.push({ name, price, image, kg });
+/* RENDER PRODUCTS */
+function renderProducts(){
+  let html="";
+  for(let name in products){
+    const qty = cart[name]?.kg || 0;
+    html+=`
+    <div class="product-card">
+      <img src="${products[name].img}">
+      <h3>${name}</h3>
+      <div class="price">₹${products[name].price} / kg</div>
+      <div class="qty">
+        <button ${qty===0?"disabled":""} onclick="updateQty('${name}',-1)">−</button>
+        <span>${qty}</span>
+        <button onclick="updateQty('${name}',1)">+</button>
+      </div>
+      <button class="btn" onclick="addFirst('${name}')">Add to Cart</button>
+    </div>`;
   }
-
-  quantities[name] = 0;
-  document.getElementById("qty-"+name).innerText = 0;
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartCount();
+  document.getElementById("productList").innerHTML=html;
 }
 
-function updateCartCount(){
-  let totalKg = cart.reduce((sum,item)=>sum+item.kg,0);
-  document.getElementById("cart-count").innerText = totalKg;
+/* ADD / UPDATE */
+function addFirst(name){
+  if(!cart[name]) cart[name]={kg:1,...products[name]};
+  save();
+}
+
+function updateQty(name,change){
+  if(!cart[name]) return;
+  cart[name].kg+=change;
+  if(cart[name].kg<=0) delete cart[name];
+  save();
+}
+
+/* SAVE & SYNC */
+function save(){
+  localStorage.setItem("cart",JSON.stringify(cart));
+  updateAll();
+}
+
+/* UPDATE UI */
+function updateAll(){
+  renderProducts();
+  updateMini();
+  document.getElementById("cartCount").innerText =
+    Object.values(cart).reduce((s,i)=>s+i.kg,0);
+}
+
+/* MINI CART */
+function updateMini(){
+  let html="",total=0;
+  for(let k in cart){
+    total+=cart[k].kg*cart[k].price;
+    html+=`<div class="cart-item">
+      <span>${k} × ${cart[k].kg}</span>
+      <span>₹${cart[k].kg*cart[k].price}</span>
+    </div>`;
+  }
+  document.getElementById("miniItems").innerHTML=html||"<p>Empty</p>";
+  document.getElementById("miniTotal").innerText=total;
+}
+
+function toggleCart(){
+  document.getElementById("miniCart").classList.toggle("show");
 }
 </script>
 
 </body>
-      </html>
+</html>
