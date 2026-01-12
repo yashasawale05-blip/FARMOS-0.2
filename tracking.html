@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -60,7 +60,7 @@ body{
   font-size:14px;
 }
 
-/* MAP ICON */
+/* MAP */
 .map{
   text-align:center;
   font-size:60px;
@@ -71,7 +71,7 @@ body{
   50%{transform:translateY(-6px)}
 }
 
-/* 🚚 TRUCK ANIMATION */
+/* ROAD */
 .road{
   position:relative;
   width:100%;
@@ -81,19 +81,47 @@ body{
   overflow:hidden;
   margin:20px 0;
 }
+
+/* TRUCK + DUST */
 .truck{
   position:absolute;
-  right:-80px;
+  left:-80px;
   top:6px;
   font-size:42px;
-  animation: drive 18s linear infinite;
-}
-@keyframes drive{
-  0%{ right:-80px }
-  100%{ right:100% }
+  animation: drive 16s linear infinite;
 }
 
-/* PROGRESS BAR */
+@keyframes drive{
+  0%{ left:100% }
+  100%{ left:-80px }
+}
+
+.dust{
+  position:absolute;
+  right:-10px;
+  bottom:8px;
+  width:10px;
+  height:10px;
+  background:rgba(255,255,255,.6);
+  border-radius:50%;
+  animation:dust 1.2s infinite ease-out;
+}
+
+.dust:nth-child(2){ animation-delay:.3s; }
+.dust:nth-child(3){ animation-delay:.6s; }
+
+@keyframes dust{
+  0%{
+    transform:translate(0,0) scale(1);
+    opacity:.6;
+  }
+  100%{
+    transform:translate(30px,-10px) scale(2);
+    opacity:0;
+  }
+}
+
+/* PROGRESS */
 .progress{
   background:var(--line);
   height:8px;
@@ -103,12 +131,13 @@ body{
 }
 .bar{
   height:100%;
-  width:0%;
+  width:100%;
   background:linear-gradient(90deg,#22c55e,#4ade80);
   animation:fill 6s forwards;
 }
 @keyframes fill{
-  100%{width:100%}
+  from{width:0}
+  to{width:100%}
 }
 
 /* STEPS */
@@ -178,9 +207,14 @@ body{
 
   <div class="map">📍</div>
 
-  <!-- 🚚 ARRIVING TRUCK -->
+  <!-- 🚚 TRUCK -->
   <div class="road">
-    <div class="truck">🚚</div>
+    <div class="truck">
+      🚚
+      <span class="dust"></span>
+      <span class="dust"></span>
+      <span class="dust"></span>
+    </div>
   </div>
 
   <div class="progress">
@@ -188,22 +222,10 @@ body{
   </div>
 
   <div class="order-card">
-    <div class="step">
-      <div class="dot"></div>
-      <span>Order Placed</span>
-    </div>
-    <div class="step">
-      <div class="dot"></div>
-      <span>Farmer Preparing Produce</span>
-    </div>
-    <div class="step">
-      <div class="dot"></div>
-      <span>Out for Delivery</span>
-    </div>
-    <div class="step">
-      <div class="dot"></div>
-      <span>Delivered to You</span>
-    </div>
+    <div class="step"><div class="dot"></div><span>Order Placed</span></div>
+    <div class="step"><div class="dot"></div><span>Farmer Preparing Produce</span></div>
+    <div class="step"><div class="dot"></div><span>Out for Delivery</span></div>
+    <div class="step"><div class="dot"></div><span>Delivered to You</span></div>
 
     <div class="eta">Estimated delivery: 30–40 mins 🚜</div>
   </div>
@@ -220,4 +242,4 @@ body{
 </div>
 
 </body>
-</html>   
+   </html>
