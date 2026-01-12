@@ -4,299 +4,276 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>FarmOS — Shop</title>
+
 <style>
-:root{
-  --green:#22c55e;
-  --bg:#020617;
-  --glass:rgba(255,255,255,0.06);
-  --border:rgba(255,255,255,0.12);
-  --accent:#fbbf24;
-}
-*{box-sizing:border-box}
+:root{--green:#2f7a32}
+
 body{
   margin:0;
-  font-family:"Segoe UI", Arial;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,.95)),
-    url("https://images.unsplash.com/photo-1506806732259-39c2d0268443");
-  background-size:cover;
-  background-attachment:fixed;
-  color:#e5e7eb;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f7fff7;
 }
 
-/* NAVBAR */
+/* ===== NAVBAR ===== */
 .navbar{
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(14px);
-  padding:14px 24px;
+  background:var(--green);
+  padding:12px 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  color:#fff;
   position:sticky;
   top:0;
-  z-index:50;
 }
-.navbar a{
-  color:#e5e7eb;
-  text-decoration:none;
-  font-weight:600;
-  margin-left:18px;
-}
-.navbar a:hover{color:var(--green);}
 
-/* CART FLOAT */
-.cart-float{
-  position:fixed;
-  top:80px;
-  right:20px;
-  background: linear-gradient(135deg,#22c55e,#16a34a);
-  color:white;
-  padding:12px 20px;
-  border-radius:50px;
-  font-weight:800;
-  cursor:pointer;
-  z-index:60;
+.nav-links{
   display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:16px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.4);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.cart-float:hover{
-  transform:scale(1.1);
-  box-shadow:0 0 25px rgba(34,197,94,0.6);
-}
-#cartCount{
-  display:inline-block;
-  min-width:24px;
-  height:24px;
-  line-height:24px;
-  text-align:center;
-  border-radius:50%;
-  background:#fff;
-  color:#22c55e;
-  font-weight:bold;
-  font-size:14px;
-  transition: transform 0.3s;
-}
-.bounce{
-  animation: bounceCart 0.4s ease;
-}
-@keyframes bounceCart{
-  0%{ transform: scale(1); }
-  30%{ transform: scale(1.3); }
-  60%{ transform: scale(0.95); }
-  100%{ transform: scale(1); }
+  gap:18px;
+  list-style:none;
+  margin:0;
+  padding:0;
 }
 
-/* GRID */
+.nav-links a{
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+/* ===== CART ICON ===== */
+.cart-icon{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:var(--green);
+  color:white;
+  padding:10px 14px;
+  border-radius:20px;
+  font-weight:bold;
+  z-index:10;
+}
+
+/* ===== PRODUCT GRID ===== */
 .container{
   max-width:1200px;
   margin:30px auto;
-  padding:20px;
+  padding:15px;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:26px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
 }
 
-/* PRODUCT */
 .product-card{
-  background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.02));
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:16px;
+  background:white;
+  padding:15px;
+  border-radius:14px;
   text-align:center;
-  backdrop-filter:blur(14px);
-  box-shadow:0 20px 40px rgba(0,0,0,.6);
+  box-shadow:0 8px 22px rgba(0,0,0,0.1);
   transition:0.3s;
 }
+
 .product-card:hover{
-  transform:translateY(-5px) scale(1.02);
+  transform:translateY(-5px);
 }
+
 .product-card img{
   width:100%;
   height:180px;
   object-fit:cover;
-  border-radius:14px;
+  border-radius:10px;
 }
-.price{opacity:.85;margin:6px 0}
-.qty{
+
+.product-card h3{
+  margin:10px 0;
+  color:var(--green);
+}
+
+.price{
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+/* ===== QTY SELECTOR ===== */
+.qty-box{
   display:flex;
   justify-content:center;
-  gap:14px;
-  margin:14px 0;
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
 }
-.qty button{
-  width:36px;
-  height:36px;
+
+.qty-box button{
+  width:32px;
+  height:32px;
   border-radius:50%;
   border:none;
   background:var(--green);
-  font-size:20px;
-  font-weight:bold;
+  color:white;
+  font-size:18px;
   cursor:pointer;
-}
-.qty button:disabled{
-  opacity:.3;
-  cursor:not-allowed;
-}
-.btn{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:14px;
-  font-weight:800;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  cursor:pointer;
-  transition:0.3s;
-}
-.btn:hover{
-  transform:scale(1.05);
-  box-shadow:0 10px 30px rgba(34,197,94,.5);
 }
 
-/* MINI CART */
-.mini-cart{
-  position:fixed;
-  top:0;
-  right:-360px;
-  width:340px;
-  height:100%;
-  background:#020617;
-  box-shadow:-10px 0 40px rgba(0,0,0,.8);
-  padding:20px;
-  transition:.4s;
-  z-index:100;
+.qty-box span{
+  font-weight:bold;
+  font-size:16px;
+  min-width:20px;
 }
-.mini-cart.show{right:0}
-.mini-cart h3{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.mini-cart .back-btn{
+
+/* ===== BUTTON ===== */
+.btn-add{
+  background:var(--green);
+  color:white;
+  border:none;
+  padding:10px;
+  width:100%;
+  border-radius:10px;
   cursor:pointer;
-  font-size:14px;
-  color:var(--accent);
+  font-size:15px;
 }
-.cart-item{
-  display:flex;
-  justify-content:space-between;
-  margin:10px 0;
-  font-size:14px;
-}
-.checkout{
+
+/* ===== CHECKOUT ===== */
+.checkout-btn{
   display:block;
-  margin-top:20px;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:black;
+  width:220px;
+  margin:30px auto;
   text-align:center;
+  background:var(--green);
+  color:white;
   padding:12px;
   border-radius:12px;
   text-decoration:none;
-  font-weight:900;
 }
 </style>
 </head>
+
 <body>
 
-<div class="navbar">
-  <strong>FarmOS 🌿</strong>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="checkout.html">Checkout</a>
+<nav class="navbar">
+  <div class="logo">FarmOS 🌿</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="product.html">Shop</a></li>
+    <li><a href="checkout.html">Cart</a></li>
+  </ul>
+</nav>
+
+<div class="cart-icon">
+  Cart: <span id="cart-count">0</span>
+</div>
+
+<h1 style="text-align:center;color:#2f7a32;margin-top:20px">
+Fresh Vegetables
+</h1>
+
+<div class="container">
+
+<!-- ===== TOMATO ===== -->
+<div class="product-card">
+  <img src="https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg">
+  <h3>Tomato</h3>
+  <div class="price">₹40 / kg</div>
+
+  <div class="qty-box">
+    <button onclick="changeQty('Tomato',-1)">−</button>
+    <span id="qty-Tomato">1</span>
+    <button onclick="changeQty('Tomato',1)">+</button>
   </div>
+
+  <button class="btn-add"
+    onclick="addToCart('Tomato',40,'https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg')">
+    Add to Cart
+  </button>
 </div>
 
-<div class="cart-float" onclick="toggleCart()">
-  🛒 <span id="cartCount">0</span>
+<!-- ===== POTATO ===== -->
+<div class="product-card">
+  <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true">
+  <h3>Potato</h3>
+  <div class="price">₹25 / kg</div>
+
+  <div class="qty-box">
+    <button onclick="changeQty('Potato',-1)">−</button>
+    <span id="qty-Potato">1</span>
+    <button onclick="changeQty('Potato',1)">+</button>
+  </div>
+
+  <button class="btn-add"
+    onclick="addToCart('Potato',25,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true')">
+    Add to Cart
+  </button>
 </div>
 
-<h1 style="text-align:center;margin-top:30px">Fresh Vegetables</h1>
-<div class="container" id="productList"></div>
+<!-- ===== ONION ===== -->
+<div class="product-card">
+  <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true">
+  <h3>Onion</h3>
+  <div class="price">₹40 / kg</div>
 
-<!-- MINI CART -->
-<div class="mini-cart" id="miniCart">
-  <h3>
-    <span>Your Cart</span>
-    <span class="back-btn" onclick="toggleCart()">← Back</span>
-  </h3>
-  <div id="miniItems"></div>
-  <strong>Total: ₹<span id="miniTotal">0</span></strong>
-  <a href="checkout.html" class="checkout">Checkout</a>
+  <div class="qty-box">
+    <button onclick="changeQty('Onion',-1)">−</button>
+    <span id="qty-Onion">1</span>
+    <button onclick="changeQty('Onion',1)">+</button>
+  </div>
+
+  <button class="btn-add"
+    onclick="addToCart('Onion',40,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true')">
+    Add to Cart
+  </button>
 </div>
+
+<!-- ===== CARROT ===== -->
+<div class="product-card">
+  <img src="https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true">
+  <h3>Carrot</h3>
+  <div class="price">₹40 / kg</div>
+
+  <div class="qty-box">
+    <button onclick="changeQty('Carrot',-1)">−</button>
+    <span id="qty-Carrot">1</span>
+    <button onclick="changeQty('Carrot',1)">+</button>
+  </div>
+
+  <button class="btn-add"
+    onclick="addToCart('Carrot',40,'https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true')">
+    Add to Cart
+  </button>
+</div>
+
+</div>
+
+<a href="checkout.html" class="checkout-btn">Go to Checkout</a>
 
 <script>
-const products={
-  Tomato:{price:40,img:"https://raw.githubusercontent.com/yashasawale05-blip/FARMOS-0.2/main/tomato.jpg"},
-  Potato:{price:25,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/potato.jpg?raw=true"},
-  Onion:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/onion.jpg?raw=true"},
-  Carrot:{price:40,img:"https://github.com/yashasawale05-blip/FARMOS-0.2/blob/main/carrot.jpg?raw=true"}
-};
-let cart=JSON.parse(localStorage.getItem("cart"))||{};
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let quantities = {};
+updateCartCount();
 
-renderProducts();
-updateAll();
+function changeQty(name,change){
+  quantities[name]=(quantities[name]||1)+change;
+  if(quantities[name]<1) quantities[name]=1;
+  document.getElementById("qty-"+name).innerText=quantities[name];
+}
 
-function renderProducts(){
-  let html="";
-  for(let name in products){
-    const qty=cart[name]?.kg||0;
-    html+=`
-    <div class="product-card">
-      <img src="${products[name].img}">
-      <h3>${name}</h3>
-      <div class="price">₹${products[name].price} / kg</div>
-      <div class="qty">
-        <button ${qty===0?"disabled":""} onclick="updateQty('${name}',-1)">−</button>
-        <span>${qty}</span>
-        <button onclick="updateQty('${name}',1)">+</button>
-      </div>
-      <button class="btn" onclick="addFirst('${name}')">Add to Cart</button>
-    </div>`;
+function addToCart(name,price,image){
+  let kg = quantities[name] || 1;
+  let existing = cart.find(item=>item.name===name);
+
+  if(existing){
+    existing.kg += kg;
+  } else {
+    cart.push({name,price,image,kg});
   }
-  document.getElementById("productList").innerHTML=html;
-}
 
-function addFirst(name){
-  if(!cart[name]) cart[name]={kg:1,...products[name]};
-  save();
-}
-function updateQty(name,change){
-  if(!cart[name]) return;
-  cart[name].kg+=change;
-  if(cart[name].kg<=0) delete cart[name];
-  save();
-}
-function save(){
   localStorage.setItem("cart",JSON.stringify(cart));
-  updateAll();
+  updateCartCount();
+  alert(name+" added to cart 🧺");
 }
-function updateAll(){
-  renderProducts();
-  updateMini();
-  const countEl=document.getElementById("cartCount");
-  countEl.innerText=Object.values(cart).reduce((s,i)=>s+i.kg,0);
-  countEl.classList.remove("bounce");
-  void countEl.offsetWidth;
-  countEl.classList.add("bounce");
-}
-function updateMini(){
-  let html="",total=0;
-  for(let k in cart){
-    total+=cart[k].kg*cart[k].price;
-    html+=`<div class="cart-item">
-      <span>${k} × ${cart[k].kg}</span>
-      <span>₹${cart[k].kg*cart[k].price}</span>
-    </div>`;
-  }
-  document.getElementById("miniItems").innerHTML=html||"<p>Empty</p>";
-  document.getElementById("miniTotal").innerText=total;
-}
-function toggleCart(){
-  document.getElementById("miniCart").classList.toggle("show");
+
+function updateCartCount(){
+  let totalKg = cart.reduce((sum,item)=>sum+item.kg,0);
+  document.getElementById("cart-count").innerText=totalKg;
 }
 </script>
+
 </body>
 </html>
