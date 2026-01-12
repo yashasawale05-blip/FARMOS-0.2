@@ -11,54 +11,90 @@
   --dark:#0f1b13;
   --card:#16261c;
 }
+
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:var(--dark);
   color:#eaeaea;
 }
+
+/* Navbar */
 .navbar{
   background:#0b1510;
   padding:15px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
-.navbar h2{color:var(--green);margin:0}
+
+.navbar h2{
+  color:var(--green);
+  margin:0;
+}
+
 .navbar a{
   color:#ddd;
   text-decoration:none;
   margin-left:18px;
   font-weight:bold;
 }
-.navbar a:hover{color:var(--green)}
 
+.navbar a:hover{
+  color:var(--green);
+}
+
+/* Hero */
 .hero{
   height:90vh;
   background:
     linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),
     url("https://images.unsplash.com/photo-1567306226416-28f0efdc88ce");
   background-size:cover;
+  background-position:center;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
 }
-.hero h1{font-size:52px}
-.hero p{font-size:20px}
+
+.hero h1{
+  font-size:52px;
+  color:#fff;
+  margin-bottom:15px;
+}
+
+.hero p{
+  font-size:20px;
+  color:#cfded0;
+  margin-bottom:30px;
+}
+
 .hero button{
   background:var(--green);
+  color:#0b1510;
   border:none;
   padding:14px 30px;
   border-radius:30px;
+  font-size:16px;
   font-weight:bold;
   cursor:pointer;
 }
 
+/* Features */
 .features{
   padding:60px 20px;
   text-align:center;
 }
+
+.features h2{
+  color:var(--green);
+  margin-bottom:35px;
+}
+
 .feature-box{
   max-width:1100px;
   margin:auto;
@@ -66,13 +102,28 @@ body{
   grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:22px;
 }
+
 .card{
   background:var(--card);
   padding:28px;
   border-radius:18px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.5);
+  transition:transform .2s;
 }
+
+.card:hover{
+  transform:translateY(-8px);
+}
+
+.card h3{
+  color:var(--green);
+  margin-bottom:10px;
+}
+
+/* Footer */
 footer{
   background:#0b1510;
+  color:#aaa;
   text-align:center;
   padding:18px;
 }
@@ -81,34 +132,58 @@ footer{
 
 <body>
 
+<!-- Navbar -->
 <div class="navbar">
   <h2>FarmOS 🌿</h2>
   <div>
     <a href="index.html">Home</a>
-    <a href="product.html">Shop</a>
+    <a href="products.html">Shop</a>
     <a href="checkout.html">Cart</a>
+    <a href="admin.html">Admin</a>
   </div>
 </div>
 
+<!-- Hero -->
 <section class="hero">
   <div>
     <h1>Premium Fresh Vegetables</h1>
-    <p>Direct from farms • No middlemen</p>
-    <button onclick="window.location.href='product.html'">Shop Now 🛒</button>
+    <p>Direct from farms • No middlemen • Pure quality</p>
+    <button onclick="location.href='products.html'">
+      Shop Now 🛒
+    </button>
   </div>
 </section>
 
+<!-- Features -->
 <section class="features">
-  <h2>Why FarmOS</h2>
+  <h2>Why FarmOS is Different</h2>
+
   <div class="feature-box">
-    <div class="card">🌱 Farm Direct</div>
-    <div class="card">💎 Premium Quality</div>
-    <div class="card">🚚 Fast Delivery</div>
-    <div class="card">💰 Fair Pricing</div>
+    <div class="card">
+      <h3>🌱 Farm Direct</h3>
+      <p>Fresh vegetables directly sourced from trusted farmers.</p>
+    </div>
+
+    <div class="card">
+      <h3>💎 Premium Quality</h3>
+      <p>Handpicked produce for health-conscious families.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚚 Fast Delivery</h3>
+      <p>Quick doorstep delivery with freshness intact.</p>
+    </div>
+
+    <div class="card">
+      <h3>💰 Fair Pricing</h3>
+      <p>Best value without compromising quality.</p>
+    </div>
   </div>
 </section>
 
-<footer>© 2025 FarmOS 🌿</footer>
+<footer>
+  © 2025 FarmOS • Premium Farm Experience 🌿
+</footer>
 
 </body>
 </html>
