@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,113 +6,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-*{box-sizing:border-box}
+* { box-sizing: border-box; }
 
-body{
-  margin:0;
-  font-family:"Segoe UI", Arial, sans-serif;
-  background:#f8fafc;
-  color:#0f172a;
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
 }
 
 /* NAVBAR */
-.navbar{
-  background:#ffffff;
-  padding:16px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #e5e7eb;
-  box-shadow:0 3px 6px rgba(0,0,0,0.05);
+.navbar {
+  background: #ffffff;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.navbar strong{
-  color:#16a34a;
-  font-size:20px;
+.navbar strong {
+  color: #16a34a;
+  font-size: 20px;
 }
 
-.navbar button{
-  padding:8px 14px;
-  border:none;
-  border-radius:10px;
-  background:#ef4444;
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-  transition:0.3s;
-}
-.navbar button:hover{
-  background:#dc2626;
+.navbar button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #ef4444;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* CONTAINER */
-.container{
-  max-width:900px;
-  margin:30px auto;
-  padding:20px;
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
 }
 
 /* CARD */
-.card{
-  background:white;
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
-  margin-bottom:20px;
-  transition:0.3s;
-}
-.card:hover{
-  box-shadow:0 15px 30px rgba(0,0,0,.1);
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+  margin-bottom: 20px;
 }
 
 /* CHECKPOINT */
-.checkpoint{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px 0;
-  border-bottom:1px solid #e5e7eb;
+.checkpoint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
 }
-.checkpoint:last-child{border:none}
+.checkpoint:last-child { border-bottom: none; }
 
-.info strong{
-  color:#16a34a;
-  font-size:16px;
-}
-.info span{
-  display:block;
-  font-size:14px;
-  color:#475569;
-  margin-top:2px;
+.info strong {
+  color: #16a34a;
+  font-size: 16px;
 }
 
 /* STATUS */
-.status{
-  font-weight:700;
-  margin-bottom:6px;
+.status {
+  font-weight: 700;
 }
-.pending{color:#f59e0b;}
-.reached{color:#16a34a;}
+.pending { color: #f59e0b; }
+.reached { color: #16a34a; }
 
 /* BUTTON */
-.btn{
-  padding:8px 14px;
-  border:none;
-  border-radius:10px;
-  background:#16a34a;
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-  transition:0.3s;
-}
-.btn:hover{
-  background:#15803d;
-}
-
-.note{
-  margin-top:20px;
-  font-size:13px;
-  color:#64748b;
+.btn {
+  margin-top: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #16a34a;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -121,10 +96,7 @@ body{
 
 <div class="navbar">
   <strong>FarmOS Admin 🚚</strong>
-  <div>
-    <button onclick="location.href='index.html'">Home</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+  <button onclick="logout()">Logout</button>
 </div>
 
 <div class="container">
@@ -136,17 +108,12 @@ body{
 
   <div class="card" id="checkpointList"></div>
 
-  <div class="note">
-    ✔ Admin updates checkpoint status manually after truck arrival.<br>
-    ✔ Customers collect orders using stamped Order ID.
-  </div>
-
 </div>
 
- <script>
-/* 🔐 SIMPLE ADMIN PASSWORD CHECK */
+<script>
+/* 🔐 ADMIN PASSWORD PROTECTION */
 (function adminAuth(){
-  const ADMIN_PASSWORD = "farmos@admin"; // change password here
+  const ADMIN_PASSWORD = "farmos@admin"; // Change this password
 
   let entered = prompt("Enter Admin Password:");
 
@@ -155,8 +122,8 @@ body{
     window.location.href = "index.html";
   }
 })();
- </script>
-<script>
+
+/* 🚚 CHECKPOINT DATA */
 const checkpoints = [
   {name:"Main Vegetable Market", orders:42, status:"pending"},
   {name:"Hotel Zone East", orders:18, status:"pending"},
@@ -164,24 +131,21 @@ const checkpoints = [
   {name:"Highway Pickup Point", orders:15, status:"pending"}
 ];
 
+/* RENDER CHECKPOINTS */
 function render(){
-  let html="";
+  let html = "";
   checkpoints.forEach((c,i)=>{
-    html+=`
+    html += `
       <div class="checkpoint">
         <div class="info">
-          <strong>${c.name}</strong>
-          <span>Orders: ${c.orders}</span>
+          <strong>${c.name}</strong><br>
+          Orders: ${c.orders}
         </div>
         <div>
           <div class="status ${c.status}">
             ${c.status === "pending" ? "Pending" : "Reached"}
           </div>
-          ${
-            c.status === "pending"
-            ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>`
-            : ``
-          }
+          ${c.status === "pending" ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>` : ""}
         </div>
       </div>
     `;
@@ -189,18 +153,20 @@ function render(){
   document.getElementById("checkpointList").innerHTML = html;
 }
 
+/* MARK CHECKPOINT REACHED */
 function markReached(i){
   checkpoints[i].status = "reached";
   render();
 }
 
+/* LOGOUT BUTTON */
 function logout(){
   alert("Logged out");
-  location.href="index.html";
+  window.location.href = "index.html";
 }
 
 render();
 </script>
 
 </body>
-</html>       
+</html>
