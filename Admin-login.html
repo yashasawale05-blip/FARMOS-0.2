@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FarmOS — Admin Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root{
+  --green:#22c55e;
+  --bg:#f9fafb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+}
+
+body{
+  margin:0;
+  font-family:Segoe UI, Arial;
+  background:linear-gradient(180deg,#f9fafb,#eef2f7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+/* CARD */
+.login-card{
+  background:var(--card);
+  width:360px;
+  padding:28px;
+  border-radius:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+
+h2{
+  margin:0;
+  color:var(--green);
+}
+p{
+  font-size:14px;
+  color:var(--muted);
+}
+
+input,select{
+  width:100%;
+  padding:12px;
+  margin:14px 0;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-size:15px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  border:none;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.note{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:12px;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+  <h2>FarmOS Admin 🌿</h2>
+  <p>Secure access for operations</p>
+
+  <input type="text" id="username" placeholder="Admin ID">
+  <input type="password" id="password" placeholder="Password">
+
+  <select id="role">
+    <option value="admin">Admin</option>
+    <option value="staff">Staff</option>
+    <option value="viewer">Viewer</option>
+  </select>
+
+  <button onclick="login()">Login</button>
+
+  <div class="note">
+    Demo credentials: <strong>admin / 1234</strong>
+  </div>
+</div>
+
+<script>
+function login(){
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+  const role = document.getElementById("role").value;
+
+  if(user==="admin" && pass==="1234"){
+    localStorage.setItem("farmOS_admin",JSON.stringify({
+      user,role,login:true
+    }));
+    window.location.href="admin.html";
+  }else{
+    alert("Invalid credentials");
+  }
+}
+</script>
+
+</body>
+</html>
