@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 
 body{
   margin:0;
-  font-family:Segoe UI, Arial;
+  font-family:"Segoe UI", Arial, sans-serif;
   background:#f8fafc;
   color:#0f172a;
 }
@@ -23,6 +23,7 @@ body{
   justify-content:space-between;
   align-items:center;
   border-bottom:1px solid #e5e7eb;
+  box-shadow:0 3px 6px rgba(0,0,0,0.05);
 }
 
 .navbar strong{
@@ -38,6 +39,10 @@ body{
   color:white;
   font-weight:700;
   cursor:pointer;
+  transition:0.3s;
+}
+.navbar button:hover{
+  background:#dc2626;
 }
 
 /* CONTAINER */
@@ -54,6 +59,10 @@ body{
   padding:20px;
   box-shadow:0 10px 25px rgba(0,0,0,.08);
   margin-bottom:20px;
+  transition:0.3s;
+}
+.card:hover{
+  box-shadow:0 15px 30px rgba(0,0,0,.1);
 }
 
 /* CHECKPOINT */
@@ -70,17 +79,23 @@ body{
   color:#16a34a;
   font-size:16px;
 }
+.info span{
+  display:block;
+  font-size:14px;
+  color:#475569;
+  margin-top:2px;
+}
 
 /* STATUS */
 .status{
   font-weight:700;
+  margin-bottom:6px;
 }
-.pending{color:#f59e0b}
-.reached{color:#16a34a}
+.pending{color:#f59e0b;}
+.reached{color:#16a34a;}
 
 /* BUTTON */
 .btn{
-  margin-top:6px;
   padding:8px 14px;
   border:none;
   border-radius:10px;
@@ -88,6 +103,16 @@ body{
   color:white;
   font-weight:700;
   cursor:pointer;
+  transition:0.3s;
+}
+.btn:hover{
+  background:#15803d;
+}
+
+.note{
+  margin-top:20px;
+  font-size:13px;
+  color:#64748b;
 }
 </style>
 </head>
@@ -96,7 +121,10 @@ body{
 
 <div class="navbar">
   <strong>FarmOS Admin 🚚</strong>
-  <button onclick="logout()">Logout</button>
+  <div>
+    <button onclick="location.href='index.html'">Home</button>
+    <button onclick="logout()">Logout</button>
+  </div>
 </div>
 
 <div class="container">
@@ -107,6 +135,11 @@ body{
   </div>
 
   <div class="card" id="checkpointList"></div>
+
+  <div class="note">
+    ✔ Admin updates checkpoint status manually after truck arrival.<br>
+    ✔ Customers collect orders using stamped Order ID.
+  </div>
 
 </div>
 
@@ -124,8 +157,8 @@ function render(){
     html+=`
       <div class="checkpoint">
         <div class="info">
-          <strong>${c.name}</strong><br>
-          Orders: ${c.orders}
+          <strong>${c.name}</strong>
+          <span>Orders: ${c.orders}</span>
         </div>
         <div>
           <div class="status ${c.status}">
@@ -157,4 +190,4 @@ render();
 </script>
 
 </body>
-</html>
+</html>       
