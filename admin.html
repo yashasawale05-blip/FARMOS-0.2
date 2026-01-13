@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS — Admin Control</title>
+<title>FarmOS — Admin Truck Control</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -35,7 +35,7 @@ body{
 
 /* CONTAINER */
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:30px auto;
   padding:0 20px;
 }
@@ -58,6 +58,25 @@ body{
   margin-bottom:24px;
 }
 
+/* TRUCK SELECTOR */
+.trucks{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.truck-btn{
+  padding:12px 18px;
+  border-radius:14px;
+  border:2px solid var(--border);
+  cursor:pointer;
+  font-weight:700;
+  background:white;
+}
+.truck-btn.active{
+  border-color:var(--green);
+  color:var(--green);
+}
+
 /* MAP */
 .map{
   position:relative;
@@ -72,7 +91,7 @@ body{
   border-radius:10px;
   position:relative;
 }
-.checkpoint-dot{
+.dot{
   position:absolute;
   top:-7px;
   width:20px;
@@ -80,17 +99,16 @@ body{
   border-radius:50%;
   border:4px solid white;
 }
-.pending-dot{background:var(--pending)}
-.reached-dot{background:var(--green)}
+.pending{background:var(--pending)}
+.reached{background:var(--green)}
 .label{
   position:absolute;
   top:22px;
   font-size:12px;
   color:var(--muted);
-  white-space:nowrap;
 }
 
-/* CHECKPOINT LIST */
+/* LIST */
 .row{
   display:flex;
   justify-content:space-between;
@@ -110,10 +128,6 @@ body{
   background:linear-gradient(135deg,#22c55e,#16a34a);
   color:white;
 }
-
-/* STATUS */
-.pending{color:var(--pending)}
-.reached{color:var(--green)}
 </style>
 </head>
 
@@ -121,19 +135,25 @@ body{
 
 <div class="navbar">
   <strong>FarmOS 🌿 Admin</strong>
-  <span>Truck Distribution Control</span>
+  <span>Multi-Truck Distribution System</span>
 </div>
 
 <div class="container">
 
   <div class="header">
-    <h2>🚚 Truck Route & Checkpoints</h2>
+    <h2>🚚 Truck Management</h2>
     <p>Farmers distribute pre-packed orders at checkpoints</p>
   </div>
 
-  <!-- MAP VIEW -->
+  <!-- TRUCK SELECT -->
   <div class="card">
-    <h3>🗺️ Route Overview</h3>
+    <h3>Select Truck</h3>
+    <div class="trucks" id="truckTabs"></div>
+  </div>
+
+  <!-- MAP -->
+  <div class="card">
+    <h3>🗺️ Truck Route</h3>
     <div class="map">
       <div class="route" id="route"></div>
     </div>
@@ -145,43 +165,70 @@ body{
 </div>
 
 <script>
-const checkpoints = [
-  {name:"Main Vegetable Market", pos:5, orders:42, status:"pending"},
-  {name:"Hotel Zone – East", pos:30, orders:18, status:"pending"},
-  {name:"Residential Area – Sector 5", pos:60, orders:27, status:"pending"},
-  {name:"Highway Outlet Stop", pos:85, orders:15, status:"pending"}
+const trucks = [
+  {
+    name:"Truck A — Hotel Supply",
+    checkpoints:[
+      {name:"Hotel Zone East",pos:20,orders:18,status:"pending"},
+      {name:"Hotel Zone West",pos:60,orders:22,status:"pending"}
+    ]
+  },
+  {
+    name:"Truck B — Residential",
+    checkpoints:[
+      {name:"Sector 5",pos:15,orders:27,status:"pending"},
+      {name:"Sector 9",pos:55,orders:19,status:"pending"},
+      {name:"Sector 12",pos:85,orders:14,status:"pending"}
+    ]
+  },
+  {
+    name:"Truck C — Highway Outlet",
+    checkpoints:[
+      {name:"Highway Stop 1",pos:35,orders:15,status:"pending"},
+      {name:"Highway Stop 2",pos:75,orders:11,status:"pending"}
+    ]
+  }
 ];
 
-function render(){
-  // Map
-  let route = document.getElementById("route");
-  route.innerHTML="";
-  checkpoints.forEach(c=>{
-    route.innerHTML+=`
-      <div class="checkpoint-dot ${c.status === "pending" ? "pending-dot" : "reached-dot"}"
-        style="left:${c.pos}%">
-      </div>
-      <div class="label" style="left:${c.pos-4}%">
-        ${c.name}
+let currentTruck = 0;
+
+function renderTabs(){
+  let html="";
+  trucks.forEach((t,i)=>{
+    html+=`
+      <div class="truck-btn ${i===currentTruck?'active':''}"
+        onclick="selectTruck(${i})">
+        ${t.name}
       </div>
     `;
   });
+  document.getElementById("truckTabs").innerHTML = html;
+}
 
-  // List
-  let html="";
-  checkpoints.forEach((c,i)=>{
-    html+=`
+function renderTruck(){
+  const route = document.getElementById("route");
+  route.innerHTML="";
+  trucks[currentTruck].checkpoints.forEach(c=>{
+    route.innerHTML+=`
+      <div class="dot ${c.status}" style="left:${c.pos}%"></div>
+      <div class="label" style="left:${c.pos-4}%">${c.name}</div>
+    `;
+  });
+
+  let list="";
+  trucks[currentTruck].checkpoints.forEach((c,i)=>{
+    list+=`
       <div class="row">
         <div>
           <strong>${c.name}</strong><br>
           Orders: ${c.orders}
         </div>
         <div>
-          <span class="${c.status}">
+          <span style="color:${c.status==='pending'?'#f59e0b':'#22c55e'}">
             ${c.status === "pending" ? "Pending" : "Reached"}
           </span><br>
           ${
-            c.status === "pending"
+            c.status==="pending"
             ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>`
             : ""
           }
@@ -189,15 +236,22 @@ function render(){
       </div>
     `;
   });
-  document.getElementById("checkpointList").innerHTML = html;
+  document.getElementById("checkpointList").innerHTML = list;
+}
+
+function selectTruck(i){
+  currentTruck=i;
+  renderTabs();
+  renderTruck();
 }
 
 function markReached(i){
-  checkpoints[i].status="reached";
-  render();
+  trucks[currentTruck].checkpoints[i].status="reached";
+  renderTruck();
 }
 
-render();
+renderTabs();
+renderTruck();
 </script>
 
 </body>
