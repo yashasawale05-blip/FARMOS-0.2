@@ -6,86 +6,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-*{box-sizing:border-box;}
+*{box-sizing:border-box}
 
-body {
+body{
   margin:0;
-  font-family:"Segoe UI", Arial, sans-serif;
+  font-family:Segoe UI, Arial;
   background:#f8fafc;
   color:#0f172a;
 }
 
-/* CENTER LOGIN */
-#loginScreen {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  background:#f8fafc;
-}
+/* HIDE CONTENT UNTIL LOGIN */
+#dashboard{ display:none; }
 
-.loginBox {
-  background:white;
-  border-radius:18px;
-  padding:30px 24px;
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
-  width:300px;
-  text-align:center;
-}
-
-.loginBox h2 {
-  color:#16a34a;
-  margin-bottom:20px;
-}
-
-.loginBox input {
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border:1px solid #d1d5db;
-  border-radius:10px;
-  outline:none;
-  font-size:14px;
-}
-
-.loginBox .showPass {
-  cursor:pointer;
-  font-size:12px;
-  color:#16a34a;
-  margin-bottom:12px;
-  display:block;
-  text-align:right;
-}
-
-.loginBox button {
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:#16a34a;
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-}
-
-/* ADMIN DASHBOARD */
-#adminDashboard { display:none; }
-
-.navbar {
-  background: #ffffff;
-  padding: 16px 24px;
+/* NAVBAR */
+.navbar{
+  background:#ffffff;
+  padding:16px 24px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   border-bottom:1px solid #e5e7eb;
 }
 
-.navbar strong {
-  color: #16a34a;
+.navbar strong{
+  color:#16a34a;
   font-size:20px;
 }
 
-.navbar button {
+.navbar button{
   padding:8px 14px;
   border:none;
   border-radius:10px;
@@ -95,13 +43,15 @@ body {
   cursor:pointer;
 }
 
-.container {
+/* CONTAINER */
+.container{
   max-width:900px;
   margin:30px auto;
   padding:20px;
 }
 
-.card {
+/* CARD */
+.card{
   background:white;
   border-radius:18px;
   padding:20px;
@@ -109,22 +59,30 @@ body {
   margin-bottom:20px;
 }
 
-.checkpoint {
+/* CHECKPOINT */
+.checkpoint{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:14px 0;
   border-bottom:1px solid #e5e7eb;
 }
-.checkpoint:last-child { border-bottom:none; }
+.checkpoint:last-child{border:none}
 
-.info strong { color:#16a34a; font-size:16px; }
+.info strong{
+  color:#16a34a;
+  font-size:16px;
+}
 
-.status { font-weight:700; }
-.pending { color:#f59e0b; }
-.reached { color:#16a34a; }
+/* STATUS */
+.status{
+  font-weight:700;
+}
+.pending{color:#f59e0b}
+.reached{color:#16a34a}
 
-.btn {
+/* BUTTON */
+.btn{
   margin-top:6px;
   padding:8px 14px;
   border:none;
@@ -139,71 +97,41 @@ body {
 
 <body>
 
-<!-- LOGIN SCREEN -->
-<div id="loginScreen">
-  <div class="loginBox">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPass" placeholder="Enter password">
-    <span class="showPass" onclick="togglePassword()">Show Password</span>
-    <button onclick="checkLogin()">Login</button>
-  </div>
-</div>
-
-<!-- ADMIN DASHBOARD -->
-<div id="adminDashboard">
+<div id="dashboard">
   <div class="navbar">
     <strong>FarmOS Admin 🚚</strong>
     <button onclick="logout()">Logout</button>
   </div>
 
   <div class="container">
+
     <div class="card">
       <h2>Truck Checkpoints</h2>
       <p>Farmer-led distribution control panel</p>
     </div>
+
     <div class="card" id="checkpointList"></div>
+
   </div>
 </div>
 
 <script>
-const ADMIN_PASSWORD = "farmos@admin"; // Change your admin password
+const ADMIN_PASSWORD = "Farmos123"; // <-- Change your password here
 
-/* SHOW/HIDE PASSWORD */
-function togglePassword(){
-  const passField = document.getElementById("adminPass");
-  passField.type = passField.type === "password" ? "text" : "password";
-}
-
-/* LOGIN CHECK */
-function checkLogin(){
-  const val = document.getElementById("adminPass").value;
-  if(val === ADMIN_PASSWORD){
-    localStorage.setItem("adminLoggedIn", "true");
-    showDashboard();
+function askPassword(){
+  let pass = prompt("Enter admin password:");
+  if(pass === null){
+    // user clicked cancel
+    alert("Access denied");
+    location.href="index.html";
+  } else if(pass !== ADMIN_PASSWORD){
+    alert("Incorrect password! Try again.");
+    askPassword();
   } else {
-    alert("❌ Incorrect Password");
+    document.getElementById("dashboard").style.display = "block";
   }
 }
 
-/* SHOW DASHBOARD IF LOGGED IN */
-function showDashboard(){
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("adminDashboard").style.display = "block";
-  renderCheckpoints();
-}
-
-/* LOGOUT */
-function logout(){
-  localStorage.removeItem("adminLoggedIn");
-  location.reload();
-}
-
-/* CHECK SESSION */
-if(localStorage.getItem("adminLoggedIn") === "true"){
-  showDashboard();
-}
-
-/* CHECKPOINT DATA */
 const checkpoints = [
   {name:"Main Vegetable Market", orders:42, status:"pending"},
   {name:"Hotel Zone East", orders:18, status:"pending"},
@@ -211,11 +139,10 @@ const checkpoints = [
   {name:"Highway Pickup Point", orders:15, status:"pending"}
 ];
 
-/* RENDER CHECKPOINTS */
-function renderCheckpoints(){
-  let html = "";
+function render(){
+  let html="";
   checkpoints.forEach((c,i)=>{
-    html += `
+    html+=`
       <div class="checkpoint">
         <div class="info">
           <strong>${c.name}</strong><br>
@@ -225,7 +152,11 @@ function renderCheckpoints(){
           <div class="status ${c.status}">
             ${c.status === "pending" ? "Pending" : "Reached"}
           </div>
-          ${c.status === "pending" ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>` : ""}
+          ${
+            c.status === "pending"
+            ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>`
+            : ``
+          }
         </div>
       </div>
     `;
@@ -233,11 +164,18 @@ function renderCheckpoints(){
   document.getElementById("checkpointList").innerHTML = html;
 }
 
-/* MARK REACHED */
 function markReached(i){
   checkpoints[i].status = "reached";
-  renderCheckpoints();
+  render();
 }
+
+function logout(){
+  alert("Logged out");
+  location.href="index.html";
+}
+
+askPassword();
+render();
 </script>
 
 </body>
