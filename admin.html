@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>FarmOS Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
 *{box-sizing:border-box}
 
@@ -15,12 +14,9 @@ body{
   color:#0f172a;
 }
 
-/* HIDE DASHBOARD UNTIL LOGIN */
-#dashboard{ display:none; }
-
 /* NAVBAR */
 .navbar{
-  background:#ffffff;
+  background:white;
   padding:16px 24px;
   display:flex;
   justify-content:space-between;
@@ -92,96 +88,28 @@ body{
   font-weight:700;
   cursor:pointer;
 }
-
-/* LOGIN MODAL */
-.modal{
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.4);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-}
-
-.modal-content{
-  background:white;
-  padding:30px 24px;
-  border-radius:18px;
-  max-width:400px;
-  width:90%;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
-  text-align:center;
-}
-
-.modal-content h2{
-  color:#16a34a;
-  margin-bottom:20px;
-}
-
-.modal-content input{
-  width:100%;
-  padding:12px;
-  margin-bottom:16px;
-  border-radius:10px;
-  border:1px solid #e5e7eb;
-  font-size:16px;
-}
-
-.modal-content button{
-  padding:12px 20px;
-  border:none;
-  border-radius:10px;
-  background:#16a34a;
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-  width:100%;
-  font-size:16px;
-}
-
-.error-msg{
-  color:#ef4444;
-  margin-bottom:12px;
-  font-weight:600;
-  display:none;
-}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN MODAL -->
-<div class="modal" id="loginModal">
-  <div class="modal-content">
-    <h2>Admin Login</h2>
-    <div class="error-msg" id="errorMsg">Incorrect password!</div>
-    <input type="password" id="adminPassword" placeholder="Enter password">
-    <button onclick="login()">Login</button>
-  </div>
+<div class="navbar">
+  <strong>FarmOS Admin 🚚</strong>
+  <button onclick="logout()">Logout</button>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard">
-  <div class="navbar">
-    <strong>FarmOS Admin 🚚</strong>
-    <button onclick="logout()">Logout</button>
+<div class="container">
+
+  <div class="card">
+    <h2>Truck Checkpoints</h2>
+    <p>Farmer-led distribution control panel</p>
   </div>
 
-  <div class="container">
-    <div class="card">
-      <h2>Truck Checkpoints</h2>
-      <p>Farmer-led distribution control panel</p>
-    </div>
+  <div class="card" id="checkpointList"></div>
 
-    <div class="card" id="checkpointList"></div>
-  </div>
 </div>
 
 <script>
-const ADMIN_PASSWORD = "Farmos123"; // set your password here
-
 const checkpoints = [
   {name:"Main Vegetable Market", orders:42, status:"pending"},
   {name:"Hotel Zone East", orders:18, status:"pending"},
@@ -220,31 +148,13 @@ function markReached(i){
 }
 
 function logout(){
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("loginModal").style.display = "flex";
-  document.getElementById("adminPassword").value = "";
-  document.getElementById("errorMsg").style.display = "none";
+  alert("Logged out");
+  location.href="admin-login.html"; // redirect to login page
 }
 
-// LOGIN FUNCTION
-function login(){
-  const input = document.getElementById("adminPassword").value;
-  const error = document.getElementById("errorMsg");
-  if(input === ADMIN_PASSWORD){
-    document.getElementById("loginModal").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-    render();
-  } else {
-    error.style.display = "block";
-  }
-}
-
-// FORCE LOGIN ON PAGE LOAD
-window.onload = function(){
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("loginModal").style.display = "flex";
-};
+render();
 </script>
 
 </body>
 </html>
+  
