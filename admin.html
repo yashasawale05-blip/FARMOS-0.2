@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS — Admin Truck Checkpoints</title>
+<title>FarmOS — Admin Control</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -13,6 +13,7 @@
   --text:#111827;
   --muted:#6b7280;
   --border:#e5e7eb;
+  --pending:#f59e0b;
 }
 
 body{
@@ -28,39 +29,24 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:#ffffff;
+  background:white;
   border-bottom:1px solid var(--border);
-}
-.navbar strong{
-  font-size:18px;
-}
-.navbar a{
-  color:var(--green);
-  text-decoration:none;
-  font-weight:600;
 }
 
 /* CONTAINER */
 .container{
-  max-width:900px;
-  margin:32px auto;
+  max-width:1000px;
+  margin:30px auto;
   padding:0 20px;
 }
 
-/* HEADER CARD */
-.header-card{
+/* HEADER */
+.header{
   background:linear-gradient(135deg,#22c55e,#16a34a);
   color:white;
-  border-radius:20px;
   padding:22px;
-  margin-bottom:26px;
-}
-.header-card h2{
-  margin:0;
-}
-.header-card p{
-  opacity:.9;
-  margin-top:6px;
+  border-radius:20px;
+  margin-bottom:30px;
 }
 
 /* CARD */
@@ -69,57 +55,65 @@ body{
   border-radius:18px;
   padding:20px;
   box-shadow:0 10px 30px rgba(0,0,0,.06);
+  margin-bottom:24px;
 }
 
-/* CHECKPOINT */
-.checkpoint{
+/* MAP */
+.map{
+  position:relative;
+  height:120px;
+  background:#f1f5f9;
+  border-radius:16px;
+  padding:30px 20px;
+}
+.route{
+  height:6px;
+  background:#d1d5db;
+  border-radius:10px;
+  position:relative;
+}
+.checkpoint-dot{
+  position:absolute;
+  top:-7px;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  border:4px solid white;
+}
+.pending-dot{background:var(--pending)}
+.reached-dot{background:var(--green)}
+.label{
+  position:absolute;
+  top:22px;
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+/* CHECKPOINT LIST */
+.row{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:16px;
+  padding:14px 0;
   border-bottom:1px solid var(--border);
 }
-.checkpoint:last-child{border:none}
-
-.info strong{
-  font-size:16px;
-  color:var(--text);
-}
-.info{
-  font-size:14px;
-  color:var(--muted);
-}
-
-/* STATUS */
-.status{
-  font-weight:700;
-  font-size:14px;
-}
-.pending{color:#f59e0b}
-.reached{color:#22c55e}
+.row:last-child{border:none}
 
 /* BUTTON */
 .btn{
-  margin-top:6px;
   padding:8px 14px;
   border:none;
   border-radius:10px;
-  cursor:pointer;
   font-weight:700;
+  cursor:pointer;
   background:linear-gradient(135deg,#22c55e,#16a34a);
   color:white;
 }
 
-/* NOTE */
-.note{
-  margin-top:26px;
-  font-size:13px;
-  color:var(--muted);
-  background:#ffffff;
-  border-radius:16px;
-  padding:16px;
-  box-shadow:0 10px 20px rgba(0,0,0,.05);
-}
+/* STATUS */
+.pending{color:var(--pending)}
+.reached{color:var(--green)}
 </style>
 </head>
 
@@ -127,51 +121,69 @@ body{
 
 <div class="navbar">
   <strong>FarmOS 🌿 Admin</strong>
-  <a href="index.html">Home</a>
+  <span>Truck Distribution Control</span>
 </div>
 
 <div class="container">
 
-  <div class="header-card">
-    <h2>🚚 Truck Checkpoint Control</h2>
-    <p>Farmer-driven distribution • Order code handover system</p>
+  <div class="header">
+    <h2>🚚 Truck Route & Checkpoints</h2>
+    <p>Farmers distribute pre-packed orders at checkpoints</p>
   </div>
 
+  <!-- MAP VIEW -->
+  <div class="card">
+    <h3>🗺️ Route Overview</h3>
+    <div class="map">
+      <div class="route" id="route"></div>
+    </div>
+  </div>
+
+  <!-- CHECKPOINT LIST -->
   <div class="card" id="checkpointList"></div>
-
-  <div class="note">
-    ✔ Farmers hand over pre-packed orders at checkpoints<br>
-    ✔ Order code stamped on packets<br>
-    ✔ Admin manually confirms truck arrival
-  </div>
 
 </div>
 
 <script>
 const checkpoints = [
-  {name:"Main Vegetable Market", orders:42, status:"pending"},
-  {name:"Hotel Zone – East", orders:18, status:"pending"},
-  {name:"Residential Area – Sector 5", orders:27, status:"pending"},
-  {name:"Highway Outlet Stop", orders:15, status:"pending"}
+  {name:"Main Vegetable Market", pos:5, orders:42, status:"pending"},
+  {name:"Hotel Zone – East", pos:30, orders:18, status:"pending"},
+  {name:"Residential Area – Sector 5", pos:60, orders:27, status:"pending"},
+  {name:"Highway Outlet Stop", pos:85, orders:15, status:"pending"}
 ];
 
 function render(){
+  // Map
+  let route = document.getElementById("route");
+  route.innerHTML="";
+  checkpoints.forEach(c=>{
+    route.innerHTML+=`
+      <div class="checkpoint-dot ${c.status === "pending" ? "pending-dot" : "reached-dot"}"
+        style="left:${c.pos}%">
+      </div>
+      <div class="label" style="left:${c.pos-4}%">
+        ${c.name}
+      </div>
+    `;
+  });
+
+  // List
   let html="";
   checkpoints.forEach((c,i)=>{
     html+=`
-      <div class="checkpoint">
-        <div class="info">
+      <div class="row">
+        <div>
           <strong>${c.name}</strong><br>
           Orders: ${c.orders}
         </div>
         <div>
-          <span class="status ${c.status}">
+          <span class="${c.status}">
             ${c.status === "pending" ? "Pending" : "Reached"}
           </span><br>
           ${
             c.status === "pending"
             ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>`
-            : ``
+            : ""
           }
         </div>
       </div>
@@ -180,8 +192,8 @@ function render(){
   document.getElementById("checkpointList").innerHTML = html;
 }
 
-function markReached(index){
-  checkpoints[index].status = "reached";
+function markReached(i){
+  checkpoints[i].status="reached";
   render();
 }
 
