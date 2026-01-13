@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS — Truck Route Tracker</title>
+<title>FarmOS — Order Tracking</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -21,7 +21,7 @@ body{
   color:#e5e7eb;
 }
 
-/* NAVBAR */
+/* NAV */
 .navbar{
   padding:14px 22px;
   display:flex;
@@ -39,119 +39,96 @@ body{
 /* CONTAINER */
 .container{
   max-width:520px;
-  margin:28px auto;
-  padding:20px;
+  margin:30px auto;
+  padding:22px;
 }
 
-/* INFO CARD */
+/* CARD */
 .card{
   background:var(--card);
   border-radius:20px;
-  padding:18px;
+  padding:20px;
   box-shadow:0 0 30px rgba(34,197,94,.15);
   margin-bottom:22px;
 }
-.card h2{
-  margin:0;
-  color:var(--green);
-}
-.card p{
-  opacity:.85;
-  font-size:14px;
-  margin:6px 0 0;
+
+/* STATUS */
+.status{
+  font-size:18px;
+  color:var(--accent);
+  margin-top:10px;
 }
 
 /* ROAD */
 .road{
   position:relative;
+  width:100%;
   height:70px;
   background:linear-gradient(90deg,#1f2937,#020617);
   border-radius:40px;
   overflow:hidden;
-  margin:26px 0;
-}
-
-/* TRUCK */
-.truck{
-  position:absolute;
-  right:-90px;
-  top:12px;
-  font-size:44px;
-  animation:truckMove 16s linear infinite;
-  z-index:2;
+  margin:20px 0;
 }
 
 /* DUST */
 .dust{
   position:absolute;
-  right:-90px;
-  top:40px;
-  font-size:16px;
-  opacity:0.4;
-  animation:dustMove 16s linear infinite;
+  bottom:10px;
+  width:6px;
+  height:6px;
+  background:#9ca3af;
+  border-radius:50%;
+  opacity:.4;
+  animation:dust 1.5s linear infinite;
+}
+@keyframes dust{
+  0%{left:100%; opacity:.5}
+  100%{left:-10px; opacity:0}
 }
 
-@keyframes truckMove{
-  0%{ right:-90px; }
-  100%{ right:110%; }
+/* TRUCK */
+.truck{
+  position:absolute;
+  right:-80px;
+  top:10px;
+  font-size:42px;
+  animation:drive 18s linear infinite;
+}
+@keyframes drive{
+  0%{ right:-80px }
+  100%{ right:110% }
 }
 
-@keyframes dustMove{
-  0%{ right:-100px; opacity:0; }
-  10%{ opacity:.4; }
-  100%{ right:115%; opacity:0; }
-}
-
-/* CHECKPOINTS */
-.checkpoints{
-  margin-top:20px;
-}
-.point{
+/* STEPS */
+.step{
   display:flex;
   align-items:center;
-  gap:14px;
-  margin:14px 0;
+  gap:12px;
+  margin:12px 0;
 }
 .dot{
   width:14px;
   height:14px;
   border-radius:50%;
+  background:#374151;
+}
+.active .dot{
   background:var(--green);
 }
-.point span{
-  font-size:14px;
+.step span{
   opacity:.9;
 }
 
-/* STATUS */
-.status{
-  text-align:center;
-  font-size:17px;
-  color:var(--accent);
-  margin-top:18px;
-}
-
-/* BUTTONS */
-.actions{
-  display:flex;
-  gap:12px;
-  margin-top:24px;
-}
+/* BUTTON */
 .btn{
-  flex:1;
+  width:100%;
   padding:14px;
   border:none;
   border-radius:16px;
   font-weight:900;
   cursor:pointer;
-}
-.shop{
   background:linear-gradient(135deg,#22c55e,#16a34a);
-}
-.help{
-  background:#020617;
-  color:var(--accent);
-  border:2px solid var(--accent);
+  margin-top:20px;
 }
 </style>
 </head>
@@ -166,56 +143,53 @@ body{
 <div class="container">
 
   <div class="card">
-    <h2>FarmOS Mobile Market</h2>
-    <p>Farmer-operated truck selling fresh vegetables at fixed checkpoints</p>
+    <h2>Order Confirmed</h2>
+    <p>Order ID: <strong>#FMOS1029</strong></p>
+    <div class="status" id="statusText">Order received</div>
   </div>
 
-  <!-- 🚚 TRUCK ROUTE -->
   <div class="road">
     <div class="truck">🚚</div>
-    <div class="dust">💨💨</div>
+    <div class="dust"></div>
+    <div class="dust" style="animation-delay:.5s"></div>
+    <div class="dust" style="animation-delay:1s"></div>
   </div>
 
-  <!-- CHECKPOINTS -->
   <div class="card">
-    <div class="checkpoints">
-      <div class="point">
-        <div class="dot"></div>
-        <span>Farm Collection Center — Nashik</span>
-      </div>
-      <div class="point">
-        <div class="dot"></div>
-        <span>Sorting & Loading Hub</span>
-      </div>
-      <div class="point">
-        <div class="dot"></div>
-        <span>Residential Area: Shanti Nagar (Selling)</span>
-      </div>
-      <div class="point">
-        <div class="dot"></div>
-        <span>Hotel Zone: Green Leaf & Nearby Hotels</span>
-      </div>
-      <div class="point">
-        <div class="dot"></div>
-        <span>Society Checkpoint: Rose Residency</span>
-      </div>
-    </div>
-
-    <div class="status">
-      🟢 Truck currently selling at Shanti Nagar
-    </div>
+    <div class="step" id="s1"><div class="dot"></div><span>Order Placed</span></div>
+    <div class="step" id="s2"><div class="dot"></div><span>Packed in Truck</span></div>
+    <div class="step" id="s3"><div class="dot"></div><span>Truck Started</span></div>
+    <div class="step" id="s4"><div class="dot"></div><span>Reached Checkpoint</span></div>
+    <div class="step" id="s5"><div class="dot"></div><span>Ready for Pickup</span></div>
   </div>
 
-  <div class="actions">
-    <button class="btn shop" onclick="location.href='product.html'">
-      View Available Vegetables
-    </button>
-    <button class="btn help" onclick="alert('FarmOS support coming soon ☎️')">
-      Help
-    </button>
-  </div>
+  <button class="btn" onclick="location.href='product.html'">
+    Continue Shopping
+  </button>
 
 </div>
 
+<script>
+const steps = [
+  {id:"s1", text:"Order confirmed"},
+  {id:"s2", text:"Packed in truck"},
+  {id:"s3", text:"Truck started from farm"},
+  {id:"s4", text:"Truck reached checkpoint"},
+  {id:"s5", text:"Collect your packed order"}
+];
+
+let index = 0;
+
+function updateStep(){
+  if(index >= steps.length) return;
+  document.getElementById(steps[index].id).classList.add("active");
+  document.getElementById("statusText").innerText = steps[index].text;
+  index++;
+}
+
+updateStep();
+setInterval(updateStep, 5000);
+</script>
+
 </body>
-</html>
+      </html>
