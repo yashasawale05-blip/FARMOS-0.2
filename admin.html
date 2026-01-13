@@ -2,177 +2,120 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS — Admin Dashboard</title>
+<title>FarmOS Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root{
-  --green:#16a34a;
-  --bg:#f9fafb;
-  --card:#ffffff;
-  --text:#111827;
-  --muted:#6b7280;
-  --border:#e5e7eb;
-  --accent:#fbbf24;
-}
-
 *{box-sizing:border-box}
 
 body{
   margin:0;
   font-family:Segoe UI, Arial;
-  background:linear-gradient(180deg,#f9fafb,#eef2f7);
-  color:var(--text);
+  background:#f8fafc;
+  color:#0f172a;
 }
 
 /* NAVBAR */
 .navbar{
-  padding:16px 26px;
+  background:#ffffff;
+  padding:16px 24px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:white;
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:10;
+  border-bottom:1px solid #e5e7eb;
 }
 
 .navbar strong{
-  font-size:18px;
-  color:var(--green);
+  color:#16a34a;
+  font-size:20px;
 }
 
 .navbar button{
-  background:none;
+  padding:8px 14px;
   border:none;
+  border-radius:10px;
+  background:#ef4444;
+  color:white;
   font-weight:700;
-  color:#ef4444;
   cursor:pointer;
 }
 
 /* CONTAINER */
 .container{
-  max-width:1000px;
+  max-width:900px;
   margin:30px auto;
   padding:20px;
 }
 
-/* HEADER CARD */
-.header{
-  background:var(--card);
-  border-radius:18px;
-  padding:24px;
-  box-shadow:0 10px 30px rgba(0,0,0,.06);
-  margin-bottom:24px;
-}
-
-.header h2{
-  margin:0;
-  color:var(--green);
-}
-.header p{
-  margin-top:6px;
-  color:var(--muted);
-}
-
-/* CHECKPOINT CARD */
+/* CARD */
 .card{
-  background:var(--card);
+  background:white;
   border-radius:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  padding:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
   margin-bottom:20px;
-  overflow:hidden;
 }
 
+/* CHECKPOINT */
 .checkpoint{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:18px 22px;
-  border-bottom:1px solid var(--border);
+  padding:14px 0;
+  border-bottom:1px solid #e5e7eb;
 }
-.checkpoint:last-child{
-  border-bottom:none;
-}
+.checkpoint:last-child{border:none}
 
 .info strong{
+  color:#16a34a;
   font-size:16px;
-}
-.info span{
-  font-size:13px;
-  color:var(--muted);
 }
 
 /* STATUS */
 .status{
-  font-size:13px;
   font-weight:700;
-  margin-bottom:6px;
 }
-.pending{color:var(--accent)}
-.reached{color:var(--green)}
+.pending{color:#f59e0b}
+.reached{color:#16a34a}
 
 /* BUTTON */
 .btn{
+  margin-top:6px;
   padding:8px 14px;
-  border-radius:10px;
   border:none;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
+  border-radius:10px;
+  background:#16a34a;
   color:white;
-  font-weight:800;
+  font-weight:700;
   cursor:pointer;
-  font-size:13px;
-}
-
-/* FOOTER NOTE */
-.note{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:18px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- SESSION CHECK -->
-<script>
-const session = JSON.parse(localStorage.getItem("farmOS_admin"));
-if(!session || !session.login){
-  window.location.href="admin-login.html";
-}
-</script>
-
-<!-- NAV -->
 <div class="navbar">
-  <strong>FarmOS 🌿 Admin Panel</strong>
+  <strong>FarmOS Admin 🚚</strong>
   <button onclick="logout()">Logout</button>
 </div>
 
 <div class="container">
 
-  <div class="header">
-    <h2>🚚 Truck Checkpoint Control</h2>
-    <p>Farmer-driven distribution • No doorstep delivery • Order-code based pickup</p>
+  <div class="card">
+    <h2>Truck Checkpoints</h2>
+    <p>Farmer-led distribution control panel</p>
   </div>
 
   <div class="card" id="checkpointList"></div>
-
-  <div class="note">
-    ✔ Orders are pre-packed & stamped at night<br>
-    ✔ Truck stops only at fixed checkpoints<br>
-    ✔ Farmers hand over packets after order code verification
-  </div>
 
 </div>
 
 <script>
 const checkpoints = [
   {name:"Main Vegetable Market", orders:42, status:"pending"},
-  {name:"Hotel Zone – East", orders:18, status:"pending"},
-  {name:"Residential Area – Sector 5", orders:27, status:"pending"},
-  {name:"Highway Outlet Stop", orders:15, status:"pending"}
+  {name:"Hotel Zone East", orders:18, status:"pending"},
+  {name:"Residential Sector 5", orders:27, status:"pending"},
+  {name:"Highway Pickup Point", orders:15, status:"pending"}
 ];
 
 function render(){
@@ -182,11 +125,11 @@ function render(){
       <div class="checkpoint">
         <div class="info">
           <strong>${c.name}</strong><br>
-          <span>Orders Packed: ${c.orders}</span>
+          Orders: ${c.orders}
         </div>
         <div>
           <div class="status ${c.status}">
-            ${c.status === "pending" ? "Awaiting Truck" : "Truck Reached"}
+            ${c.status === "pending" ? "Pending" : "Reached"}
           </div>
           ${
             c.status === "pending"
@@ -200,14 +143,14 @@ function render(){
   document.getElementById("checkpointList").innerHTML = html;
 }
 
-function markReached(index){
-  checkpoints[index].status = "reached";
+function markReached(i){
+  checkpoints[i].status = "reached";
   render();
 }
 
 function logout(){
-  localStorage.removeItem("farmOS_admin");
-  window.location.href="admin-login.html";
+  alert("Logged out");
+  location.href="index.html";
 }
 
 render();
