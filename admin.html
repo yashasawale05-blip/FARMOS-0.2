@@ -8,48 +8,67 @@
 <style>
 :root{
   --green:#22c55e;
-  --bg:#020617;
-  --card:#111827;
-  --accent:#fbbf24;
-  --line:#1f2937;
+  --bg:#f9fafb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
 }
 
 body{
   margin:0;
   font-family:Segoe UI, Arial;
-  background:linear-gradient(180deg,#020617,#000);
-  color:#e5e7eb;
+  background:var(--bg);
+  color:var(--text);
 }
 
 /* NAVBAR */
 .navbar{
-  padding:14px 22px;
+  padding:16px 26px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(14px);
+  background:#ffffff;
+  border-bottom:1px solid var(--border);
+}
+.navbar strong{
+  font-size:18px;
 }
 .navbar a{
-  color:#e5e7eb;
+  color:var(--green);
   text-decoration:none;
   font-weight:600;
 }
 
 /* CONTAINER */
 .container{
-  max-width:800px;
-  margin:30px auto;
+  max-width:900px;
+  margin:32px auto;
+  padding:0 20px;
+}
+
+/* HEADER CARD */
+.header-card{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
+  border-radius:20px;
   padding:22px;
+  margin-bottom:26px;
+}
+.header-card h2{
+  margin:0;
+}
+.header-card p{
+  opacity:.9;
+  margin-top:6px;
 }
 
 /* CARD */
 .card{
   background:var(--card);
-  border-radius:20px;
+  border-radius:18px;
   padding:20px;
-  box-shadow:0 0 30px rgba(34,197,94,.15);
-  margin-bottom:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
 }
 
 /* CHECKPOINT */
@@ -57,17 +76,18 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:14px;
-  border-bottom:1px solid var(--line);
+  padding:16px;
+  border-bottom:1px solid var(--border);
 }
 .checkpoint:last-child{border:none}
 
-.info{
-  font-size:14px;
-}
 .info strong{
   font-size:16px;
-  color:var(--green);
+  color:var(--text);
+}
+.info{
+  font-size:14px;
+  color:var(--muted);
 }
 
 /* STATUS */
@@ -75,24 +95,30 @@ body{
   font-weight:700;
   font-size:14px;
 }
-.pending{color:#fbbf24}
+.pending{color:#f59e0b}
 .reached{color:#22c55e}
 
 /* BUTTON */
 .btn{
+  margin-top:6px;
   padding:8px 14px;
   border:none;
   border-radius:10px;
   cursor:pointer;
   font-weight:700;
   background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;
 }
 
-/* FOOTER NOTE */
+/* NOTE */
 .note{
-  margin-top:20px;
+  margin-top:26px;
   font-size:13px;
-  opacity:.7;
+  color:var(--muted);
+  background:#ffffff;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 10px 20px rgba(0,0,0,.05);
 }
 </style>
 </head>
@@ -106,16 +132,17 @@ body{
 
 <div class="container">
 
-  <div class="card">
-    <h2>🚚 Truck Checkpoints</h2>
-    <p>Live operational control — farmer distribution model</p>
+  <div class="header-card">
+    <h2>🚚 Truck Checkpoint Control</h2>
+    <p>Farmer-driven distribution • Order code handover system</p>
   </div>
 
   <div class="card" id="checkpointList"></div>
 
   <div class="note">
-    ✔ Admin updates checkpoint status manually after truck arrival.<br>
-    ✔ Customers collect orders using stamped Order ID.
+    ✔ Farmers hand over pre-packed orders at checkpoints<br>
+    ✔ Order code stamped on packets<br>
+    ✔ Admin manually confirms truck arrival
   </div>
 
 </div>
