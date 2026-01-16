@@ -45,14 +45,12 @@ body{
   box-shadow:0 0 30px rgba(34,197,94,.2);
 }
 
-/* HEAD */
 .container h2{
   text-align:center;
   margin-bottom:20px;
   color:var(--green);
 }
 
-/* INPUTS */
 input, textarea{
   width:100%;
   padding:14px;
@@ -66,7 +64,6 @@ input, textarea{
 }
 textarea{resize:none;height:90px}
 
-/* PAYMENT METHODS */
 .methods{
   display:flex;
   gap:10px;
@@ -86,7 +83,6 @@ textarea{resize:none;height:90px}
   box-shadow:0 0 15px rgba(34,197,94,.4);
 }
 
-/* BUTTON */
 .pay-btn{
   width:100%;
   padding:16px;
@@ -99,7 +95,6 @@ textarea{resize:none;height:90px}
   color:#000;
 }
 
-/* LOADER */
 .loader{
   display:none;
   text-align:center;
@@ -128,19 +123,16 @@ textarea{resize:none;height:90px}
 <div class="container">
   <h2>Delivery & Payment</h2>
 
-  <!-- ADDRESS -->
   <input type="text" id="name" placeholder="Full Name">
   <input type="text" id="phone" placeholder="Mobile Number">
   <textarea id="address" placeholder="Complete Address"></textarea>
 
-  <!-- PAYMENT METHODS -->
   <div class="methods">
     <div class="method active" onclick="selectMethod(this)">UPI</div>
     <div class="method" onclick="selectMethod(this)">Card</div>
     <div class="method" onclick="selectMethod(this)">COD</div>
   </div>
 
-  <!-- PAY -->
   <button class="pay-btn" onclick="payNow()">Pay Now</button>
 
   <div class="loader" id="loader">
@@ -155,6 +147,10 @@ function selectMethod(el){
   el.classList.add('active');
 }
 
+function generateOrderId(){
+  return "FMOS" + Math.floor(1000 + Math.random() * 9000);
+}
+
 function payNow(){
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
@@ -165,11 +161,49 @@ function payNow(){
     return;
   }
 
+  let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+  if(Object.keys(cart).length === 0){
+    alert("Cart is empty!");
+    return;
+  }
+
+  let total = 0;
+  let items = [];
+
+  for(let k in cart){
+    total += cart[k].kg * cart[k].price;
+    items.push({
+      name: k,
+      kg: cart[k].kg,
+      price: cart[k].price
+    });
+  }
+
+  const orderId = generateOrderId();
+
+  let newOrder = {
+    id: orderId,
+    customer: name,
+    phone: phone,
+    address: address,
+    items: items,
+    total: total,
+    status: "pending",
+    time: new Date().toLocaleString()
+  };
+
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  orders.push(newOrder);
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+
   document.querySelector(".pay-btn").style.display="none";
   document.getElementById("loader").style.display="block";
 
   setTimeout(()=>{
-    alert("✅ Payment Successful!\nYour order is confirmed 🌿");
+    alert("✅ Payment Successful!\nYour order ID: " + orderId);
     localStorage.removeItem("cart");
     window.location.href="tracking.html";
   },2000);
