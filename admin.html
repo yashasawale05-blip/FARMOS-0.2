@@ -1,9 +1,10 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>FarmOS Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 *{box-sizing:border-box}
 
@@ -29,14 +30,20 @@ body{
   font-size:20px;
 }
 
-.navbar button{
+/* BUTTON STYLE */
+.btn{
   padding:8px 14px;
   border:none;
   border-radius:10px;
-  background:#ef4444;
+  background:#16a34a;
   color:white;
   font-weight:700;
   cursor:pointer;
+  margin-left:10px;
+}
+
+.logout{
+  background:#ef4444;
 }
 
 /* CONTAINER */
@@ -77,16 +84,9 @@ body{
 .pending{color:#f59e0b}
 .reached{color:#16a34a}
 
-/* BUTTON */
-.btn{
-  margin-top:6px;
-  padding:8px 14px;
-  border:none;
-  border-radius:10px;
-  background:#16a34a;
-  color:white;
-  font-weight:700;
-  cursor:pointer;
+.nav-actions{
+  display:flex;
+  gap:10px;
 }
 </style>
 </head>
@@ -95,24 +95,37 @@ body{
 
 <div class="navbar">
   <strong>FarmOS Admin 🚚</strong>
-  <button onclick="logout()">Logout</button>
+
+  <div class="nav-actions">
+    <button class="btn" onclick="location.href='admin-orders.html'">
+      Orders
+    </button>
+
+    <button class="btn" onclick="location.href='admin-history.html'">
+      Delivered History
+    </button>
+
+    <button class="btn logout" onclick="logout()">
+      Logout
+    </button>
+  </div>
 </div>
 
 <div class="container">
 
   <div class="card">
-  <h2>Admin Control Panel</h2>
-  <p>Manage orders and truck checkpoints</p>
+    <h2>Admin Control Panel</h2>
+    <p>Manage orders and truck checkpoints</p>
 
-  <div style="margin-top:15px; display:flex; gap:10px;">
-    <button class="btn" onclick="location.href='admin-orders.html'">
-      View Customer Orders
-    </button>
+    <div style="margin-top:15px; display:flex; gap:10px;">
+      <button class="btn" onclick="location.href='admin-orders.html'">
+        View Customer Orders
+      </button>
 
-    <button class="btn" onclick="location.href='admin.html'">
-      Truck Checkpoints
-    </button>
-  </div>
+      <button class="btn" onclick="location.href='admin-history.html'">
+        Delivered Order History
+      </button>
+    </div>
   </div>
 
   <div class="card" id="checkpointList"></div>
@@ -159,7 +172,7 @@ function markReached(i){
 
 function logout(){
   alert("Logged out");
-  location.href="admin-login.html"; // redirect to login page
+  location.href="admin-login.html";
 }
 
 render();
@@ -167,4 +180,3 @@ render();
 
 </body>
 </html>
-  
