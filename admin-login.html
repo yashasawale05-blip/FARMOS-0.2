@@ -76,7 +76,7 @@ const ADMIN_PASSWORD = "Farmos123"; // set your password here
 function checkLogin(){
   const pass = document.getElementById("password").value;
   const error = document.getElementById("errorMsg");
-  if(pass === ADMIN_PASSWORD){
+  if(pass === "admin123"){
     window.location.href = "admin.html"; // redirect on success
   } else {
     error.style.display = "block";
