@@ -101,8 +101,18 @@ body{
 <div class="container">
 
   <div class="card">
-    <h2>Truck Checkpoints</h2>
-    <p>Farmer-led distribution control panel</p>
+  <h2>Admin Control Panel</h2>
+  <p>Manage orders and truck checkpoints</p>
+
+  <div style="margin-top:15px; display:flex; gap:10px;">
+    <button class="btn" onclick="location.href='admin-orders.html'">
+      View Customer Orders
+    </button>
+
+    <button class="btn" onclick="location.href='admin.html'">
+      Truck Checkpoints
+    </button>
+  </div>
   </div>
 
   <div class="card" id="checkpointList"></div>
