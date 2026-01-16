@@ -2,188 +2,138 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FarmOS — Premium Fresh</title>
+<title>FarmOS – Fresh From Farmers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root{
-  --green:#4caf50;
-  --dark:#0f1b13;
-  --card:#16261c;
-}
-
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--dark);
-  color:#eaeaea;
+  font-family:Segoe UI, Arial;
+  background:#f1f5f9;
 }
 
-/* Navbar */
+/* NAVBAR */
 .navbar{
-  background:#0b1510;
-  padding:15px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  position:sticky;
-  top:0;
-  z-index:100;
+  padding:16px 24px;
+  background:white;
+  border-bottom:1px solid #e5e7eb;
 }
 
-.navbar h2{
-  color:var(--green);
-  margin:0;
+.navbar strong{
+  font-size:20px;
+  color:#16a34a;
 }
 
 .navbar a{
-  color:#ddd;
   text-decoration:none;
-  margin-left:18px;
-  font-weight:bold;
+  margin-left:16px;
+  color:#0f172a;
+  font-weight:600;
 }
 
-.navbar a:hover{
-  color:var(--green);
-}
-
-/* Hero */
+/* HERO SECTION */
 .hero{
-  height:90vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),
-    url("https://images.unsplash.com/photo-1567306226416-28f0efdc88ce");
-  background-size:cover;
-  background-position:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   text-align:center;
+  padding:60px 20px;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:white;
 }
 
 .hero h1{
-  font-size:52px;
-  color:#fff;
-  margin-bottom:15px;
+  margin:0;
+  font-size:32px;
 }
 
 .hero p{
-  font-size:20px;
-  color:#cfded0;
-  margin-bottom:30px;
+  margin-top:10px;
+  opacity:.9;
 }
 
-.hero button{
-  background:var(--green);
-  color:#0b1510;
-  border:none;
-  padding:14px 30px;
-  border-radius:30px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
+/* BUTTONS */
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 20px;
+  background:white;
+  color:#16a34a;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:700;
 }
 
-/* Features */
-.features{
-  padding:60px 20px;
-  text-align:center;
-}
-
-.features h2{
-  color:var(--green);
-  margin-bottom:35px;
-}
-
-.feature-box{
-  max-width:1100px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:22px;
+/* FEATURES */
+.container{
+  max-width:900px;
+  margin:30px auto;
+  padding:20px;
 }
 
 .card{
-  background:var(--card);
-  padding:28px;
+  background:white;
+  padding:20px;
   border-radius:18px;
-  box-shadow:0 15px 35px rgba(0,0,0,0.5);
-  transition:transform .2s;
-}
-
-.card:hover{
-  transform:translateY(-8px);
-}
-
-.card h3{
-  color:var(--green);
-  margin-bottom:10px;
-}
-
-/* Footer */
-footer{
-  background:#0b1510;
-  color:#aaa;
-  text-align:center;
-  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 10px 20px rgba(0,0,0,.08);
 }
 </style>
+
 </head>
 
 <body>
 
-<!-- Navbar -->
+<!-- NAVBAR -->
 <div class="navbar">
-  <h2>FarmOS 🌿</h2>
+  <strong>FarmOS 🌿</strong>
+
   <div>
-    <a href="index.html">Home</a>
-    <a href="products.html">Shop</a>
+    <a href="product.html">Shop</a>
     <a href="checkout.html">Cart</a>
-    <a href="adminlogin.html">Admin</a>
+
+    <!-- VERY IMPORTANT CHANGE -->
+    <a href="admin-login.html">Admin</a>
   </div>
 </div>
 
-<!-- Hero -->
-<section class="hero">
-  <div>
-    <h1>Premium Fresh Vegetables</h1>
-    <p>Direct from farms • No middlemen • Pure quality</p>
-    <button onclick="location.href='products.html'">
-      Shop Now 🛒
-    </button>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Fresh Vegetables Direct From Farmers</h1>
+  <p>No middleman – fair price for farmers and customers</p>
+
+  <a class="btn" href="product.html">Start Shopping</a>
+</div>
+
+
+<!-- INFO SECTION -->
+<div class="container">
+
+  <div class="card">
+    <h3>How FarmOS Works?</h3>
+    <p>
+      Customers place orders in the evening, farmers pack them at night,
+      and next morning truck delivers at checkpoints.
+    </p>
   </div>
-</section>
 
-<!-- Features -->
-<section class="features">
-  <h2>Why FarmOS is Different</h2>
-
-  <div class="feature-box">
-    <div class="card">
-      <h3>🌱 Farm Direct</h3>
-      <p>Fresh vegetables directly sourced from trusted farmers.</p>
-    </div>
-
-    <div class="card">
-      <h3>💎 Premium Quality</h3>
-      <p>Handpicked produce for health-conscious families.</p>
-    </div>
-
-    <div class="card">
-      <h3>🚚 Fast Delivery</h3>
-      <p>Quick doorstep delivery with freshness intact.</p>
-    </div>
-
-    <div class="card">
-      <h3>💰 Fair Pricing</h3>
-      <p>Best value without compromising quality.</p>
-    </div>
+  <div class="card">
+    <h3>Our Mission</h3>
+    <p>
+      Support Indian farmers by connecting them directly with customers
+      without any commission or brokers.
+    </p>
   </div>
-</section>
 
-<footer>
-  © 2025 FarmOS • Premium Farm Experience 🌿
-</footer>
+  <div class="card">
+    <h3>Why Choose Us?</h3>
+    <p>
+      Fresh, chemical-free vegetables at better prices than market.
+    </p>
+  </div>
+
+</div>
 
 </body>
 </html>
