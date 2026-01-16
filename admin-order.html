@@ -1,1 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FarmOS Admin – Orders</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI, Arial;
+  background:#f1f5f9;
+  color:#0f172a;
+}
+
+/* NAVBAR */
+.navbar{
+  background:#ffffff;
+  padding:16px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.navbar strong{
+  color:#16a34a;
+  font-size:20px;
+}
+
+.navbar a{
+  text-decoration:none;
+  color:#0f172a;
+  margin-left:20px;
+  font-weight:600;
+}
+
+/* CONTAINER */
+.container{
+  max-width:1000px;
+  margin:30px auto;
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  margin-bottom:20px;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:12px;
+  text-align:left;
+  border-bottom:1px solid #e5e7eb;
+}
+
+th{
+  background:#f8fafc;
+}
+
+.status{
+  font-weight:bold;
+}
+
+.pending{color:#f59e0b}
+.packed{color:#3b82f6}
+.delivered{color:#16a34a}
+
+/* BUTTONS */
+.btn{
+  padding:6px 12px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:700;
+  margin-right:6px;
+}
+
+.pack{
+  background:#3b82f6;
+  color:white;
+}
+
+.deliver{
+  background:#16a34a;
+  color:white;
+}
+
+.view{
+  background:#f59e0b;
+  color:white;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-content{
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  width:400px;
+}
+
+.close{
+  float:right;
+  cursor:pointer;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <strong>FarmOS Admin 🌿</strong>
+
+  <div>
+    <a href="admin.html">Dashboard</a>
+    <a href="admin-orders.html">Orders</a>
+    <a href="index.html">Home</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h2>📦 All Orders</h2>
+    <p>Manage hotel and customer orders</p>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="orderList"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">X</span>
+    <h3>Order Details</h3>
+
+    <div id="modalData"></div>
+  </div>
+</div>
+
+<script>
+
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+// If no orders exist – create sample for demo
+if(orders.length === 0){
+  orders = [
+    {
+      id:"FM101",
+      customer:"Hotel Raj",
+      total:2400,
+      status:"pending",
+      items:[
+        {name:"Tomato",kg:20},
+        {name:"Potato",kg:15}
+      ]
+    },
+    {
+      id:"FM102",
+      customer:"Sunrise Restaurant",
+      total:1800,
+      status:"packed",
+      items:[
+        {name:"Onion",kg:10},
+        {name:"Carrot",kg:8}
+      ]
+    }
+  ];
+
+  localStorage.setItem("orders",JSON.stringify(orders));
+}
+
+function render(){
+
+  let html="";
+
+  orders.forEach((o,i)=>{
+
+    html += `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.customer}</td>
+        <td>₹${o.total}</td>
+
+        <td class="status ${o.status}">
+          ${o.status.toUpperCase()}
+        </td>
+
+        <td>
+          <button class="btn view" onclick="view(${i})">View</button>
+
+          ${
+            o.status === "pending"
+            ? `<button class="btn pack" onclick="markPacked(${i})">Packed</button>`
+            : ""
+          }
+
+          ${
+            o.status === "packed"
+            ? `<button class="btn deliver" onclick="markDelivered(${i})">Delivered</button>`
+            : ""
+          }
+        </td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("orderList").innerHTML = html;
+}
+
+function markPacked(i){
+  orders[i].status = "packed";
+  save();
+}
+
+function markDelivered(i){
+  orders[i].status = "delivered";
+  save();
+}
+
+function save(){
+  localStorage.setItem("orders",JSON.stringify(orders));
+  render();
+}
+
+function view(i){
+
+  let o = orders[i];
+
+  let html = `
+    <strong>Order ID:</strong> ${o.id}<br>
+    <strong>Customer:</strong> ${o.customer}<br>
+    <strong>Total:</strong> ₹${o.total}<br>
+    <strong>Status:</strong> ${o.status}<br><br>
+
+    <strong>Items:</strong><br>
+  `;
+
+  o.items.forEach(it=>{
+    html += `- ${it.name} : ${it.kg} kg<br>`;
+  });
+
+  document.getElementById("modalData").innerHTML = html;
+  document.getElementById("modal").style.display="flex";
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display="none";
+}
+
+render();
+
+</script>
+
+</body>
+  </html>
