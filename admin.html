@@ -53,46 +53,65 @@ body{margin:0;font-family:Segoe UI, Arial;background:#f8fafc;color:#0f172a;}
 </div>
 
 <script>
-let checkpoints = JSON.parse(localStorage.getItem("checkpoints"));
-if(!checkpoints){
-  checkpoints = [
-    {name:"Main Vegetable Market", orders:42, status:"pending"},
-    {name:"Hotel Zone East", orders:18, status:"pending"},
-    {name:"Residential Sector 5", orders:27, status:"pending"},
-    {name:"Highway Pickup Point", orders:15, status:"pending"}
-  ];
-  localStorage.setItem("checkpoints", JSON.stringify(checkpoints));
-}
+// Load active customer orders from localStorage
+let checkpoints = JSON.parse(localStorage.getItem("customerOrders")) || [];
 
 function render(){
   let html = "";
-  checkpoints.forEach((c,i)=>{
-    html+=`
-      <div class="checkpoint">
-        <div class="info"><strong>${c.name}</strong><br>Orders: ${c.orders}</div>
-        <div>
-          <div class="status ${c.status}">${c.status === "pending" ? "Pending" : "Reached"}</div>
-          ${c.status === "pending" ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>` : ``}
+
+  if(checkpoints.length === 0){
+    html = "<p>No active orders yet</p>";
+  } else {
+    checkpoints.forEach((c, i) => {
+      html += `
+        <div class="checkpoint">
+          <div class="info">
+            <strong>${c.customer}</strong><br>
+            Address: ${c.address}<br>
+            Veggie Packs: ${c.items}
+          </div>
+          <div>
+            <div class="status ${c.status}">
+              ${c.status === "pending" ? "Pending" : "Delivered"}
+            </div>
+            ${
+              c.status === "pending"
+                ? `<button class="btn" onclick="markReached(${i})">Mark Delivered</button>`
+                : ``
+            }
+          </div>
         </div>
-      </div>
-    `;
-  });
+      `;
+    });
+  }
+
   document.getElementById("checkpointList").innerHTML = html;
-}
+  }
 
 function markReached(i){
-  if(checkpoints[i].status==="reached") return;
-  checkpoints[i].status="reached";
-  localStorage.setItem("checkpoints", JSON.stringify(checkpoints));
+  let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+  let deliveredHistory = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
 
-  let history = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
-  history.push({
-    id:"ORD-"+Date.now(),
-    customer:checkpoints[i].name,
-    items:checkpoints[i].orders,
-    date:new Date().toLocaleString()
+  let order = orders[i];
+  if(order.status === "delivered") return;
+
+  // mark as delivered
+  order.status = "delivered";
+
+  // push to delivered history
+  deliveredHistory.push({
+    id: order.id,
+    customer: order.customer,
+    items: order.items,
+    date: new Date().toLocaleString()
   });
-  localStorage.setItem("deliveredHistory", JSON.stringify(history));
+
+  // save back
+  orders[i] = order;
+  localStorage.setItem("customerOrders", JSON.stringify(orders));
+  localStorage.setItem("deliveredHistory", JSON.stringify(deliveredHistory));
+
+  checkpoints = orders; // update the array used for render
   render();
   updateStats();
 }
