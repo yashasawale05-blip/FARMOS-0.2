@@ -157,12 +157,17 @@ body{
 </div>
 
 <script>
-const checkpoints = [
-  {name:"Main Vegetable Market", orders:42, status:"pending"},
-  {name:"Hotel Zone East", orders:18, status:"pending"},
-  {name:"Residential Sector 5", orders:27, status:"pending"},
-  {name:"Highway Pickup Point", orders:15, status:"pending"}
-];
+let checkpoints = JSON.parse(localStorage.getItem("checkpoints"));
+
+if(!checkpoints){
+  checkpoints = [
+    {name:"Main Vegetable Market", orders:42, status:"pending"},
+    {name:"Hotel Zone East", orders:18, status:"pending"},
+    {name:"Residential Sector 5", orders:27, status:"pending"},
+    {name:"Highway Pickup Point", orders:15, status:"pending"}
+  ];
+  localStorage.setItem("checkpoints", JSON.stringify(checkpoints));
+}
 
 function render(){
   let html = "";
@@ -199,6 +204,10 @@ function render(){
 
   checkpoints[i].status = "reached";
 
+  // save checkpoints permanently
+  localStorage.setItem("checkpoints", JSON.stringify(checkpoints));
+
+  // save delivery history
   let history = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
 
   history.push({
@@ -212,7 +221,7 @@ function render(){
 
   render();
   updateStats();
-}
+  }
   function updateStats(){
 
   let deliveredHistory = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
