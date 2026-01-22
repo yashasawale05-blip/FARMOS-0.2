@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:Segoe UI, Arial;
@@ -16,7 +15,6 @@ body{
   align-items:center;
   height:100vh;
 }
-
 .login-box{
   background:white;
   padding:40px 30px;
@@ -26,12 +24,10 @@ body{
   width:90%;
   max-width:400px;
 }
-
 .login-box h2{
   color:#16a34a;
   margin-bottom:20px;
 }
-
 .login-box input{
   width:100%;
   padding:12px;
@@ -40,7 +36,6 @@ body{
   border:1px solid #e5e7eb;
   font-size:16px;
 }
-
 .login-box button{
   width:100%;
   padding:14px;
@@ -52,7 +47,6 @@ body{
   cursor:pointer;
   font-size:16px;
 }
-
 .error-msg{
   color:#ef4444;
   margin-bottom:12px;
@@ -71,13 +65,13 @@ body{
 </div>
 
 <script>
-const ADMIN_PASSWORD = "Farmos123"; // set your password here
+const ADMIN_PASSWORD = "Farmos123"; // Set your password here
 
 function checkLogin(){
   const pass = document.getElementById("password").value;
   const error = document.getElementById("errorMsg");
-  if(pass === "admin123"){
-    window.location.href = "admin.html"; // redirect on success
+  if(pass === ADMIN_PASSWORD){
+    window.location.href = "admin.html"; 
   } else {
     error.style.display = "block";
   }
