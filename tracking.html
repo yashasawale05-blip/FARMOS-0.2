@@ -175,7 +175,7 @@ const steps = [
   {id:"s2", text:"Packed in truck"},
   {id:"s3", text:"Truck started from farm"},
   {id:"s4", text:"Truck reached checkpoint"},
-  {id:"s5", text:"Collect your packed order"}
+  {id:"s5", text:"Ready for pickup"}
 ];
 
 let index = 0;
@@ -188,17 +188,20 @@ function updateStep(){
 }
 
 updateStep();
-setInterval(updateStep, 5000);
+setInterval(updateStep, 4000);
 
-// Load last order ID dynamically from localStorage
-let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
-if(orders.length > 0){
-    document.getElementById("orderID").innerText = orders[orders.length - 1].id;
+/* 🔥 LOAD LAST ORDER CORRECTLY */
+const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+if(orders.length === 0){
+  document.getElementById("orderID").innerText = "No Order Found";
+}else{
+  const lastOrder = orders[orders.length - 1];
+  document.getElementById("orderID").innerText = "#" + lastOrder.id;
 }
 
-// Continue shopping button
 function continueShopping(){
-    window.location.href = "index.html";
+  window.location.href = "index.html";
 }
 </script>
 
