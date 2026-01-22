@@ -114,8 +114,32 @@ body{
 <div class="container">
 
   <div class="card">
-    <h2>Admin Control Panel</h2>
-    <p>Manage orders and truck checkpoints</p>
+  <h2>📊 Order Statistics</h2>
+
+  <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:15px; margin-top:15px;">
+
+    <div class="card">
+      <strong>Total Orders</strong><br>
+      <span id="totalOrders">0</span>
+    </div>
+
+    <div class="card">
+      <strong>Delivered</strong><br>
+      <span id="deliveredOrders" style="color:#16a34a">0</span>
+    </div>
+
+    <div class="card">
+      <strong>Pending</strong><br>
+      <span id="pendingOrders" style="color:#f59e0b">0</span>
+    </div>
+
+    <div class="card">
+      <strong>Total Veggie Packs</strong><br>
+      <span id="totalPacks">0</span>
+    </div>
+
+  </div>
+  </div>
 
     <div style="margin-top:15px; display:flex; gap:10px;">
       <button class="btn" onclick="location.href='admin-orders.html'">
@@ -185,6 +209,21 @@ function markReached(i){
 
   render();
 }
+  function updateStats(){
+
+  let deliveredHistory = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
+
+  let deliveredCount = deliveredHistory.length;
+  let totalOrders = checkpoints.reduce((sum,c)=> sum + c.orders, 0);
+  let deliveredOrders = deliveredHistory.reduce((sum,h)=> sum + parseInt(h.items), 0);
+
+  let pendingOrders = totalOrders - deliveredOrders;
+
+  document.getElementById("totalOrders").innerText = totalOrders;
+  document.getElementById("deliveredOrders").innerText = deliveredOrders;
+  document.getElementById("pendingOrders").innerText = pendingOrders < 0 ? 0 : pendingOrders;
+  document.getElementById("totalPacks").innerText = totalOrders;
+  }
 
 function logout(){
   alert("Logged out successfully");
@@ -192,6 +231,7 @@ function logout(){
 }
 
 render();
+updateStats();
 </script>
 
 </body>
