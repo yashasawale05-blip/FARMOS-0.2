@@ -4,14 +4,12 @@
 <meta charset="UTF-8">
 <title>Customer Orders</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
 body{
   margin:0;
   font-family:Segoe UI, Arial;
   background:#f8fafc;
 }
-
 .navbar{
   background:white;
   padding:16px 24px;
@@ -20,18 +18,15 @@ body{
   align-items:center;
   border-bottom:1px solid #e5e7eb;
 }
-
 .navbar strong{
   color:#16a34a;
   font-size:20px;
 }
-
 .container{
   max-width:1000px;
   margin:30px auto;
   padding:20px;
 }
-
 .card{
   background:white;
   border-radius:18px;
@@ -39,14 +34,11 @@ body{
   box-shadow:0 10px 25px rgba(0,0,0,.08);
   margin-bottom:20px;
 }
-
-.order{
+.order-item{
   padding:12px 0;
   border-bottom:1px solid #e5e7eb;
 }
-
-.order:last-child{border:none}
-
+.order-item:last-child{border:none}
 .btn{
   padding:8px 14px;
   border:none;
@@ -55,81 +47,60 @@ body{
   color:white;
   font-weight:700;
   cursor:pointer;
+  margin-top:6px;
 }
-
 .pending{color:#f59e0b;font-weight:bold}
 .delivered{color:#16a34a;font-weight:bold}
 </style>
 </head>
-
 <body>
-
 <div class="navbar">
   <strong>Customer Orders 📦</strong>
   <button class="btn" onclick="location.href='admin.html'">Back</button>
 </div>
-
 <div class="container">
-
   <div class="card">
     <h2>Active Orders</h2>
     <p>Orders placed by customers</p>
   </div>
-
   <div class="card" id="orderList"></div>
-
 </div>
 
 <script>
-// DEMO DATA (REMOVE LATER WHEN CUSTOMER FLOW READY)
+// DEMO DATA: only if no previous orders exist
 if(!localStorage.getItem("customerOrders")){
   localStorage.setItem("customerOrders", JSON.stringify([
-    {
-      id:"ORD-1001",
-      customer:"Rahul",
-      items:5,
-      address:"Mumbai",
-      status:"pending"
-    },
-    {
-      id:"ORD-1002",
-      customer:"Amit",
-      items:3,
-      address:"Pune",
-      status:"pending"
-    }
+    {id:"ORD-1001", customer:"Rahul", items:5, address:"Mumbai", status:"pending"},
+    {id:"ORD-1002", customer:"Amit", items:3, address:"Pune", status:"pending"}
   ]));
 }
 
 function loadOrders(){
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
+  let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+  const container = document.getElementById("orderList");
   if(orders.length === 0){
-    document.getElementById("ordersList").innerHTML = "<p>No orders yet</p>";
+    container.innerHTML = "<p>No active orders</p>";
     return;
   }
-
   let html = "";
-  orders.forEach(o => {
+  orders.forEach((o,i)=>{
     html += `
       <div class="order-item">
         <strong>Order ID:</strong> ${o.id}<br>
         <strong>Customer:</strong> ${o.customer}<br>
         <strong>Items:</strong> ${o.items}<br>
-        <strong>Status:</strong> ${o.status}
+        <strong>Address:</strong> ${o.address}<br>
+        <strong>Status:</strong> <span class="${o.status}">${o.status}</span><br>
+        <button class="btn" onclick="markDelivered(${i})">Mark Delivered</button>
       </div>
     `;
   });
-
-  document.getElementById("ordersList").innerHTML = html;
+  container.innerHTML = html;
 }
 
-loadOrders();
 function markDelivered(index){
-
   let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
   let deliveredHistory = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
-
   let order = orders[index];
 
   // move to delivered history
@@ -137,12 +108,14 @@ function markDelivered(index){
     id: order.id,
     customer: order.customer,
     items: order.items,
+    address: order.address,
     date: new Date().toLocaleString()
   });
 
   // remove from active orders
   orders.splice(index,1);
 
+  // save back
   localStorage.setItem("customerOrders", JSON.stringify(orders));
   localStorage.setItem("deliveredHistory", JSON.stringify(deliveredHistory));
 
@@ -151,6 +124,5 @@ function markDelivered(index){
 
 loadOrders();
 </script>
-
 </body>
-</html>
+</html>  
