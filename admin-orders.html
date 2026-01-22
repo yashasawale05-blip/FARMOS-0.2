@@ -77,27 +77,25 @@ if(!localStorage.getItem("customerOrders")){
 
 function loadOrders(){
   let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
-  const container = document.getElementById("orderList");
   if(orders.length === 0){
-    container.innerHTML = "<p>No active orders</p>";
+    document.getElementById("orderList").innerHTML = "<p>No orders yet</p>";
     return;
   }
   let html = "";
-  orders.forEach((o,i)=>{
+  orders.forEach((o, index) => {
     html += `
-      <div class="order-item">
+      <div class="order">
         <strong>Order ID:</strong> ${o.id}<br>
         <strong>Customer:</strong> ${o.customer}<br>
         <strong>Items:</strong> ${o.items}<br>
         <strong>Address:</strong> ${o.address}<br>
         <strong>Status:</strong> <span class="${o.status}">${o.status}</span><br>
-        <button class="btn" onclick="markDelivered(${i})">Mark Delivered</button>
+        ${o.status === "pending" ? `<button class="btn" onclick="markDelivered(${index})">Mark Delivered</button>` : ""}
       </div>
     `;
   });
-  container.innerHTML = html;
-}
-
+  document.getElementById("orderList").innerHTML = html;
+  }
 function markDelivered(index){
   let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
   let deliveredHistory = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
@@ -108,19 +106,18 @@ function markDelivered(index){
     id: order.id,
     customer: order.customer,
     items: order.items,
-    address: order.address,
+    details: order.details,
     date: new Date().toLocaleString()
   });
 
   // remove from active orders
-  orders.splice(index,1);
+  orders.splice(index, 1);
 
-  // save back
   localStorage.setItem("customerOrders", JSON.stringify(orders));
   localStorage.setItem("deliveredHistory", JSON.stringify(deliveredHistory));
 
   loadOrders();
-}
+  }
 
 loadOrders();
 </script>
