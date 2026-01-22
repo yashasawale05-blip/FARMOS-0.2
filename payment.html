@@ -148,7 +148,7 @@ function selectMethod(el){
 }
 
 function generateOrderId(){
-  return "FMOS" + Math.floor(1000 + Math.random() * 9000);
+  return "FMOS" + Date.now();
 }
 
 function payNow(){
@@ -156,13 +156,12 @@ function payNow(){
   const phone = document.getElementById("phone").value.trim();
   const address = document.getElementById("address").value.trim();
 
-  if(name === "" || phone === "" || address === ""){
+  if(!name || !phone || !address){
     alert("❗ Please fill all address details");
     return;
   }
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || {};
-
+  const cart = JSON.parse(localStorage.getItem("cart")) || {};
   if(Object.keys(cart).length === 0){
     alert("Cart is empty!");
     return;
@@ -173,40 +172,31 @@ function payNow(){
 
   for(let k in cart){
     total += cart[k].kg * cart[k].price;
-    items.push({
-      name: k,
-      kg: cart[k].kg,
-      price: cart[k].price
-    });
+    items.push(cart[k]);
   }
 
-  const orderId = generateOrderId();
-
-  let newOrder = {
-    id: orderId,
+  const order = {
+    id: generateOrderId(),
     customer: name,
-    phone: phone,
-    address: address,
-    items: items,
-    total: total,
-    status: "pending",
+    phone,
+    address,
+    items,
+    total,
+    status: "confirmed",
     time: new Date().toLocaleString()
   };
 
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-  orders.push(newOrder);
-
+  orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
 
-  document.querySelector(".pay-btn").style.display="none";
-  document.getElementById("loader").style.display="block";
+  document.querySelector(".pay-btn").style.display = "none";
+  document.getElementById("loader").style.display = "block";
 
   setTimeout(()=>{
-    alert("✅ Payment Successful!\nYour order ID: " + orderId);
     localStorage.removeItem("cart");
-    window.location.href="tracking.html";
-  },2000);
+    window.location.href = "tracking.html";
+  }, 2000);
 }
 </script>
 
