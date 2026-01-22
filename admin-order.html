@@ -2,20 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FarmOS Admin – Orders</title>
+<title>Customer Orders</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{
   margin:0;
   font-family:Segoe UI, Arial;
-  background:#f1f5f9;
-  color:#0f172a;
+  background:#f8fafc;
 }
 
-/* NAVBAR */
 .navbar{
-  background:#ffffff;
+  background:white;
   padding:16px 24px;
   display:flex;
   justify-content:space-between;
@@ -28,21 +26,12 @@ body{
   font-size:20px;
 }
 
-.navbar a{
-  text-decoration:none;
-  color:#0f172a;
-  margin-left:20px;
-  font-weight:600;
-}
-
-/* CONTAINER */
 .container{
   max-width:1000px;
   margin:30px auto;
   padding:20px;
 }
 
-/* CARD */
 .card{
   background:white;
   border-radius:18px;
@@ -51,243 +40,124 @@ body{
   margin-bottom:20px;
 }
 
-/* TABLE */
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:12px;
-  text-align:left;
+.order{
+  padding:12px 0;
   border-bottom:1px solid #e5e7eb;
 }
 
-th{
-  background:#f8fafc;
-}
+.order:last-child{border:none}
 
-.status{
-  font-weight:bold;
-}
-
-.pending{color:#f59e0b}
-.packed{color:#3b82f6}
-.delivered{color:#16a34a}
-
-/* BUTTONS */
 .btn{
-  padding:6px 12px;
+  padding:8px 14px;
   border:none;
   border-radius:10px;
-  cursor:pointer;
-  font-weight:700;
-  margin-right:6px;
-}
-
-.pack{
-  background:#3b82f6;
-  color:white;
-}
-
-.deliver{
   background:#16a34a;
   color:white;
-}
-
-.view{
-  background:#f59e0b;
-  color:white;
-}
-
-/* MODAL */
-.modal{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.6);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-
-.modal-content{
-  background:white;
-  padding:20px;
-  border-radius:16px;
-  width:400px;
-}
-
-.close{
-  float:right;
+  font-weight:700;
   cursor:pointer;
-  font-weight:bold;
 }
+
+.pending{color:#f59e0b;font-weight:bold}
+.delivered{color:#16a34a;font-weight:bold}
 </style>
 </head>
 
 <body>
 
 <div class="navbar">
-  <strong>FarmOS Admin 🌿</strong>
-
-  <div>
-    <a href="admin.html">Dashboard</a>
-    <a href="admin-orders.html">Orders</a>
-    <a href="index.html">Home</a>
-  </div>
+  <strong>Customer Orders 📦</strong>
+  <button class="btn" onclick="location.href='admin.html'">Back</button>
 </div>
 
 <div class="container">
 
   <div class="card">
-    <h2>📦 All Orders</h2>
-    <p>Manage hotel and customer orders</p>
+    <h2>Active Orders</h2>
+    <p>Orders placed by customers</p>
   </div>
 
-  <div class="card">
-    <table>
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+  <div class="card" id="orderList"></div>
 
-      <tbody id="orderList"></tbody>
-    </table>
-  </div>
-
-</div>
-
-<!-- ORDER DETAIL MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">X</span>
-    <h3>Order Details</h3>
-
-    <div id="modalData"></div>
-  </div>
 </div>
 
 <script>
-
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-// If no orders exist – create sample for demo
-if(orders.length === 0){
-  orders = [
+// DEMO DATA (REMOVE LATER WHEN CUSTOMER FLOW READY)
+if(!localStorage.getItem("customerOrders")){
+  localStorage.setItem("customerOrders", JSON.stringify([
     {
-      id:"FM101",
-      customer:"Hotel Raj",
-      total:2400,
-      status:"pending",
-      items:[
-        {name:"Tomato",kg:20},
-        {name:"Potato",kg:15}
-      ]
+      id:"ORD-1001",
+      customer:"Rahul",
+      items:5,
+      address:"Mumbai",
+      status:"pending"
     },
     {
-      id:"FM102",
-      customer:"Sunrise Restaurant",
-      total:1800,
-      status:"packed",
-      items:[
-        {name:"Onion",kg:10},
-        {name:"Carrot",kg:8}
-      ]
+      id:"ORD-1002",
+      customer:"Amit",
+      items:3,
+      address:"Pune",
+      status:"pending"
     }
-  ];
-
-  localStorage.setItem("orders",JSON.stringify(orders));
+  ]));
 }
 
-function render(){
+function loadOrders(){
 
-  let html="";
+  let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
 
-  orders.forEach((o,i)=>{
+  if(orders.length === 0){
+    document.getElementById("orderList").innerHTML =
+      "<p>No orders yet</p>";
+    return;
+  }
 
+  let html = "";
+
+  orders.forEach((o,index)=>{
     html += `
-      <tr>
-        <td>${o.id}</td>
-        <td>${o.customer}</td>
-        <td>₹${o.total}</td>
+      <div class="order">
+        <strong>Order ID:</strong> ${o.id}<br>
+        <strong>Customer:</strong> ${o.customer}<br>
+        <strong>Items:</strong> ${o.items} Veggie Packs<br>
+        <strong>Address:</strong> ${o.address}<br>
+        <span class="pending">Status: Pending</span><br><br>
 
-        <td class="status ${o.status}">
-          ${o.status.toUpperCase()}
-        </td>
-
-        <td>
-          <button class="btn view" onclick="view(${i})">View</button>
-
-          ${
-            o.status === "pending"
-            ? `<button class="btn pack" onclick="markPacked(${i})">Packed</button>`
-            : ""
-          }
-
-          ${
-            o.status === "packed"
-            ? `<button class="btn deliver" onclick="markDelivered(${i})">Delivered</button>`
-            : ""
-          }
-        </td>
-      </tr>
+        <button class="btn" onclick="markDelivered(${index})">
+          Mark Delivered
+        </button>
+      </div>
     `;
   });
 
   document.getElementById("orderList").innerHTML = html;
 }
 
-function markPacked(i){
-  orders[i].status = "packed";
-  save();
-}
+function markDelivered(index){
 
-function markDelivered(i){
-  orders[i].status = "delivered";
-  save();
-}
+  let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+  let deliveredHistory = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
 
-function save(){
-  localStorage.setItem("orders",JSON.stringify(orders));
-  render();
-}
+  let order = orders[index];
 
-function view(i){
-
-  let o = orders[i];
-
-  let html = `
-    <strong>Order ID:</strong> ${o.id}<br>
-    <strong>Customer:</strong> ${o.customer}<br>
-    <strong>Total:</strong> ₹${o.total}<br>
-    <strong>Status:</strong> ${o.status}<br><br>
-
-    <strong>Items:</strong><br>
-  `;
-
-  o.items.forEach(it=>{
-    html += `- ${it.name} : ${it.kg} kg<br>`;
+  // move to delivered history
+  deliveredHistory.push({
+    id: order.id,
+    customer: order.customer,
+    items: order.items,
+    date: new Date().toLocaleString()
   });
 
-  document.getElementById("modalData").innerHTML = html;
-  document.getElementById("modal").style.display="flex";
+  // remove from active orders
+  orders.splice(index,1);
+
+  localStorage.setItem("customerOrders", JSON.stringify(orders));
+  localStorage.setItem("deliveredHistory", JSON.stringify(deliveredHistory));
+
+  loadOrders();
 }
 
-function closeModal(){
-  document.getElementById("modal").style.display="none";
-}
-
-render();
-
+loadOrders();
 </script>
 
 </body>
-  </html>
+</html>
