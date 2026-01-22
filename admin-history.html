@@ -4,108 +4,44 @@
 <meta charset="UTF-8">
 <title>Delivered Orders History</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
-body{
-  margin:0;
-  font-family:Segoe UI, Arial;
-  background:#f8fafc;
-}
-
-.navbar{
-  background:white;
-  padding:16px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #e5e7eb;
-}
-
-.navbar strong{
-  color:#16a34a;
-  font-size:20px;
-}
-
-.container{
-  max-width:1000px;
-  margin:30px auto;
-  padding:20px;
-}
-
-.card{
-  background:white;
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
-  margin-bottom:20px;
-}
-
-.history-item{
-  padding:12px 0;
-  border-bottom:1px solid #e5e7eb;
-}
-
-.history-item:last-child{
-  border:none;
-}
-
-.green{
-  color:#16a34a;
-  font-weight:bold;
-}
-
-.btn{
-  padding:8px 14px;
-  border:none;
-  border-radius:10px;
-  background:#16a34a;
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-}
+body{margin:0;font-family:Segoe UI, Arial;background:#f8fafc;}
+.navbar{background:white;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e7eb;}
+.navbar strong{color:#16a34a;font-size:20px;}
+.container{max-width:1000px;margin:30px auto;padding:20px;}
+.card{background:white;border-radius:18px;padding:20px;box-shadow:0 10px 25px rgba(0,0,0,.08);margin-bottom:20px;}
+.history-item{padding:12px 0;border-bottom:1px solid #e5e7eb;}
+.history-item:last-child{border:none;}
+.green{color:#16a34a;font-weight:bold;}
+.btn{padding:8px 14px;border:none;border-radius:10px;background:#16a34a;color:white;font-weight:700;cursor:pointer;}
 </style>
 </head>
-
 <body>
-
 <div class="navbar">
   <strong>Delivered Orders History 📦</strong>
-
   <div>
-    <button class="btn" onclick="location.href='admin.html'">
-      Back to Dashboard
-    </button>
+    <button class="btn" onclick="location.href='admin.html'">Back to Dashboard</button>
   </div>
 </div>
-
 <div class="container">
-
   <div class="card">
     <h2>Completed Deliveries</h2>
     <p>All successfully delivered orders record</p>
   </div>
-
-  <div class="card" id="historyList">
-  </div>
-
+  <div class="card" id="historyList"></div>
 </div>
 
 <script>
-
 function loadHistory(){
-
   let history = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
-
-  if(history.length === 0){
-    document.getElementById("historyList").innerHTML =
-      "<p>No delivered orders yet</p>";
+  const container = document.getElementById("historyList");
+  if(history.length===0){
+    container.innerHTML="<p>No delivered orders yet</p>";
     return;
   }
-
-  let html = "";
-
-  history.forEach(h => {
-    html += `
+  let html="";
+  history.forEach(h=>{
+    html+=`
       <div class="history-item">
         <strong>Order ID:</strong> ${h.id}<br>
         <strong>Customer:</strong> ${h.customer}<br>
@@ -115,13 +51,9 @@ function loadHistory(){
       </div>
     `;
   });
-
-  document.getElementById("historyList").innerHTML = html;
+  container.innerHTML = html;
 }
-
 loadHistory();
-
 </script>
-
 </body>
 </html>
