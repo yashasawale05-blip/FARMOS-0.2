@@ -165,9 +165,10 @@ const checkpoints = [
 ];
 
 function render(){
-  let html="";
-  checkpoints.forEach((c,i)=>{
-    html+=`
+  let html = "";
+
+  checkpoints.forEach((c, i) => {
+    html += `
       <div class="checkpoint">
         <div class="info">
           <strong>${c.name}</strong><br>
@@ -179,11 +180,14 @@ function render(){
           </div>
           ${
             c.status === "pending"
-            ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>`
-            : ``
+              ? `<button class="btn" onclick="markReached(${i})">Mark Reached</button>`
+              : ``
           }
         </div>
+      </div>
+    `;
   });
+
   document.getElementById("checkpointList").innerHTML = html;
 }
 
