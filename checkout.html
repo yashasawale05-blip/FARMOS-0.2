@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -134,6 +134,7 @@ body{
   text-align:center;
   font-weight:900;
   text-decoration:none;
+  cursor:pointer;
 }
 .back{
   display:block;
@@ -167,7 +168,7 @@ Total: ₹<span id="totalPrice">0</span>
 </div>
 
 <span class="back" onclick="window.location.href='product.html'">← Back to Shop</span>
-<a href="payment.html" class="place">Place Order</a>
+<div class="place" id="placeOrderBtn">Place Order</div>
 
 <script>
 let cart=JSON.parse(localStorage.getItem("cart"))||{};
@@ -202,6 +203,35 @@ function change(name,val){
   if(cart[name].kg<=0) delete cart[name];
   render();
 }
+
+// --- NEW CODE FOR SAVING ORDER ---
+document.getElementById("placeOrderBtn").addEventListener("click", function() {
+    const customerName = prompt("Enter your name:") || "Guest";
+    const deliveryAddress = prompt("Enter your address:") || "Not provided";
+    const cartItems = Object.keys(cart).map(key => ({name:key, qty:cart[key].kg}));
+    const totalItems = cartItems.reduce((sum,item)=>sum+item.qty,0);
+
+    const orderID = "ORD-" + Date.now();
+
+    const newOrder = {
+        id: orderID,
+        customer: customerName,
+        items: totalItems,
+        details: cartItems,
+        address: deliveryAddress,
+        status: "pending",
+        date: new Date().toLocaleString()
+    };
+
+    let customerOrders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+    customerOrders.push(newOrder);
+    localStorage.setItem("customerOrders", JSON.stringify(customerOrders));
+    localStorage.removeItem("cart");
+
+    alert("Payment successful! Your order ID is " + orderID);
+
+    window.location.href = "order-confirmation.html";
+});
 </script>
 </body>
-</html>     
+ </html>
