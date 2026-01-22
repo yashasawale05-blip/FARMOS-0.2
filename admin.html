@@ -217,9 +217,12 @@ function render(){
 
   let deliveredHistory = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
 
-  let deliveredCount = deliveredHistory.length;
-  let totalOrders = checkpoints.reduce((sum,c)=> sum + c.orders, 0);
-  let deliveredOrders = deliveredHistory.reduce((sum,h)=> sum + parseInt(h.items), 0);
+  let totalOrders = checkpoints.reduce((sum, c) => sum + c.orders, 0);
+
+  let deliveredOrders = deliveredHistory.reduce(
+    (sum, h) => sum + h.items,
+    0
+  );
 
   let pendingOrders = totalOrders - deliveredOrders;
 
