@@ -183,31 +183,31 @@ function render(){
             : ``
           }
         </div>
-      </div>
-    `;
   });
   document.getElementById("checkpointList").innerHTML = html;
 }
 
-function markReached(i){
+  function markReached(i){
+
+  if(checkpoints[i].status === "reached"){
+    return; // already delivered
+  }
 
   checkpoints[i].status = "reached";
 
-  // load existing history
   let history = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
 
-  // push new delivered entry
   history.push({
     id: "ORD-" + Date.now(),
     customer: checkpoints[i].name,
-    items: checkpoints[i].orders + " Veggie Packs",
+    items: checkpoints[i].orders,
     date: new Date().toLocaleString()
   });
 
-  // save back to localStorage
   localStorage.setItem("deliveredHistory", JSON.stringify(history));
 
   render();
+  updateStats();
 }
   function updateStats(){
 
