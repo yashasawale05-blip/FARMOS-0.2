@@ -127,6 +127,53 @@ footer{
   text-align:center;
   padding:18px;
 }
+
+/* Customer Order Form */
+.order-section{
+  max-width:600px;
+  margin:50px auto;
+  background:var(--card);
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.5);
+}
+
+.order-section h2{
+  color:var(--green);
+  margin-bottom:20px;
+  text-align:center;
+}
+
+.order-section input, .order-section button{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #aaa;
+  font-size:16px;
+}
+
+.order-section button{
+  background:var(--green);
+  color:#0b1510;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.order-list{
+  margin-top:20px;
+  max-height:300px;
+  overflow-y:auto;
+}
+
+.order-item{
+  background:#0f1b13;
+  padding:12px;
+  margin-bottom:8px;
+  border-radius:10px;
+  box-shadow:0 5px 10px rgba(0,0,0,0.3);
+}
 </style>
 </head>
 
@@ -181,9 +228,74 @@ footer{
   </div>
 </section>
 
+<!-- Customer Order Section -->
+<section class="order-section">
+  <h2>Place Your Order</h2>
+  <input type="text" id="customerName" placeholder="Your Name">
+  <input type="text" id="customerAddress" placeholder="Your Address">
+  <input type="number" id="veggiePacks" placeholder="Number of Veggie Packs" min="1">
+  <button onclick="placeOrder()">Place Order</button>
+
+  <div class="order-list" id="myOrders"></div>
+</section>
+
 <footer>
   © 2025 FarmOS • Premium Farm Experience 🌿
 </footer>
+
+<script>
+function loadMyOrders(){
+  const orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+  const container = document.getElementById("myOrders");
+  if(orders.length===0){
+    container.innerHTML="<p>No orders yet</p>";
+    return;
+  }
+  let html="";
+  orders.forEach(o=>{
+    html+=`<div class="order-item">
+      <strong>Order ID:</strong> ${o.id}<br>
+      <strong>Name:</strong> ${o.customer}<br>
+      <strong>Address:</strong> ${o.address}<br>
+      <strong>Veggie Packs:</strong> ${o.items}<br>
+      <strong>Status:</strong> ${o.status}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function placeOrder(){
+  const name = document.getElementById("customerName").value.trim();
+  const address = document.getElementById("customerAddress").value.trim();
+  const packs = parseInt(document.getElementById("veggiePacks").value);
+
+  if(!name || !address || !packs){
+    alert("Please fill all fields correctly");
+    return;
+  }
+
+  let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+
+  const newOrder = {
+    id: "ORD-" + Date.now(),
+    customer: name,
+    address: address,
+    items: packs,
+    status: "pending"
+  };
+
+  orders.push(newOrder);
+  localStorage.setItem("customerOrders", JSON.stringify(orders));
+
+  alert("Order placed successfully!");
+  document.getElementById("customerName").value="";
+  document.getElementById("customerAddress").value="";
+  document.getElementById("veggiePacks").value="";
+  loadMyOrders();
+}
+
+loadMyOrders();
+</script>
 
 </body>
   </html>
