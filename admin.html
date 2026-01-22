@@ -166,7 +166,23 @@ function render(){
 }
 
 function markReached(i){
+
   checkpoints[i].status = "reached";
+
+  // load existing history
+  let history = JSON.parse(localStorage.getItem("deliveredHistory")) || [];
+
+  // push new delivered entry
+  history.push({
+    id: "ORD-" + Date.now(),
+    customer: checkpoints[i].name,
+    items: checkpoints[i].orders + " Veggie Packs",
+    date: new Date().toLocaleString()
+  });
+
+  // save back to localStorage
+  localStorage.setItem("deliveredHistory", JSON.stringify(history));
+
   render();
 }
 
