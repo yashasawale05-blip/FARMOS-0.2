@@ -102,36 +102,29 @@ if(!localStorage.getItem("customerOrders")){
 }
 
 function loadOrders(){
-
-  let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
   if(orders.length === 0){
-    document.getElementById("orderList").innerHTML =
-      "<p>No orders yet</p>";
+    document.getElementById("ordersList").innerHTML = "<p>No orders yet</p>";
     return;
   }
 
   let html = "";
-
-  orders.forEach((o,index)=>{
+  orders.forEach(o => {
     html += `
-      <div class="order">
+      <div class="order-item">
         <strong>Order ID:</strong> ${o.id}<br>
         <strong>Customer:</strong> ${o.customer}<br>
-        <strong>Items:</strong> ${o.items} Veggie Packs<br>
-        <strong>Address:</strong> ${o.address}<br>
-        <span class="pending">Status: Pending</span><br><br>
-
-        <button class="btn" onclick="markDelivered(${index})">
-          Mark Delivered
-        </button>
+        <strong>Items:</strong> ${o.items}<br>
+        <strong>Status:</strong> ${o.status}
       </div>
     `;
   });
 
-  document.getElementById("orderList").innerHTML = html;
+  document.getElementById("ordersList").innerHTML = html;
 }
 
+loadOrders();
 function markDelivered(index){
 
   let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
