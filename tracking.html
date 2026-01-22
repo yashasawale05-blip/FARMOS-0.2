@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -137,14 +137,14 @@ body{
 
 <div class="navbar">
   <strong>FarmOS 🌿</strong>
-  <a href="product.html">← Shop</a>
+  <a href="index.html">← Home</a>
 </div>
 
 <div class="container">
 
   <div class="card">
     <h2>Order Confirmed</h2>
-    <p>Order ID: <strong>#FMOS1029</strong></p>
+    <p>Order ID: <strong id="orderID">#FMOS0000</strong></p>
     <div class="status" id="statusText">Order received</div>
   </div>
 
@@ -163,7 +163,7 @@ body{
     <div class="step" id="s5"><div class="dot"></div><span>Ready for Pickup</span></div>
   </div>
 
-  <button class="btn" onclick="location.href='product.html'">
+  <button class="btn" onclick="continueShopping()">
     Continue Shopping
   </button>
 
@@ -189,7 +189,18 @@ function updateStep(){
 
 updateStep();
 setInterval(updateStep, 5000);
+
+// Load last order ID dynamically from localStorage
+let orders = JSON.parse(localStorage.getItem("customerOrders")) || [];
+if(orders.length > 0){
+    document.getElementById("orderID").innerText = orders[orders.length - 1].id;
+}
+
+// Continue shopping button
+function continueShopping(){
+    window.location.href = "index.html";
+}
 </script>
 
 </body>
-      </html>
+</html>
